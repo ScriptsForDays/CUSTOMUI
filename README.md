@@ -1,51 +1,43 @@
-# CUSTOMUI
+<!--<h1 align="center">WindUI</h1> -->
 
-Custom enhanced version of [WindUI](https://github.com/Footagesus/WindUI) - A modern UI library for Roblox Script Hubs.
 
-## About
+<picture>
+    <source srcset="docs/banner-dark.webp" media="(prefers-color-scheme: dark)">
+    <source srcset="docs/banner-light.webp" media="(prefers-color-scheme: light)">
+    <img src="docs/banner-light.png" alt="WindUI Banner">
+</picture>
 
-This repository contains a custom-enhanced version of WindUI with additional features for dynamic UI updates and advanced customization.
+> [!WARNING]
+> This WindUI was not inspired by, and the name has nothing to do with UI Frameworks
 
-## Custom Features
 
-### Dynamic Dropdown Updates
-- **`dropdown:SetValues(newValues)`** - Update dropdown values dynamically
-- Preserves current selection when possible
-- Works with both single-select and multi-select dropdowns
-- Automatically updates UI even when menu is open
+ 
+> [!WARNING] 
+> WindUI is currently in Beta.
+> This project is still under active development. Bugs, issues, and unstable features may occur. We’re constantly working on improvements, so please be patient and report any problems you encounter.
 
-### Custom Accent Customization
-Override theme properties without creating full custom themes:
 
-- `WindUI:SetCustomAccent(color)` - Set custom accent color
-- `WindUI:SetCustomBackground(color)` - Set custom background (supports gradients)
-- `WindUI:SetCustomText(color)` - Set custom text color
-- `WindUI:SetCustomButton(color)` - Set custom button color
-- `WindUI:SetCustomIcon(color)` - Set custom icon color
-- `WindUI:SetCustomDialog(color)` - Set custom dialog background
-- `WindUI:SetCustomOutline(color)` - Set custom outline color
-- `WindUI:SetCustomProperty(name, value)` - Set any theme property
-- `WindUI:ClearCustomOverrides()` - Clear all custom overrides
-- `WindUI:ClearCustomProperty(name)` - Clear specific override
-- `WindUI:GetCustomOverrides()` - Get all current overrides
 
-## Installation
+### Credits
+- [Dawid-Scripts](https://github.com/dawid-scripts) 
+- [Lucide-Icons](https://github.com/lucide-icons/lucide) 
 
-```lua
-local WindUI = loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/main/WindUI/dist/main.lua'))()
-```
 
-## Documentation
+### Links
+- [Discord Server](https://discord.gg/ftgs-development-hub-1300692552005189632)
+- [Documentation](https://Footagesus.github.io/WindUI-Docs/)
 
-See the [WindUI Documentation](https://footagesus.github.io/WindUI-Docs/) for base features.
+- [Example](/main_example.lua) (wip)
+  ```luau
+  loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/refs/heads/main/WindUI/main_example.lua'))()
+  ```
 
-For custom features, see [main_example.lua](WindUI/main_example.lua) for usage examples.
+### Custom Enhancements
 
-## Original Repository
+This is a custom version of WindUI with the following enhancements:
 
-Based on [WindUI by Footagesus](https://github.com/Footagesus/WindUI)
+- **Dynamic Dropdown Updates**: Added `SetValues()` method for real-time dropdown value updates
+- **Custom Accent Customization**: Override theme properties with methods like `SetCustomAccent()`, `SetCustomBackground()`, etc.
+- **Enhanced UI Control**: Customize backgrounds, text colors, buttons, and more without creating full themes
 
-## License
-
-MIT License - See [LICENSE](WindUI/LICENSE) file for details.
-
+See [main_example.lua](/main_example.lua) for usage examples.
