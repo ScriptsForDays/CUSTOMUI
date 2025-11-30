@@ -17,5 +17,10 @@ To preview the documentation locally:
 
 The documentation is automatically deployed to GitHub Pages when changes are pushed to the `main` branch.
 
-Access the live site at: `https://scriptsfordays.github.io/CUSTOMUI/`
+Access the live site at: `https://ScriptsForDays.github.io/CUSTOMUI/`
+
+Note: After pushing, enable GitHub Pages in your repository settings:
+1. Go to Settings → Pages
+2. Under "Source", select "GitHub Actions"
+3. The site will be available at the URL above
 
