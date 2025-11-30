@@ -29,7 +29,7 @@
 
 - [Example](/main_example.lua) (wip)
   ```luau
-  loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/refs/heads/main/WindUI/main_example.lua'))()
+  loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/refs/heads/main/main_example.lua'))()
   ```
 
 ### Custom Enhancements
