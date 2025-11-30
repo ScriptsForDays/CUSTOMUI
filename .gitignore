@@ -26,3 +26,6 @@ build/.init.lua
 *.njsproj
 *.sln
 *.sw?
+
+# Temporary comparison directory
+WindUI-original/
