@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation - WindUI Custom</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #27272a;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #30ff6a, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav {
+            margin-bottom: 2rem;
+        }
+
+        .nav a {
+            color: #30ff6a;
+            text-decoration: none;
+            font-weight: 500;
+            margin-right: 1rem;
+        }
+
+        .nav a:hover {
+            text-decoration: underline;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .section p {
+            color: #a1a1aa;
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: #1a1a1a;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: #71717a;
+        }
+
+        ul {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        ul li {
+            padding: 0.5rem 0;
+            color: #a1a1aa;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        ul li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #30ff6a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← Home</a>
+            <a href="components.html">Components</a>
+            <a href="customizations.html">Custom Enhancements</a>
+        </div>
+        
+        <div class="header">
+            <h1>Installation</h1>
+            <p style="color: #a1a1aa;">Get started with WindUI Custom</p>
+        </div>
+
+        <section class="section">
+            <h2>Quick Start</h2>
+            <p>Load WindUI Custom directly from GitHub:</p>
+            
+            <div class="code-block">
+                <code>
+local WindUI = loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/refs/heads/main/dist/main.lua'))()
+                </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Basic Usage</h2>
+            <p>After loading WindUI, create a window and start adding elements:</p>
+            
+            <div class="code-block">
+                <code>
+<span class="comment">-- Load WindUI</span><br>
+local WindUI = loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/refs/heads/main/dist/main.lua'))()<br>
+<br>
+<span class="comment">-- Create a window</span><br>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Author = "by YourName",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Folder = "myscript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings"<br>
+})<br>
+<br>
+<span class="comment">-- Create a tab</span><br>
+local Tab = Window:Tab({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Main",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "home"<br>
+})<br>
+<br>
+<span class="comment">-- Add a button</span><br>
+Tab:Button({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Click Me",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "mouse-pointer-click",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Button clicked!")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})
+                </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Example Script</h2>
+            <p>Load the complete example script to see all features:</p>
+            
+            <div class="code-block">
+                <code>
+loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/refs/heads/main/main_example.lua'))()
+                </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Requirements</h2>
+            <ul>
+                <li>Roblox exploit/executor with HTTP support</li>
+                <li>Internet connection to load from GitHub</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Next Steps</h2>
+            <ul>
+                <li>Check out the <a href="components.html" style="color: #30ff6a;">Components</a> documentation</li>
+                <li>Learn about <a href="customizations.html" style="color: #30ff6a;">Custom Enhancements</a></li>
+                <li>View the <a href="https://github.com/ScriptsForDays/CUSTOMUI/blob/main/main_example.lua" target="_blank" style="color: #30ff6a;">full example script</a></li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>
+
