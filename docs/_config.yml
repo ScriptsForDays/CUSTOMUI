@@ -1,0 +1,15 @@
+# Jekyll configuration for GitHub Pages (optional)
+title: WindUI Custom Documentation
+description: Enhanced Roblox UI Library with Dynamic Updates & Custom Accent Customization
+theme: minima
+plugins:
+  - jekyll-feed
+
+# Exclude from processing
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+
