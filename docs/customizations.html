@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Enhancements - WindUI Custom</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #27272a;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #30ff6a, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: #30ff6a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .section h3 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .section p {
+            color: #a1a1aa;
+            margin-bottom: 1rem;
+        }
+
+        .code-block {
+            background: #1a1a1a;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: #71717a;
+        }
+
+        .method-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+
+        .method-list li {
+            background: #1a1a1a;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .method-list code {
+            color: #30ff6a;
+            font-weight: 600;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 1rem 0;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            color: #a1a1aa;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        
+        <div class="header">
+            <h1>Custom Enhancements</h1>
+            <p style="color: #a1a1aa;">Enhanced features for better UI control and dynamic updates</p>
+        </div>
+
+        <section class="section">
+            <h2>Dynamic Dropdown Updates</h2>
+            <p>The <code>:SetValues()</code> method allows you to update dropdown values dynamically, which is perfect for scenarios where your exploit needs to refresh dropdown options based on runtime data.</p>
+
+            <h3>Basic Usage</h3>
+            <div class="code-block">
+                <code>
+local dropdown = Tab:Dropdown({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Dynamic Dropdown",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Values = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ Title = "Option 1", Icon = "file" },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ Title = "Option 2", Icon = "folder" },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(option)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Selected:", option.Title)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Later, update the dropdown values</span><br>
+dropdown:SetValues({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ Title = "New Option A", Icon = "star" },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ Title = "New Option B", Icon = "heart" },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ Title = "New Option C", Icon = "zap" },<br>
+})
+                </code>
+            </div>
+
+            <h3>Features</h3>
+            <ul class="feature-list">
+                <li>Preserves current selection when possible</li>
+                <li>Works with both single-select and multi-select dropdowns</li>
+                <li>Handles open menus gracefully</li>
+                <li>Clears search filters when menu is open</li>
+                <li>Automatically recalculates list and canvas sizes</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>Custom Accent Customization</h2>
+            <p>Customize UI accents without creating a full theme. These overrides persist when switching themes, giving you fine-grained control over the UI appearance.</p>
+
+            <h3>Available Methods</h3>
+            <ul class="method-list">
+                <li><code>WindUI:SetCustomAccent(color)</code> - Set the accent color</li>
+                <li><code>WindUI:SetCustomBackground(color)</code> - Set the background color (supports gradients)</li>
+                <li><code>WindUI:SetCustomText(color)</code> - Set the text color</li>
+                <li><code>WindUI:SetCustomButton(color)</code> - Set the button color (supports gradients)</li>
+                <li><code>WindUI:SetCustomIcon(color)</code> - Set the icon color</li>
+                <li><code>WindUI:SetCustomDialog(color)</code> - Set the dialog background color</li>
+                <li><code>WindUI:SetCustomOutline(color)</code> - Set the outline color</li>
+                <li><code>WindUI:SetCustomProperty(name, value)</code> - Set any custom theme property</li>
+            </ul>
+
+            <h3>Examples</h3>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Solid colors</span><br>
+WindUI:SetCustomAccent(Color3.fromHex("#30ff6a"))<br>
+WindUI:SetCustomBackground(Color3.fromHex("#1a1a1a"))<br>
+WindUI:SetCustomText(Color3.fromHex("#ffffff"))<br>
+<br>
+<span class="comment">-- Gradients</span><br>
+WindUI:SetCustomBackground(WindUI:Gradient({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;["0"] = { Color = Color3.fromHex("#0f0c29"), Transparency = 0 },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;["100"] = { Color = Color3.fromHex("#302b63"), Transparency = 0.1 },<br>
+}, {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Rotation = 45,<br>
+}))<br>
+<br>
+<span class="comment">-- Clear overrides</span><br>
+WindUI:ClearCustomProperty("Accent")<br>
+WindUI:ClearCustomOverrides()
+                </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Installation</h2>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Load WindUI Custom</span><br>
+local WindUI = loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/refs/heads/main/dist/main.lua'))()
+                </code>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
+

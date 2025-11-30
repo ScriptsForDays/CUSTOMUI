@@ -4,311 +4,206 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WindUI Custom - Documentation</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #30ff6a, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .version {
+            font-size: 1.25rem;
+            color: #a1a1aa;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .tagline {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .description {
+            font-size: 1.125rem;
+            color: #a1a1aa;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .link {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            background: #1a1a1a;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .link:hover {
+            border-color: #30ff6a;
+            color: #30ff6a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(48, 255, 106, 0.2);
+        }
+
+        .custom-section {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid #27272a;
+        }
+
+        .custom-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #30ff6a;
+        }
+
+        .custom-description {
+            font-size: 1rem;
+            color: #a1a1aa;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature {
+            background: #1a1a1a;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: left;
+        }
+
+        .feature h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .feature p {
+            font-size: 0.875rem;
+            color: #a1a1aa;
+            line-height: 1.5;
+        }
+
+        .more-soon {
+            margin-top: 3rem;
+            font-size: 1rem;
+            color: #71717a;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.5rem;
+            }
+
+            .description {
+                font-size: 1rem;
+            }
+
+            .links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .link {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <img src="logo.png" alt="WindUI" class="logo">
-                <span class="brand-text">WindUI Custom</span>
-            </div>
-            <div class="nav-links">
-                <a href="#installation">Installation</a>
-                <a href="#features">Features</a>
-                <a href="#customizations">Customizations</a>
-                <a href="#examples">Examples</a>
-                <a href="https://github.com/ScriptsForDays/CUSTOMUI" target="_blank" class="github-link">GitHub</a>
-            </div>
-        </div>
-    </nav>
+    <div class="container">
+        <h1>WindUI</h1>
+        <div class="version">v1.6.61 Custom Beta</div>
+        
+        <div class="tagline">Create beautiful scripts<br>with WindUI</div>
+        <div class="description">A modern UI Library. Simple design, and Open Source code.</div>
 
-    <div class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">WindUI Custom</h1>
-            <p class="hero-subtitle">Enhanced Roblox UI Library with Dynamic Updates & Custom Accent Customization</p>
-            <div class="hero-buttons">
-                <a href="#installation" class="btn btn-primary">Get Started</a>
-                <a href="https://github.com/ScriptsForDays/CUSTOMUI" target="_blank" class="btn btn-secondary">View on GitHub</a>
+        <div class="links">
+            <a href="customizations.html" class="link">Documentation</a>
+            <a href="https://github.com/ScriptsForDays/CUSTOMUI" class="link" target="_blank">Github</a>
+        </div>
+
+        <div class="custom-section">
+            <div class="custom-title">Custom Enhancements</div>
+            <div class="custom-description">
+                This custom version includes enhanced features for better UI control and dynamic updates.
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <h3>🔄 Dynamic Dropdown Updates</h3>
+                    <p>Update dropdown values in real-time with the <code>:SetValues()</code> method. Perfect for dynamic content that changes during runtime.</p>
+                </div>
+                <div class="feature">
+                    <h3>🎨 Custom Accent Customization</h3>
+                    <p>Override theme properties with granular control. Customize accents, backgrounds, text, buttons, and more without creating full themes.</p>
+                </div>
+                <div class="feature">
+                    <h3>⚡ Enhanced UI Control</h3>
+                    <p>Fine-tune your UI appearance with methods like <code>SetCustomAccent()</code>, <code>SetCustomBackground()</code>, and more.</p>
+                </div>
             </div>
         </div>
+
+        <div class="more-soon">More Soon</div>
     </div>
-
-    <main class="container">
-        <section id="installation" class="section">
-            <h2>Installation</h2>
-            <p>Install WindUI Custom using the following methods:</p>
-            
-            <div class="code-block">
-                <div class="code-header">
-                    <span>Load from GitHub</span>
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                </div>
-                <pre><code>loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/refs/heads/main/dist/main.lua'))()</code></pre>
-            </div>
-
-            <div class="code-block">
-                <div class="code-header">
-                    <span>Load Example Script</span>
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                </div>
-                <pre><code>loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/refs/heads/main/main_example.lua'))()</code></pre>
-            </div>
-        </section>
-
-        <section id="features" class="section">
-            <h2>Custom Enhancements</h2>
-            <p>This custom version of WindUI includes the following enhancements:</p>
-            
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🔄</div>
-                    <h3>Dynamic Dropdown Updates</h3>
-                    <p>Update dropdown values in real-time without recreating the dropdown element.</p>
-                    <a href="#dynamic-dropdown" class="feature-link">Learn More →</a>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">🎨</div>
-                    <h3>Custom Accent Customization</h3>
-                    <p>Override theme properties with granular control over UI aesthetics.</p>
-                    <a href="#custom-accents" class="feature-link">Learn More →</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="dynamic-dropdown" class="section">
-            <h2>Dynamic Dropdown Updates</h2>
-            <p>The <code>:SetValues()</code> method allows you to update dropdown values dynamically, which is perfect for scenarios where your exploit needs to refresh dropdown options based on runtime data.</p>
-
-            <h3>Basic Usage</h3>
-            <div class="code-block">
-                <div class="code-header">
-                    <span>Lua</span>
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                </div>
-                <pre><code>local dropdown = Tab:Dropdown({
-    Title = "Dynamic Dropdown",
-    Desc = "Values can be updated dynamically",
-    Values = {
-        { Title = "Option 1", Icon = "file" },
-        { Title = "Option 2", Icon = "folder" },
-        { Title = "Option 3", Icon = "settings" },
-    },
-    Value = "Option 1",
-    Callback = function(option)
-        print("Selected:", option.Title)
-    end
-})
-
--- Later, update the dropdown values
-dropdown:SetValues({
-    { Title = "New Option A", Icon = "star" },
-    { Title = "New Option B", Icon = "heart" },
-    { Title = "New Option C", Icon = "zap" },
-})</code></pre>
-            </div>
-
-            <h3>Features</h3>
-            <ul class="feature-list">
-                <li>✅ Preserves current selection when possible</li>
-                <li>✅ Works with both single-select and multi-select dropdowns</li>
-                <li>✅ Handles open menus gracefully</li>
-                <li>✅ Clears search filters when menu is open</li>
-                <li>✅ Automatically recalculates list and canvas sizes</li>
-            </ul>
-
-            <h3>Preserving Selection</h3>
-            <p>The method attempts to preserve the current selection by matching titles. If the current selection is not in the new values, it will be cleared.</p>
-        </section>
-
-        <section id="custom-accents" class="section">
-            <h2>Custom Accent Customization</h2>
-            <p>Customize UI accents without creating a full theme. These overrides persist when switching themes, giving you fine-grained control over the UI appearance.</p>
-
-            <h3>Available Methods</h3>
-            <div class="method-grid">
-                <div class="method-card">
-                    <code>WindUI:SetCustomAccent(color)</code>
-                    <p>Set the accent color</p>
-                </div>
-                <div class="method-card">
-                    <code>WindUI:SetCustomBackground(color)</code>
-                    <p>Set the background color (supports gradients)</p>
-                </div>
-                <div class="method-card">
-                    <code>WindUI:SetCustomText(color)</code>
-                    <p>Set the text color</p>
-                </div>
-                <div class="method-card">
-                    <code>WindUI:SetCustomButton(color)</code>
-                    <p>Set the button color (supports gradients)</p>
-                </div>
-                <div class="method-card">
-                    <code>WindUI:SetCustomIcon(color)</code>
-                    <p>Set the icon color</p>
-                </div>
-                <div class="method-card">
-                    <code>WindUI:SetCustomDialog(color)</code>
-                    <p>Set the dialog background color</p>
-                </div>
-                <div class="method-card">
-                    <code>WindUI:SetCustomOutline(color)</code>
-                    <p>Set the outline color</p>
-                </div>
-                <div class="method-card">
-                    <code>WindUI:SetCustomProperty(name, value)</code>
-                    <p>Set any custom theme property</p>
-                </div>
-            </div>
-
-            <h3>Basic Examples</h3>
-            <div class="code-block">
-                <div class="code-header">
-                    <span>Solid Colors</span>
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                </div>
-                <pre><code>-- Set custom accent color
-WindUI:SetCustomAccent(Color3.fromHex("#30ff6a"))
-
--- Set custom background
-WindUI:SetCustomBackground(Color3.fromHex("#1a1a1a"))
-
--- Set custom text color
-WindUI:SetCustomText(Color3.fromHex("#ffffff"))</code></pre>
-            </div>
-
-            <h3>Gradient Examples</h3>
-            <div class="code-block">
-                <div class="code-header">
-                    <span>Gradients</span>
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                </div>
-                <pre><code>-- Custom background with gradient
-WindUI:SetCustomBackground(WindUI:Gradient({
-    ["0"] = { Color = Color3.fromHex("#0f0c29"), Transparency = 0 },
-    ["100"] = { Color = Color3.fromHex("#302b63"), Transparency = 0.1 },
-}, {
-    Rotation = 45,
-}))
-
--- Custom button with gradient
-WindUI:SetCustomButton(WindUI:Gradient({
-    ["0"] = { Color = Color3.fromHex("#30FF6A"), Transparency = 0 },
-    ["100"] = { Color = Color3.fromHex("#e7ff2f"), Transparency = 0 },
-}, {
-    Rotation = 60,
-}))</code></pre>
-            </div>
-
-            <h3>Managing Overrides</h3>
-            <div class="code-block">
-                <div class="code-header">
-                    <span>Clear Overrides</span>
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                </div>
-                <pre><code>-- Get all current custom overrides
-local overrides = WindUI:GetCustomOverrides()
-print("Current overrides:", overrides)
-
--- Clear a specific custom property
-WindUI:ClearCustomProperty("Accent")
-
--- Clear all custom overrides
-WindUI:ClearCustomOverrides()</code></pre>
-            </div>
-
-            <h3>Advanced Usage</h3>
-            <div class="code-block">
-                <div class="code-header">
-                    <span>Generic Property Setter</span>
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                </div>
-                <pre><code>-- Set any custom theme property
-WindUI:SetCustomProperty("WindowBackground", Color3.fromHex("#0f172a"))
-WindUI:SetCustomProperty("TabBackground", Color3.fromHex("#1e293b"))
-WindUI:SetCustomProperty("ElementBackground", Color3.fromHex("#1e293b"))</code></pre>
-            </div>
-        </section>
-
-        <section id="examples" class="section">
-            <h2>Complete Example</h2>
-            <p>Here's a complete example showing both customizations in action:</p>
-            
-            <div class="code-block">
-                <div class="code-header">
-                    <span>Complete Example</span>
-                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                </div>
-                <pre><code>-- Load WindUI
-local WindUI = loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/refs/heads/main/dist/main.lua'))()
-
--- Set custom accent
-WindUI:SetCustomAccent(Color3.fromHex("#30ff6a"))
-
--- Create window
-local Window = WindUI:Window({
-    Title = "My Custom UI",
-    Size = { 500, 400 }
-})
-
-local Tab = Window:Tab({
-    Title = "Main",
-    Icon = "home"
-})
-
--- Create dynamic dropdown
-local dropdown = Tab:Dropdown({
-    Title = "Dynamic Dropdown",
-    Values = {
-        { Title = "Option 1" },
-        { Title = "Option 2" },
-    },
-    Callback = function(option)
-        print("Selected:", option.Title)
-    end
-})
-
--- Update dropdown later
-task.wait(5)
-dropdown:SetValues({
-    { Title = "New Option A" },
-    { Title = "New Option B" },
-    { Title = "New Option C" },
-})</code></pre>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2>Links</h2>
-            <div class="links-grid">
-                <a href="https://github.com/ScriptsForDays/CUSTOMUI" target="_blank" class="link-card">
-                    <strong>GitHub Repository</strong>
-                    <span>View source code and contribute</span>
-                </a>
-                <a href="https://discord.gg/ftgs-development-hub-1300692552005189632" target="_blank" class="link-card">
-                    <strong>Discord Server</strong>
-                    <span>Join the community</span>
-                </a>
-                <a href="https://github.com/Footagesus/WindUI" target="_blank" class="link-card">
-                    <strong>Original WindUI</strong>
-                    <span>Check out the original library</span>
-                </a>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <p>WindUI Custom - Enhanced by <a href="https://github.com/ScriptsForDays" target="_blank">ScriptsForDays</a></p>
-            <p>Based on <a href="https://github.com/Footagesus/WindUI" target="_blank">WindUI</a> by Footagesus</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
-
