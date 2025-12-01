@@ -105,7 +105,8 @@ return function(Config)
     )
     
     if Window.Folder then
-        -- Removed WindUI folder creation - folders created at root level only
+        -- Only create folders if they don't exist (for configs and assets)
+        -- Key system folder is created separately via KeyFolder parameter
         if not isfolder(Window.Folder) then
             makefolder(Window.Folder)
         end
