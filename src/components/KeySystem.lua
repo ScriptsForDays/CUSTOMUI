@@ -239,7 +239,7 @@ function KeySystem.new(Config, Filename, func)
                     if not iconFrame then
                         -- Create Discord icon
                         iconFrame = New("ImageLabel", {
-                            Image = "rbxassetid://110769239384778",
+                            Image = "rbxassetid://123777262952212",
                             Size = UDim2.new(0,24-3,0,24-3),
                             BackgroundTransparency = 1,
                             ThemeTag = {
@@ -250,7 +250,7 @@ function KeySystem.new(Config, Filename, func)
                         iconFrame.Parent = frame
                     else
                         -- Replace existing icon with Discord icon
-                        iconFrame.Image = "rbxassetid://110769239384778"
+                        iconFrame.Image = "rbxassetid://123777262952212"
                         iconFrame.ImageRectSize = Vector2.new(0, 0)
                         iconFrame.ImageRectOffset = Vector2.new(0, 0)
                         iconFrame.ImageTransparency = 0
