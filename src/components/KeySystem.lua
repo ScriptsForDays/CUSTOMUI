@@ -216,8 +216,8 @@ function KeySystem.new(Config, Filename, func)
     end
     
     if discordEnabled and discordURL then
-        -- Create button without icon first, then add Discord icon directly
-        DiscordButton = CreateButton("Discord", "", function()
+        -- Create Discord button with "key" icon (same as URL key system)
+        DiscordButton = CreateButton("Discord", "key", function()
             if setclipboard then
                 setclipboard(discordURL)
                 Config.WindUI:Notify({
@@ -228,52 +228,6 @@ function KeySystem.new(Config, Filename, func)
                 })
             end
         end, "Tertiary", ButtonsContainer.Frame)
-        
-        -- Add Discord icon directly to the button
-        if DiscordButton then
-            task.spawn(function()
-                task.wait(0.1) -- Wait for button structure to be fully created
-                local frame = DiscordButton:FindFirstChild("Frame")
-                if frame then
-                    -- Get Icon color from theme
-                    local iconColor = Creator.GetThemeProperty("Icon", Creator.Theme)
-                    local imageColor3 = nil
-                    if typeof(iconColor) == "Color3" then
-                        imageColor3 = iconColor
-                    end
-                    
-                    -- Create Discord icon directly (no placeholder to replace)
-                    local iconFrame = New("ImageLabel", {
-                        Image = "rbxassetid://124135407373085",
-                        Size = UDim2.new(0,24-3,0,24-3),
-                        BackgroundTransparency = 1,
-                        ImageTransparency = 0,
-                        Visible = true,
-                        ImageColor3 = imageColor3,
-                        LayoutOrder = -1,
-                        Name = "DiscordIcon" -- Give it a unique name to identify it
-                    })
-                    iconFrame.Parent = frame
-                    
-                    -- Protect the icon from being changed by settings/theme system
-                    local imageConnection
-                    imageConnection = iconFrame:GetPropertyChangedSignal("Image"):Connect(function()
-                        -- If something tries to change the image to something other than our Discord icon, restore it
-                        if iconFrame.Image ~= "rbxassetid://124135407373085" then
-                            iconFrame.Image = "rbxassetid://124135407373085"
-                        end
-                    end)
-                    
-                    -- Ensure visibility is maintained
-                    local visibilityConnection
-                    visibilityConnection = iconFrame:GetPropertyChangedSignal("Visible"):Connect(function()
-                        if not iconFrame.Visible then
-                            iconFrame.Visible = true
-                        end
-                    end)
-                end
-            end)
-        end
     end
     
     if ThumbnailFrame then
@@ -301,7 +255,15 @@ function KeySystem.new(Config, Filename, func)
     
     if Config.KeySystem.URL then
         CreateButton("Get key", "key", function()
-            setclipboard(Config.KeySystem.URL)
+            if setclipboard then
+                setclipboard(Config.KeySystem.URL)
+                Config.WindUI:Notify({
+                    Title = "Key System",
+                    Content = "Key link copied to clipboard!",
+                    Icon = "check",
+                    Duration = 2
+                })
+            end
         end, "Secondary", ButtonsContainer.Frame)
     end
     
