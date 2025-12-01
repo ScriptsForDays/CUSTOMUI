@@ -92,6 +92,7 @@ LocalizationObjects={},
 FontObjects={},
 Language=string.match(g.SystemLocaleId,"^[a-z]+"),
 Request=http_request or(syn and syn.request)or request,
+CustomOverrides={},
 DefaultProperties={
 ScreenGui={
 ResetOnSpawn=false,
@@ -271,6 +272,14 @@ end
 end
 
 function m.GetThemeProperty(p,r)
+
+if m.CustomOverrides[p]~=nil then
+local u=m.CustomOverrides[p]
+if typeof(u)=="Color3"or(typeof(u)=="table"and u.Color)then
+return u
+end
+end
+
 local function getValue(u,v)
 local x=v[u]
 
@@ -12000,6 +12009,64 @@ end
 function ac.Popup(as,at)
 at.WindUI=ac
 return a.load'r'.new(at)
+end
+
+
+
+
+
+function ac.SetCustomAccent(as,at)
+ak.CustomOverrides.Accent=at
+ak.UpdateTheme(nil,false)
+end
+
+function ac.SetCustomBackground(as,at)
+ak.CustomOverrides.Background=at
+ak.UpdateTheme(nil,false)
+end
+
+function ac.SetCustomText(as,at)
+ak.CustomOverrides.Text=at
+ak.UpdateTheme(nil,false)
+end
+
+function ac.SetCustomButton(as,at)
+ak.CustomOverrides.Button=at
+ak.UpdateTheme(nil,false)
+end
+
+function ac.SetCustomIcon(as,at)
+ak.CustomOverrides.Icon=at
+ak.UpdateTheme(nil,false)
+end
+
+function ac.SetCustomDialog(as,at)
+ak.CustomOverrides.Dialog=at
+ak.UpdateTheme(nil,false)
+end
+
+function ac.SetCustomOutline(as,at)
+ak.CustomOverrides.Outline=at
+ak.UpdateTheme(nil,false)
+end
+
+function ac.SetCustomProperty(as,at,au)
+ak.CustomOverrides[at]=au
+ak.UpdateTheme(nil,false)
+end
+
+function ac.ClearCustomProperty(as,at)
+ak.CustomOverrides[at]=nil
+ak.UpdateTheme(nil,false)
+end
+
+function ac.ClearCustomOverrides(as)
+ak.CustomOverrides={}
+ak.UpdateTheme(nil,false)
+end
+
+function ac.GetCustomOverrides(as)
+return ak.CustomOverrides
 end
 
 
