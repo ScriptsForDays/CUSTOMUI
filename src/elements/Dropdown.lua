@@ -102,6 +102,15 @@ function Element:New(Config)
     -- If Values is not provided or is a function/string, fetch data
     if not initialValues or type(initialValues) == "function" or type(initialValues) == "string" then
         initialValues = fetchDropdownData(dataSource)
+        -- If fetching failed and result is empty, use placeholder to ensure dropdown is visible
+        if not initialValues or #initialValues == 0 then
+            initialValues = {{Title = "--"}}
+        end
+    end
+    
+    -- Ensure Values is never empty (use placeholder if needed)
+    if not initialValues or #initialValues == 0 then
+        initialValues = {{Title = "--"}}
     end
     
     local Dropdown = {
@@ -218,8 +227,14 @@ function Element:New(Config)
         
         -- Validate input
         if type(newValues) ~= "table" then
-            warn("Dropdown:SetValues - newValues must be a table")
+            warn("Dropdown:SetValues - newValues must be a table, got: " .. tostring(type(newValues)))
             return false
+        end
+        
+        -- Ensure values is not empty (use placeholder if needed)
+        if #newValues == 0 then
+            warn("Dropdown:SetValues - newValues is empty, using placeholder")
+            newValues = {{Title = "--"}}
         end
         
         -- Store old selected value to preserve selection
@@ -261,6 +276,10 @@ function Element:New(Config)
                 else
                     self.Value = nil
                 end
+                -- Update display to show placeholder
+                if self.Display then
+                    self:Display()
+                end
             end
         end
         
@@ -283,9 +302,26 @@ function Element:New(Config)
     -- Add RefreshData method to refetch from DataSource
     function Dropdown:RefreshData()
         if self.DataSource then
-            return self:SetValues(nil) -- nil triggers refresh from DataSource
+            local newValues = fetchDropdownData(self.DataSource)
+            -- If refresh returns empty, keep current values or use placeholder
+            if not newValues or #newValues == 0 then
+                warn("Dropdown:RefreshData - DataSource returned empty table, keeping current values")
+                return false
+            end
+            return self:SetValues(newValues)
+        elseif type(self.Values) == "function" then
+            -- Support for function-based Values (legacy compatibility)
+            local success, result = pcall(self.Values)
+            if success and type(result) == "table" and #result > 0 then
+                return self:SetValues(result)
+            else
+                warn("Dropdown:RefreshData - Values function returned invalid data")
+                return false
+            end
+        else
+            warn("Dropdown:RefreshData - No DataSource or function-based Values available")
+            return false
         end
-        return false
     end
     
     return Dropdown.__type, Dropdown
