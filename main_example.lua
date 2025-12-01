@@ -624,16 +624,26 @@ do
     
     DropdownTab:Space()
     
-    -- Example: Dynamic dropdown updates
+    -- Example: Dynamic dropdown with function data source
     local dynamicDropdown = DropdownTab:Dropdown({
         Title = "Dynamic Dropdown",
-        Desc = "Values can be updated dynamically",
-        Values = {
-            { Title = "Option 1", Icon = "file" },
-            { Title = "Option 2", Icon = "folder" },
-            { Title = "Option 3", Icon = "settings" },
-        },
-        Value = "Option 1",
+        Desc = "Fetches data from function or ModuleScript",
+        -- Option 1: Use a function to fetch data
+        Values = function()
+            -- Fetch data from game (e.g., players, items, etc.)
+            local players = {}
+            for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+                table.insert(players, {
+                    Title = player.Name,
+                    Icon = "user"
+                })
+            end
+            return players
+        end,
+        -- Option 2: Use a ModuleScript path (string)
+        -- Values = "MyDataModule", -- Will search for ModuleScript in game
+        -- Option 3: Use static table
+        -- Values = {{ Title = "Option 1" }, { Title = "Option 2" }},
         Callback = function(option)
             print("Selected:", option.Title)
         end
@@ -641,10 +651,31 @@ do
     
     DropdownTab:Space()
     
-    -- Example button to update dropdown values
+    DropdownTab:Space()
+    
+    -- Example button to refresh data from source
+    DropdownTab:Button({
+        Title = "Refresh from Data Source",
+        Icon = "refresh-cw",
+        Desc = "Refetches data from function/ModuleScript",
+        Callback = function()
+            -- Refresh data from the original DataSource
+            dynamicDropdown:RefreshData()
+            WindUI:Notify({
+                Title = "Data Refreshed",
+                Content = "Dropdown data refreshed from source!",
+                Duration = 2
+            })
+        end
+    })
+    
+    DropdownTab:Space()
+    
+    -- Example button to update dropdown with new values
     DropdownTab:Button({
         Title = "Update Dropdown Values",
         Icon = "refresh-cw",
+        Desc = "Manually set new values",
         Callback = function()
             -- Update the dropdown with new values
             dynamicDropdown:SetValues({
@@ -663,27 +694,17 @@ do
     
     DropdownTab:Space()
     
-    -- Example: Update dropdown while preserving selection
-    DropdownTab:Button({
-        Title = "Add More Options (Preserve Selection)",
-        Icon = "plus",
-        Callback = function()
-            -- Add more options while keeping current selection if it exists
-            local currentSelection = dynamicDropdown.Value
-            dynamicDropdown:SetValues({
-                { Title = "Option 1", Icon = "file" },
-                { Title = "Option 2", Icon = "folder" },
-                { Title = "Option 3", Icon = "settings" },
-                { Title = "Option 4", Icon = "star" },
-                { Title = "Option 5", Icon = "heart" },
-            })
-            WindUI:Notify({
-                Title = "Options Added",
-                Content = "New options added to dropdown!",
-                Duration = 2
-            })
+    -- Example: Dropdown with ModuleScript data source
+    --[[
+    local moduleDropdown = DropdownTab:Dropdown({
+        Title = "ModuleScript Dropdown",
+        Desc = "Fetches data from a ModuleScript",
+        Values = "MyDataModule", -- Searches for ModuleScript named "MyDataModule"
+        Callback = function(option)
+            print("Selected:", option.Title)
         end
     })
+    --]]
     
 end
 

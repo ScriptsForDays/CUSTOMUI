@@ -129,6 +129,9 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
         )
     end
     
+    -- Expose UpdatePosition for external use
+    DropdownModule.UpdatePosition = UpdatePosition
+    
     local SearchLabel
     
     function DropdownModule:Display()
@@ -226,9 +229,21 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
     end
     
     function DropdownModule:Refresh(Values)
+        -- Clear existing UI elements
         for _, Elementt in next, Dropdown.UIElements.Menu.Frame.ScrollingFrame:GetChildren() do
             if not Elementt:IsA("UIListLayout") then
                 Elementt:Destroy()
+            end
+        end
+        
+        -- Clear search filter if enabled
+        if Dropdown.SearchBarEnabled and SearchLabel then
+            SearchLabel.Frame.Frame.TextBox.Text = ""
+            -- Reset visibility of all tabs when search is cleared
+            for _, tab in next, Dropdown.Tabs do
+                if tab and tab.UIElements and tab.UIElements.TabItem then
+                    tab.UIElements.TabItem.Visible = true
+                end
             end
         end
         
