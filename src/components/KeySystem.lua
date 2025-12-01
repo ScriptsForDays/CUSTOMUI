@@ -216,7 +216,8 @@ function KeySystem.new(Config, Filename, func)
     end
     
     if discordEnabled and discordURL then
-        DiscordButton = CreateButton("Discord", "", function()
+        -- Create button with a placeholder icon so the icon frame structure exists
+        DiscordButton = CreateButton("Discord", "user", function()
             if setclipboard then
                 setclipboard(discordURL)
                 Config.WindUI:Notify({
@@ -228,16 +229,25 @@ function KeySystem.new(Config, Filename, func)
             end
         end, "Tertiary", ButtonsContainer.Frame)
         
-        -- Add Discord icon (wait for button to be fully created)
+        -- Replace placeholder icon with Discord icon
         if DiscordButton then
             task.spawn(function()
-                task.wait(0.05) -- Wait for button structure to be created
+                task.wait(0.1) -- Wait for button structure to be fully created
                 local frame = DiscordButton:FindFirstChild("Frame")
                 if frame then
-                    -- Look for existing icon or create new one
+                    -- Find the icon that was created by CreateButton
                     local iconFrame = frame:FindFirstChildOfClass("ImageLabel")
-                    if not iconFrame then
-                        -- Create Discord icon
+                    if iconFrame then
+                        -- Replace with Discord icon
+                        iconFrame.Image = "rbxassetid://5013032530"
+                        iconFrame.ImageRectSize = Vector2.new(0, 0)
+                        iconFrame.ImageRectOffset = Vector2.new(0, 0)
+                        iconFrame.ImageTransparency = 0
+                        iconFrame.ThemeTag = {
+                            ImageColor3 = "Icon"
+                        }
+                    else
+                        -- If no icon found, create one
                         iconFrame = New("ImageLabel", {
                             Image = "rbxassetid://5013032530",
                             Size = UDim2.new(0,24-3,0,24-3),
@@ -248,15 +258,6 @@ function KeySystem.new(Config, Filename, func)
                             LayoutOrder = -1
                         })
                         iconFrame.Parent = frame
-                    else
-                        -- Replace existing icon with Discord icon
-                        iconFrame.Image = "rbxassetid://5013032530"
-                        iconFrame.ImageRectSize = Vector2.new(0, 0)
-                        iconFrame.ImageRectOffset = Vector2.new(0, 0)
-                        iconFrame.ImageTransparency = 0
-                        iconFrame.ThemeTag = {
-                            ImageColor3 = "Icon"
-                        }
                     end
                 end
             end)
