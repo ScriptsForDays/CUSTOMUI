@@ -101,11 +101,14 @@ function ConfigManager:Init(WindowTable)
     ConfigManager.Path = tostring(ConfigManager.Folder) .. "/config/"
     
     -- Removed WindUI folder creation - folders created at root level only
+    -- Only create folders if they don't already exist
     if not isfolder(ConfigManager.Folder .. "/config/") then
         if not isfolder(ConfigManager.Folder) then
             makefolder(ConfigManager.Folder)
         end
-        makefolder(ConfigManager.Folder .. "/config/")
+        if not isfolder(ConfigManager.Folder .. "/config/") then
+            makefolder(ConfigManager.Folder .. "/config/")
+        end
     end
     
     local files = ConfigManager:AllConfigs()

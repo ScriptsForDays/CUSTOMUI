@@ -563,10 +563,15 @@ function WindUI:CreateWindow(Config)
     local CreateWindow = require("./components/window/Init")
     
     -- Removed WindUI folder creation - folders created at root level only
+    -- Only create folder if it doesn't already exist
     if Config.Folder then
-        makefolder(Config.Folder)
+        if not isfolder(Config.Folder) then
+            makefolder(Config.Folder)
+        end
     else
-        makefolder(Config.Title)
+        if not isfolder(Config.Title) then
+            makefolder(Config.Title)
+        end
     end
     
     Config.WindUI = WindUI
