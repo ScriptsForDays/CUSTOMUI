@@ -482,7 +482,23 @@ function KeySystem.new(Config, Filename, func)
     
     local function handleSuccess(key)
         KeyDialog:Close()()
-        writefile((Config.Folder or "Temp") .. "/" .. Filename .. ".key", tostring(key))
+        
+        -- Get the key folder name (customizable, defaults to Config.Folder or Config.Title)
+        local keyFolder = Config.KeySystem.KeyFolder or Config.Folder or Config.Title or "Temp"
+        
+        -- Create folder structure like WindUI does
+        if not isfolder("WindUI") then
+            makefolder("WindUI")
+        end
+        if not isfolder("WindUI/" .. keyFolder) then
+            makefolder("WindUI/" .. keyFolder)
+        end
+        if not isfolder(keyFolder) then
+            makefolder(keyFolder)
+        end
+        
+        -- Save key file in the custom folder
+        writefile(keyFolder .. "/" .. Filename .. ".key", tostring(key))
         task.wait(.4)
         func(true)
     end
