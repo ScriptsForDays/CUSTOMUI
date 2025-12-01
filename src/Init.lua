@@ -600,7 +600,21 @@ function WindUI:CreateWindow(Config)
             KeySystem.new(Config, Filename, function(c) CanLoadWindow = c end)
         end
     
-        local keyPath = (Config.Folder or "Temp") .. "/" .. Filename .. ".key"
+        -- Get the key folder name (customizable, defaults to Config.Folder or Config.Title)
+        local keyFolder = Config.KeySystem.KeyFolder or Config.Folder or Config.Title or "Temp"
+        
+        -- Create folder structure like WindUI does
+        if not isfolder("WindUI") then
+            makefolder("WindUI")
+        end
+        if not isfolder("WindUI/" .. keyFolder) then
+            makefolder("WindUI/" .. keyFolder)
+        end
+        if not isfolder(keyFolder) then
+            makefolder(keyFolder)
+        end
+        
+        local keyPath = keyFolder .. "/" .. Filename .. ".key"
     
         if not Config.KeySystem.API then
             if Config.KeySystem.SaveKey and isfile(keyPath) then
