@@ -100,11 +100,12 @@ function ConfigManager:Init(WindowTable)
     ConfigManager.Folder = Window.Folder
     ConfigManager.Path = "WindUI/" .. tostring(ConfigManager.Folder) .. "/config/"
     
-    if not isfolder("WindUI/" .. ConfigManager.Folder) then
-        makefolder("WindUI/" .. ConfigManager.Folder)
-        if not isfolder("WindUI/" .. ConfigManager.Folder .. "/config/") then
-            makefolder("WindUI/" .. ConfigManager.Folder .. "/config/")
+    -- Removed WindUI folder creation - folders created at root level only
+    if not isfolder(ConfigManager.Folder .. "/config/") then
+        if not isfolder(ConfigManager.Folder) then
+            makefolder(ConfigManager.Folder)
         end
+        makefolder(ConfigManager.Folder .. "/config/")
     end
     
     local files = ConfigManager:AllConfigs()

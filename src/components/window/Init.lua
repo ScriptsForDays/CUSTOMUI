@@ -105,12 +105,7 @@ return function(Config)
     )
     
     if Window.Folder then
-        if not isfolder("WindUI/" .. Window.Folder) then
-            makefolder("WindUI/" .. Window.Folder)
-        end
-        if not isfolder("WindUI/" .. Window.Folder .. "/assets") then
-            makefolder("WindUI/" .. Window.Folder .. "/assets")
-        end
+        -- Removed WindUI folder creation - folders created at root level only
         if not isfolder(Window.Folder) then
             makefolder(Window.Folder)
         end

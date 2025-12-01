@@ -562,9 +562,7 @@ WindUI:SetLanguage(Creator.Language)
 function WindUI:CreateWindow(Config)
     local CreateWindow = require("./components/window/Init")
     
-    if not isfolder("WindUI") then
-        makefolder("WindUI")
-    end
+    -- Removed WindUI folder creation - folders created at root level only
     if Config.Folder then
         makefolder(Config.Folder)
     else
