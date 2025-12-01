@@ -688,7 +688,9 @@ return function(Config)
             New("Frame", { -- Topbar
                 Size = UDim2.new(1,0,0,52),
                 BackgroundTransparency = 1,
-                BackgroundColor3 = Color3.fromRGB(50,50,50),
+                ThemeTag = {
+                    BackgroundColor3 = "WindowTopbarBackground"
+                },
                 Name = "Topbar"
             }, {
                 Outline1,

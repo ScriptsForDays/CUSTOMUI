@@ -174,14 +174,11 @@ do
     -- Example: Set custom window topbar button icon color
     -- WindUI:SetCustomWindowTopbarButtonIcon(Color3.fromHex("#a1a1aa"))
     
-    -- Example: Set custom window background color
+    -- Example: Set custom window background color (the main window frame)
     -- WindUI:SetCustomWindowBackground(Color3.fromHex("#0f172a"))
     
-    -- Example: Set custom window shadow color
-    -- WindUI:SetCustomWindowShadow(Color3.fromHex("#000000"))
-    
-    -- Example: Set custom background transparency (0-1, where 0 is opaque, 1 is fully transparent)
-    -- WindUI:SetCustomBackgroundTransparency(0.1)
+    -- Example: Set custom window topbar background color (the topbar container itself)
+    -- WindUI:SetCustomWindowTopbarBackground(Color3.fromHex("#1a1a1a"))
     
     -- ============================================
     -- Tab Properties
@@ -228,9 +225,6 @@ do
     -- Example: Set custom popup icon color
     -- WindUI:SetCustomPopupIcon(Color3.fromHex("#30ff6a"))
     
-    -- Example: Set custom popup background transparency (0-1)
-    -- WindUI:SetCustomPopupBackgroundTransparency(0.2)
-    
     -- ============================================
     -- Dialog Properties
     -- ============================================
@@ -246,9 +240,6 @@ do
     
     -- Example: Set custom dialog icon color
     -- WindUI:SetCustomDialogIcon(Color3.fromHex("#30ff6a"))
-    
-    -- Example: Set custom dialog background transparency (0-1)
-    -- WindUI:SetCustomDialogBackgroundTransparency(0.2)
     
     -- ============================================
     -- Toggle & Checkbox Properties

@@ -11,6 +11,7 @@ return {
     Hover = "Text",
     
     WindowBackground = "Background",
+    WindowTopbarBackground = "Background",
     
     WindowShadow = "Black",
     --WindowShadowTransparency = .7,

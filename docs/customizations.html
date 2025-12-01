@@ -295,9 +295,8 @@ dropdown:SetValues({<br>
                 <li><code>WindUI:SetCustomWindowTopbarAuthor(color)</code> - Set the window topbar author color</li>
                 <li><code>WindUI:SetCustomWindowTopbarIcon(color)</code> - Set the window topbar icon color</li>
                 <li><code>WindUI:SetCustomWindowTopbarButtonIcon(color)</code> - Set the window topbar button icon color</li>
-                <li><code>WindUI:SetCustomWindowBackground(color)</code> - Set the window background color</li>
-                <li><code>WindUI:SetCustomWindowShadow(color)</code> - Set the window shadow color</li>
-                <li><code>WindUI:SetCustomBackgroundTransparency(transparency)</code> - Set the background transparency (0-1, where 0 is opaque, 1 is fully transparent)</li>
+                <li><code>WindUI:SetCustomWindowTopbarBackground(color)</code> - Set the window topbar background color (the topbar container itself)</li>
+                <li><code>WindUI:SetCustomWindowBackground(color)</code> - Set the window background color (the main window frame)</li>
             </ul>
 
             <h3>Tab Properties</h3>
@@ -321,7 +320,6 @@ dropdown:SetValues({<br>
                 <li><code>WindUI:SetCustomPopupTitle(color)</code> - Set the popup title color</li>
                 <li><code>WindUI:SetCustomPopupContent(color)</code> - Set the popup content color</li>
                 <li><code>WindUI:SetCustomPopupIcon(color)</code> - Set the popup icon color</li>
-                <li><code>WindUI:SetCustomPopupBackgroundTransparency(transparency)</code> - Set the popup background transparency (0-1)</li>
             </ul>
 
             <h3>Dialog Properties</h3>
@@ -330,7 +328,6 @@ dropdown:SetValues({<br>
                 <li><code>WindUI:SetCustomDialogTitle(color)</code> - Set the dialog title color</li>
                 <li><code>WindUI:SetCustomDialogContent(color)</code> - Set the dialog content color</li>
                 <li><code>WindUI:SetCustomDialogIcon(color)</code> - Set the dialog icon color</li>
-                <li><code>WindUI:SetCustomDialogBackgroundTransparency(transparency)</code> - Set the dialog background transparency (0-1)</li>
             </ul>
 
             <h3>Toggle & Checkbox Properties</h3>
@@ -371,18 +368,23 @@ WindUI:SetCustomBackground(WindUI:Gradient({<br>
                 </code>
             </div>
 
-            <h4>Window Topbar Customization</h4>
+            <h4>Window & Topbar Customization</h4>
             <div class="code-block">
                 <code>
-<span class="comment">-- Customize the window topbar</span><br>
+<span class="comment">-- Customize the window frame itself</span><br>
+WindUI:SetCustomWindowBackground(Color3.fromHex("#0f172a"))<br>
+<span class="comment">-- Main window frame updates immediately!</span><br>
+<br>
+<span class="comment">-- Customize the window topbar container</span><br>
+WindUI:SetCustomWindowTopbarBackground(Color3.fromHex("#1a1a1a"))<br>
+<span class="comment">-- Topbar background updates immediately!</span><br>
+<br>
+<span class="comment">-- Customize topbar text and icons</span><br>
 WindUI:SetCustomWindowTopbarTitle(Color3.fromHex("#ffffff"))<br>
 WindUI:SetCustomWindowTopbarAuthor(Color3.fromHex("#a1a1aa"))<br>
 WindUI:SetCustomWindowTopbarIcon(Color3.fromHex("#30ff6a"))<br>
 WindUI:SetCustomWindowTopbarButtonIcon(Color3.fromHex("#a1a1aa"))<br>
-WindUI:SetCustomWindowBackground(Color3.fromHex("#0f172a"))<br>
-WindUI:SetCustomWindowShadow(Color3.fromHex("#000000"))<br>
-WindUI:SetCustomBackgroundTransparency(0.1) <span class="comment">-- 0 = opaque, 1 = fully transparent</span><br>
-<span class="comment">-- Topbar updates immediately!</span>
+<span class="comment">-- All topbar elements update immediately!</span>
                 </code>
             </div>
 
@@ -417,14 +419,12 @@ WindUI:SetCustomPopupBackground(Color3.fromHex("#1a1a1a"))<br>
 WindUI:SetCustomPopupTitle(Color3.fromHex("#ffffff"))<br>
 WindUI:SetCustomPopupContent(Color3.fromHex("#a1a1aa"))<br>
 WindUI:SetCustomPopupIcon(Color3.fromHex("#30ff6a"))<br>
-WindUI:SetCustomPopupBackgroundTransparency(0.2) <span class="comment">-- 0 = opaque, 1 = fully transparent</span><br>
 <br>
 <span class="comment">-- Customize dialogs</span><br>
 WindUI:SetCustomDialogBackground(Color3.fromHex("#161616"))<br>
 WindUI:SetCustomDialogTitle(Color3.fromHex("#ffffff"))<br>
 WindUI:SetCustomDialogContent(Color3.fromHex("#a1a1aa"))<br>
 WindUI:SetCustomDialogIcon(Color3.fromHex("#30ff6a"))<br>
-WindUI:SetCustomDialogBackgroundTransparency(0.2) <span class="comment">-- 0 = opaque, 1 = fully transparent</span><br>
 <span class="comment">-- Popups and dialogs update immediately!</span>
                 </code>
             </div>

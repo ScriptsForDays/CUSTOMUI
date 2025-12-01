@@ -347,18 +347,9 @@ function WindUI:SetCustomWindowBackground(color)
     return false
 end
 
-function WindUI:SetCustomWindowShadow(color)
+function WindUI:SetCustomWindowTopbarBackground(color)
     if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
-        Creator.CustomOverrides["WindowShadow"] = color
-        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
-        return true
-    end
-    return false
-end
-
-function WindUI:SetCustomBackgroundTransparency(transparency)
-    if typeof(transparency) == "number" then
-        Creator.CustomOverrides["BackgroundTransparency"] = transparency
+        Creator.CustomOverrides["WindowTopbarBackground"] = color
         Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
         return true
     end
@@ -467,15 +458,6 @@ function WindUI:SetCustomPopupIcon(color)
     return false
 end
 
-function WindUI:SetCustomPopupBackgroundTransparency(transparency)
-    if typeof(transparency) == "number" then
-        Creator.CustomOverrides["PopupBackgroundTransparency"] = transparency
-        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
-        return true
-    end
-    return false
-end
-
 -- Dialog Properties
 function WindUI:SetCustomDialogBackground(color)
     if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
@@ -507,15 +489,6 @@ end
 function WindUI:SetCustomDialogIcon(color)
     if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
         Creator.CustomOverrides["DialogIcon"] = color
-        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
-        return true
-    end
-    return false
-end
-
-function WindUI:SetCustomDialogBackgroundTransparency(transparency)
-    if typeof(transparency) == "number" then
-        Creator.CustomOverrides["DialogBackgroundTransparency"] = transparency
         Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
         return true
     end
