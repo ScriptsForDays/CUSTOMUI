@@ -603,13 +603,7 @@ function WindUI:CreateWindow(Config)
         -- Get the key folder name (customizable, defaults to Config.Folder or Config.Title)
         local keyFolder = Config.KeySystem.KeyFolder or Config.Folder or Config.Title or "Temp"
         
-        -- Create folder structure like WindUI does
-        if not isfolder("WindUI") then
-            makefolder("WindUI")
-        end
-        if not isfolder("WindUI/" .. keyFolder) then
-            makefolder("WindUI/" .. keyFolder)
-        end
+        -- Create folder at root level (not inside WindUI)
         if not isfolder(keyFolder) then
             makefolder(keyFolder)
         end
