@@ -388,8 +388,13 @@ local Window = WindUI:CreateWindow({<br>
                 </tr>
                 <tr>
                     <td><code>Values</code></td>
-                    <td>table</td>
-                    <td>Array of option tables: <code>{Title, Desc?, Icon?, Callback?}</code></td>
+                    <td>table/function/string</td>
+                    <td>Array of option tables, function returning table, or ModuleScript path. <strong>Function is called on creation AND every time dropdown opens.</strong></td>
+                </tr>
+                <tr>
+                    <td><code>DataSource</code></td>
+                    <td>function/string</td>
+                    <td><strong>Custom Enhancement:</strong> Alternative to Values for dynamic data. Function or ModuleScript path that provides dropdown options.</td>
                 </tr>
                 <tr>
                     <td><code>Value</code></td>
@@ -431,11 +436,14 @@ local Window = WindUI:CreateWindow({<br>
             <h3>Methods</h3>
             <div class="method">
                 <h4>Dropdown:SetValues(newValues)</h4>
-                <p><strong>Custom Enhancement:</strong> Updates dropdown options dynamically. If <code>newValues</code> is nil and a DataSource exists, it will refresh from the original source. Preserves selection when possible.</p>
+                <p><strong>Custom Enhancement:</strong> Updates dropdown options dynamically. If <code>newValues</code> is nil and a DataSource exists, it will refresh from the original source. Preserves selection when possible. Automatically refreshes UI, clears search filters, and recalculates sizes.</p>
+                <p><strong>Parameters:</strong> <code>newValues</code> (table) - Array of option tables. If empty, uses placeholder <code>{{Title = "--"}}</code>.</p>
+                <p><strong>Returns:</strong> boolean - true if successful</p>
             </div>
             <div class="method">
                 <h4>Dropdown:RefreshData()</h4>
-                <p><strong>Custom Enhancement:</strong> Refetches data from the original DataSource (function or ModuleScript). Returns true if successful.</p>
+                <p><strong>Custom Enhancement:</strong> Refetches data from the original DataSource (function or ModuleScript). Useful for manually refreshing while dropdown is closed. Note: Function-based Values are automatically refreshed when dropdown opens, so this is usually not needed.</p>
+                <p><strong>Returns:</strong> boolean - true if successful</p>
             </div>
             <div class="method">
                 <h4>Dropdown:LockValues(values)</h4>
@@ -446,10 +454,25 @@ local Window = WindUI:CreateWindow({<br>
             <p><strong>Custom Enhancement:</strong> The <code>Values</code> parameter can be:</p>
             <ul class="feature-list">
                 <li><strong>Table:</strong> Static list of options (default behavior)</li>
-                <li><strong>Function:</strong> Function that returns a table of options - called automatically</li>
-                <li><strong>String:</strong> ModuleScript name/path - searches game and requires the module</li>
+                <li><strong>Function:</strong> Function that returns a table of options - <strong>called automatically on creation AND every time the dropdown opens</strong> to ensure fresh data</li>
+                <li><strong>String:</strong> ModuleScript name/path - searches game and requires the module. If module returns a function, it's called on each open.</li>
             </ul>
-            <p>When using a function or ModuleScript, the dropdown automatically fetches data on creation and can be refreshed with <code>:RefreshData()</code>.</p>
+            <p><strong>Key Feature:</strong> When using a function or ModuleScript that returns a function, the dropdown automatically fetches fresh data every time it opens, ensuring you always see the latest options. You can also manually refresh with <code>:RefreshData()</code>.</p>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Function-based Values (automatically called on open)</span><br>
+local dropdown = Tab:Dropdown({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Players",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Values = function()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- This function is called when dropdown opens</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local players = {}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for _, p in ipairs(game.Players:GetPlayers()) do<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;table.insert(players, {Title = p.Name})<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return players<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})</code>
+            </div>
         </section>
 
         <section class="section">

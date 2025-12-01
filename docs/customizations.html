@@ -153,15 +153,16 @@
             <p>WindUI Custom supports dynamic dropdowns that can automatically fetch data from functions, ModuleScripts, or be updated manually. This is perfect for scenarios where dropdown options change based on runtime data, similar to Rayfield's dynamic dropdowns.</p>
 
             <h3>Automatic Data Fetching</h3>
-            <p>You can provide a function or ModuleScript path instead of static values. The dropdown will automatically fetch data when created and can be refreshed later.</p>
+            <p><strong>Key Feature:</strong> When you provide a function or ModuleScript path, the dropdown will automatically fetch fresh data <strong>every time it opens</strong>, ensuring you always see the latest data. The function is called both during creation and when the dropdown menu is opened.</p>
 
             <h4>Using a Function</h4>
             <div class="code-block">
                 <code>
 <span class="comment">-- Dropdown that fetches players dynamically</span><br>
+<span class="comment">-- The function is called when dropdown is created AND every time it opens</span><br>
 local playerDropdown = Tab:Dropdown({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Title = "Select Player",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Fetches players from game",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Fetches players from game (updates on open)",<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Values = function()<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local players = {}<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for _, player in ipairs(game:GetService("Players"):GetPlayers()) do<br>
@@ -170,6 +171,10 @@ local playerDropdown = Tab:Dropdown({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon = "user"<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;})<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- Return placeholder if no players found</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if #players == 0 then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return {{ Title = "--" }}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return players<br>
 &nbsp;&nbsp;&nbsp;&nbsp;end,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Callback = function(option)<br>
@@ -177,34 +182,46 @@ local playerDropdown = Tab:Dropdown({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;end<br>
 })<br>
 <br>
-<span class="comment">-- Refresh data from function</span><br>
-playerDropdown:RefreshData()</code>
+<span class="comment">-- Optional: Manually refresh data from function</span><br>
+<span class="comment">-- playerDropdown:RefreshData()</span><br>
+<span class="comment">-- Note: Function is automatically called when dropdown opens, so RefreshData() is usually not needed</span></code>
             </div>
+            <p><strong>Important:</strong> The function is automatically called every time the dropdown menu opens, ensuring you always see the latest data. You don't need to manually call <code>:RefreshData()</code> unless you want to refresh while the dropdown is closed.</p>
 
             <h4>Using a ModuleScript</h4>
             <div class="code-block">
                 <code>
-<span class="comment">-- ModuleScript: MyDataModule</span><br>
+<span class="comment">-- ModuleScript: MyDataModule (in ReplicatedStorage, ServerStorage, etc.)</span><br>
+<span class="comment">-- Can return a table or a function that returns a table</span><br>
+<span class="comment">-- Option 1: Return a table directly</span><br>
 <span class="comment">-- return {</span><br>
 <span class="comment">--     { Title = "Item 1" },</span><br>
 <span class="comment">--     { Title = "Item 2" }</span><br>
 <span class="comment">-- }</span><br>
+<span class="comment">--</span><br>
+<span class="comment">-- Option 2: Return a function</span><br>
+<span class="comment">-- return function()</span><br>
+<span class="comment">--     local items = getItemsFromGame()</span><br>
+<span class="comment">--     return items</span><br>
+<span class="comment">-- end</span><br>
 <br>
 local itemDropdown = Tab:Dropdown({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Title = "Select Item",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Fetches items from ModuleScript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Fetches items from ModuleScript (updates on open)",<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Values = "MyDataModule", <span class="comment">-- Searches for ModuleScript in game</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;Callback = function(option)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Selected:", option.Title)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;end<br>
 })<br>
 <br>
-<span class="comment">-- Refresh data from ModuleScript</span><br>
-itemDropdown:RefreshData()</code>
+<span class="comment">-- Optional: Manually refresh data from ModuleScript</span><br>
+<span class="comment">-- itemDropdown:RefreshData()</span><br>
+<span class="comment">-- Note: ModuleScript is automatically accessed when dropdown opens</span></code>
             </div>
+            <p><strong>ModuleScript Behavior:</strong> If the ModuleScript returns a function, that function will be called every time the dropdown opens. If it returns a table, that table will be used. The dropdown automatically searches common game locations for the ModuleScript.</p>
 
             <h3>Manual Updates</h3>
-            <p>You can also manually update dropdown values using <code>:SetValues()</code>:</p>
+            <p>You can also manually update dropdown values using <code>:SetValues()</code>. This is useful when you want to update the dropdown programmatically, regardless of the original data source:</p>
             <div class="code-block">
                 <code>
 local dropdown = Tab:Dropdown({<br>
@@ -219,22 +236,29 @@ local dropdown = Tab:Dropdown({<br>
 })<br>
 <br>
 <span class="comment">-- Later, update the dropdown values</span><br>
+<span class="comment">-- Selection is preserved if the same option still exists</span><br>
 dropdown:SetValues({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;{ Title = "New Option A", Icon = "star" },<br>
 &nbsp;&nbsp;&nbsp;&nbsp;{ Title = "New Option B", Icon = "heart" },<br>
 &nbsp;&nbsp;&nbsp;&nbsp;{ Title = "New Option C", Icon = "zap" },<br>
-})</code>
+})<br>
+<br>
+<span class="comment">-- Or refresh from the original data source (if function/ModuleScript)</span><br>
+<span class="comment">-- dropdown:RefreshData()</span></code>
             </div>
+            <p><strong>Note:</strong> <code>:SetValues()</code> preserves the current selection if the selected option still exists in the new values. If the selection no longer exists, it will be cleared.</p>
 
             <h3>Features</h3>
             <ul class="feature-list">
+                <li><strong>Automatic refresh on open:</strong> Function-based Values are called every time the dropdown opens, ensuring fresh data</li>
                 <li>Automatic data fetching from functions or ModuleScripts</li>
-                <li>Preserves current selection when possible</li>
+                <li>Preserves current selection when possible after updates</li>
                 <li>Works with both single-select and multi-select dropdowns</li>
-                <li>Handles open menus gracefully</li>
-                <li>Clears search filters when menu is open</li>
+                <li>Handles open menus gracefully during updates</li>
+                <li>Clears search filters when values are refreshed</li>
                 <li>Automatically recalculates list and canvas sizes</li>
-                <li>RefreshData() method to refetch from original source</li>
+                <li>RefreshData() method to manually refetch from original source</li>
+                <li>SetValues() method for manual updates with new data</li>
             </ul>
 
             <h3>Data Source Locations</h3>
