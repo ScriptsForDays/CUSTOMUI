@@ -104,9 +104,9 @@ return function(Config)
         math.clamp(WindowSize.Y.Offset, Window.MinSize.Y, Window.MaxSize.Y)
     )
     
-    if Window.Folder then
-        -- Only create folders if they don't exist (for configs and assets)
-        -- Key system folder is created separately via KeyFolder parameter
+    -- Only create window folders if Config.Folder is explicitly set (not from Title)
+    -- Key system folder is created separately via KeyFolder parameter
+    if Window.Folder and Config.Folder then
         if not isfolder(Window.Folder) then
             makefolder(Window.Folder)
         end
