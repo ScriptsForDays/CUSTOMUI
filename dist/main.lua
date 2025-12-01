@@ -8374,7 +8374,7 @@ au.Default=ax.Color
 elseif typeof(ax)=="Color3"then
 au.Default=ax
 end
-au:SetHSVFromRGB(au.Default)
+
 au:Update(au.Default,au.Transparency)
 end
 end
