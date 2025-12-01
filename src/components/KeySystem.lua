@@ -270,6 +270,10 @@ function KeySystem.new(Config, Filename, func)
                 DiscordButton.Position = UDim2.new(0,10 + exitButtonWidth + 10,1,-10)
             end)
         end
+    else
+        -- When no thumbnail, Discord button should be in ButtonsContainer next to Exit
+        -- Exit button is already in ButtonsContainer.Frame, so Discord will be added there too
+        -- The UIListLayout will automatically position them side by side
     end
     
     if Config.KeySystem.URL then
