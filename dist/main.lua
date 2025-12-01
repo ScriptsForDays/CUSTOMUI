@@ -2509,16 +2509,11 @@ ak:Close()()
 
 
 
-local g=ag.KeySystem.KeyFolder
+local g=ag.KeySystem.KeyFolder or ag.Folder or"WindUIKeys"
 
 
-if g then
 if not isfolder(g)then
 makefolder(g)
-end
-else
-
-g="WindUIKeys"
 end
 
 
@@ -2529,7 +2524,7 @@ end
 
 local e=ae("Submit","arrow-right",function()
 local e=tostring(am or"empty")local g=
-ag.Folder or ag.Title
+ag.Folder
 
 if not ag.KeySystem.API then
 local h=type(ag.KeySystem.Key)=="table"
@@ -10264,7 +10259,8 @@ local at=aj("UICorner",{
 CornerRadius=UDim.new(0,ar.UICorner)
 })
 
-if ar.Folder then
+
+if ar.Folder and aq.Folder then
 ar.ConfigManager=ap:Init(ar)
 end
 
@@ -12541,16 +12537,11 @@ end
 
 
 
-local az=at.KeySystem.KeyFolder
+local az=at.KeySystem.KeyFolder or at.Folder or"WindUIKeys"
 
 
-if az then
 if not isfolder(az)then
 makefolder(az)
-end
-else
-
-az="WindUIKeys"
 end
 
 local aA=az.."/"..ay..".key"
