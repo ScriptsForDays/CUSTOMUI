@@ -119,7 +119,8 @@ return function(Config)
         CornerRadius = UDim.new(0,Window.UICorner)
     })
 
-    if Window.Folder then 
+    -- Only initialize ConfigManager if Config.Folder is explicitly set (not from Title)
+    if Window.Folder and Config.Folder then 
         Window.ConfigManager = ConfigManager:Init(Window)
     end
     

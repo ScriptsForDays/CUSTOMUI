@@ -483,18 +483,13 @@ function KeySystem.new(Config, Filename, func)
     local function handleSuccess(key)
         KeyDialog:Close()()
         
-        -- Get the key folder name - only create folder if KeyFolder is explicitly specified
+        -- Get the key folder name (customizable, only create if KeyFolder is explicitly set)
         -- Don't use Config.Folder or Config.Title to avoid creating unwanted folders
-        local keyFolder = Config.KeySystem.KeyFolder
+        local keyFolder = Config.KeySystem.KeyFolder or "WindUIKeys"
         
-        -- Only create folder if KeyFolder is explicitly set
-        if keyFolder then
-            if not isfolder(keyFolder) then
-                makefolder(keyFolder)
-            end
-        else
-            -- If KeyFolder not specified, use a default name but don't create folder
-            keyFolder = "WindUIKeys"
+        -- Create folder at root level (not inside WindUI)
+        if not isfolder(keyFolder) then
+            makefolder(keyFolder)
         end
         
         -- Save key file in the custom folder
