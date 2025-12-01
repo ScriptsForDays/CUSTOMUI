@@ -2263,19 +2263,23 @@ if e then
 local g=e:FindFirstChildOfClass"ImageLabel"
 if g then
 
+local h=ab.GetThemeProperty("Icon",ab.Theme)
+if typeof(h)=="Color3"then
+g.ImageColor3=h
+end
+
 g.Image="rbxassetid://124135407373085"
 g.ImageRectSize=Vector2.new(0,0)
 g.ImageRectOffset=Vector2.new(0,0)
 g.ImageTransparency=0
 g.Visible=true
-g.ThemeTag={
-ImageColor3="Icon"
-}
-
-if ab.UpdateTheme then
-ab.UpdateTheme(g,false)
-end
 else
+
+local h=ab.GetThemeProperty("Icon",ab.Theme)
+local i
+if typeof(h)=="Color3"then
+i=h
+end
 
 g=ac("ImageLabel",{
 Image="rbxassetid://124135407373085",
@@ -2283,16 +2287,10 @@ Size=UDim2.new(0,21,0,21),
 BackgroundTransparency=1,
 ImageTransparency=0,
 Visible=true,
-ThemeTag={
-ImageColor3="Icon"
-},
+ImageColor3=i,
 LayoutOrder=-1
 })
 g.Parent=e
-
-if ab.UpdateTheme then
-ab.UpdateTheme(g,false)
-end
 end
 end
 end)
