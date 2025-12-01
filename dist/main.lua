@@ -2511,12 +2511,6 @@ ak:Close()()
 local g=ag.KeySystem.KeyFolder or ag.Folder or ag.Title or"Temp"
 
 
-if not isfolder"WindUI"then
-makefolder"WindUI"
-end
-if not isfolder("WindUI/"..g)then
-makefolder("WindUI/"..g)
-end
 if not isfolder(g)then
 makefolder(g)
 end
@@ -12549,12 +12543,6 @@ end
 local az=at.KeySystem.KeyFolder or at.Folder or at.Title or"Temp"
 
 
-if not isfolder"WindUI"then
-makefolder"WindUI"
-end
-if not isfolder("WindUI/"..az)then
-makefolder("WindUI/"..az)
-end
 if not isfolder(az)then
 makefolder(az)
 end
