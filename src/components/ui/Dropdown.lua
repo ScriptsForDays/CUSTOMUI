@@ -545,6 +545,30 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
     
     function DropdownModule:Open()
         if CanCallback then
+            -- CRITICAL: If Values is a function, call it to get fresh data when dropdown opens
+            if Dropdown._valuesFunction and type(Dropdown._valuesFunction) == "function" then
+                local success, newValues = pcall(Dropdown._valuesFunction)
+                if success and type(newValues) == "table" and #newValues > 0 then
+                    -- Update Values and refresh UI
+                    Dropdown.Values = newValues
+                    DropdownModule:Refresh(newValues)
+                elseif success and type(newValues) == "table" and #newValues == 0 then
+                    -- Empty result, use placeholder
+                    Dropdown.Values = {{Title = "--"}}
+                    DropdownModule:Refresh(Dropdown.Values)
+                end
+            elseif Dropdown.DataSource and (type(Dropdown.DataSource) == "function" or type(Dropdown.DataSource) == "string") then
+                -- Try to fetch from DataSource if it's a function or ModuleScript path
+                local fetchDropdownData = require("../../elements/Dropdown").fetchDropdownData
+                if fetchDropdownData then
+                    local newValues = fetchDropdownData(Dropdown.DataSource)
+                    if newValues and #newValues > 0 then
+                        Dropdown.Values = newValues
+                        DropdownModule:Refresh(newValues)
+                    end
+                end
+            end
+            
             Dropdown.UIElements.Menu.Visible = true
             Dropdown.UIElements.MenuCanvas.Visible = true
             Dropdown.UIElements.MenuCanvas.Active = true

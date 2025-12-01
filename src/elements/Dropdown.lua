@@ -113,6 +113,14 @@ function Element:New(Config)
         initialValues = {{Title = "--"}}
     end
     
+    -- Store original function reference if Values is a function
+    local originalValuesFunction = nil
+    if type(Config.Values) == "function" then
+        originalValuesFunction = Config.Values
+    elseif type(dataSource) == "function" then
+        originalValuesFunction = dataSource
+    end
+    
     local Dropdown = {
         __type = "Dropdown",
         Title = Config.Title or "Dropdown",
@@ -120,6 +128,7 @@ function Element:New(Config)
         Locked = Config.Locked or false,
         Values = initialValues,
         DataSource = dataSource, -- Store original data source for refreshing
+        _valuesFunction = originalValuesFunction, -- Store function reference for dynamic fetching
         MenuWidth = Config.MenuWidth,
         Value = Config.Value,
         AllowNone = Config.AllowNone,
@@ -301,19 +310,39 @@ function Element:New(Config)
     
     -- Add RefreshData method to refetch from DataSource
     function Dropdown:RefreshData()
-        if self.DataSource then
+        -- Priority 1: Use stored function reference
+        if self._valuesFunction and type(self._valuesFunction) == "function" then
+            local success, result = pcall(self._valuesFunction)
+            if success and type(result) == "table" then
+                if #result > 0 then
+                    return self:SetValues(result)
+                else
+                    warn("Dropdown:RefreshData - Function returned empty table, using placeholder")
+                    return self:SetValues({{Title = "--"}})
+                end
+            else
+                warn("Dropdown:RefreshData - Function returned invalid data: " .. tostring(result))
+                return false
+            end
+        -- Priority 2: Use DataSource
+        elseif self.DataSource then
             local newValues = fetchDropdownData(self.DataSource)
             -- If refresh returns empty, keep current values or use placeholder
             if not newValues or #newValues == 0 then
-                warn("Dropdown:RefreshData - DataSource returned empty table, keeping current values")
-                return false
+                warn("Dropdown:RefreshData - DataSource returned empty table, using placeholder")
+                return self:SetValues({{Title = "--"}})
             end
             return self:SetValues(newValues)
+        -- Priority 3: Legacy support - Values property is still a function
         elseif type(self.Values) == "function" then
-            -- Support for function-based Values (legacy compatibility)
             local success, result = pcall(self.Values)
-            if success and type(result) == "table" and #result > 0 then
-                return self:SetValues(result)
+            if success and type(result) == "table" then
+                if #result > 0 then
+                    return self:SetValues(result)
+                else
+                    warn("Dropdown:RefreshData - Values function returned empty table, using placeholder")
+                    return self:SetValues({{Title = "--"}})
+                end
             else
                 warn("Dropdown:RefreshData - Values function returned invalid data")
                 return false
