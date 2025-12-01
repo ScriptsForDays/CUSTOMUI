@@ -2240,7 +2240,7 @@ end
 end
 
 if aA and b then
-az=ae("Discord","discord",function()
+az=ae("Discord","",function()
 if setclipboard then
 setclipboard(b)
 ag.WindUI:Notify{
@@ -2253,27 +2253,37 @@ end
 end,"Tertiary",aw.Frame)
 
 
-local e=az.Frame:FindFirstChildOfClass"ImageLabel"
+if az then
+task.spawn(function()
+task.wait(0.05)
+local e=az:FindFirstChild"Frame"
 if e then
-e.Image="rbxassetid://11529076323"
-e.ImageRectSize=Vector2.new(0,0)
-e.ImageRectOffset=Vector2.new(0,0)
-e.ImageTransparency=0
-e.ThemeTag={
-ImageColor3="Icon"
-}
-else
 
-e=ac("ImageLabel",{
+local g=e:FindFirstChildOfClass"ImageLabel"
+if not g then
+
+g=ac("ImageLabel",{
 Image="rbxassetid://11529076323",
 Size=UDim2.new(0,21,0,21),
 BackgroundTransparency=1,
 ThemeTag={
 ImageColor3="Icon"
-}
+},
+LayoutOrder=-1
 })
-e.Parent=az.Frame
-e.LayoutOrder=-1
+g.Parent=e
+else
+
+g.Image="rbxassetid://11529076323"
+g.ImageRectSize=Vector2.new(0,0)
+g.ImageRectOffset=Vector2.new(0,0)
+g.ImageTransparency=0
+g.ThemeTag={
+ImageColor3="Icon"
+}
+end
+end
+end)
 end
 end
 
