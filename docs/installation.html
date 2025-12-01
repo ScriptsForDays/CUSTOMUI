@@ -271,6 +271,26 @@ local Window = WindUI:CreateWindow({<br>
                 </code>
             </div>
 
+            <h3>Key System with Custom Folder</h3>
+            <p>Specify a custom folder name for saving keys. The folder structure is created like WindUI (both <code>WindUI/{KeyFolder}</code> and <code>{KeyFolder}</code>):</p>
+            
+            <div class="code-block">
+                <code>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Author = "by YourName",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Folder = "myscript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;KeySystem = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key = "YOUR-KEY-HERE",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SaveKey = true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KeyFolder = "MyKeyFolder" <span class="comment">-- Custom folder name (optional, defaults to Config.Folder or Config.Title)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+})
+                </code>
+            </div>
+            <p><strong>Note:</strong> If <code>KeyFolder</code> is not specified, it defaults to <code>Config.Folder</code> or <code>Config.Title</code>. The key file is saved as <code>{KeyFolder}/{hwid}.key</code>.</p>
+
             <h3>Key System with Discord Button</h3>
             <p>Add a Discord button next to the Exit button that copies your Discord link to clipboard:</p>
             
@@ -306,7 +326,7 @@ local Window = WindUI:CreateWindow({<br>
 })
                 </code>
             </div>
-            <p><strong>Note:</strong> The Discord button appears next to the Exit button with a Discord icon on the left. When clicked, it copies the Discord URL to clipboard and shows a notification. The Discord icon is automatically created with the asset ID <code>rbxassetid://124135407373085</code> and is internally named <code>DiscordIcon</code> to prevent it from being overridden by the settings/icon system.</p>
+            <p><strong>Note:</strong> The Discord button appears next to the Exit button with a "key" icon (same as the URL key system). When clicked, it copies the Discord URL to clipboard and shows a notification.</p>
 
             <h3>Key System with Thumbnail</h3>
             <p>Add a custom thumbnail image to the key system dialog:</p>
@@ -407,7 +427,12 @@ local Window = WindUI:CreateWindow({<br>
                 <tr>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>Discord</code></td>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">string/table</td>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Discord button configuration. Can be a string (Discord URL) or table with <code>Enabled</code> (boolean) and <code>URL</code> (string). When enabled, adds a Discord button next to the Exit button that copies the Discord link to clipboard. The Discord icon (asset ID: <code>rbxassetid://124135407373085</code>) is automatically created and protected from being overridden by the icon system (internally named <code>DiscordIcon</code>).</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Discord button configuration. Can be a string (Discord URL) or table with <code>Enabled</code> (boolean) and <code>URL</code> (string). When enabled, adds a Discord button next to the Exit button that copies the Discord link to clipboard. The Discord button uses the same "key" icon as the URL key system.</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>KeyFolder</code></td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">string</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Custom folder name for saving keys. If not specified, defaults to <code>Config.Folder</code> or <code>Config.Title</code>. Creates folder structure like WindUI (both <code>WindUI/{KeyFolder}</code> and <code>{KeyFolder}</code>). The key file is saved as <code>{KeyFolder}/{hwid}.key</code>.</td>
                 </tr>
             </table>
 
@@ -415,9 +440,12 @@ local Window = WindUI:CreateWindow({<br>
             <ul>
                 <li>When <code>KeySystem</code> is provided, the window will not load until a valid key is entered</li>
                 <li>If <code>SaveKey</code> is true, the key is saved locally and automatically loaded on next run</li>
+                <li>If <code>KeyFolder</code> is specified, keys are saved in that custom folder (creates both <code>WindUI/{KeyFolder}</code> and <code>{KeyFolder}</code> like WindUI's folder structure)</li>
+                <li>If <code>KeyFolder</code> is not specified, it defaults to <code>Config.Folder</code> or <code>Config.Title</code></li>
                 <li>If <code>API</code> is provided, keys are validated through the specified service(s)</li>
                 <li>If <code>URL</code> is provided, users can click to open the link and get their key</li>
                 <li>The key system dialog appears before the main window, blocking access until a valid key is entered</li>
+                <li>All copy actions (Discord, URL, API) show notifications when links are copied to clipboard</li>
             </ul>
         </section>
 
