@@ -2274,13 +2274,23 @@ BackgroundTransparency=1,
 ImageTransparency=0,
 Visible=true,
 ImageColor3=h,
-LayoutOrder=-1
+LayoutOrder=-1,
+Name="DiscordIcon"
 })
 i.Parent=e
 
 
 local j
-j=i:GetPropertyChangedSignal"Visible":Connect(function()
+j=i:GetPropertyChangedSignal"Image":Connect(function()
+
+if i.Image~="rbxassetid://124135407373085"then
+i.Image="rbxassetid://124135407373085"
+end
+end)
+
+
+local l
+l=i:GetPropertyChangedSignal"Visible":Connect(function()
 if not i.Visible then
 i.Visible=true
 end
