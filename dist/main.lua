@@ -2263,7 +2263,7 @@ local g=e:FindFirstChildOfClass"ImageLabel"
 if not g then
 
 g=ac("ImageLabel",{
-Image="rbxassetid://11529076323",
+Image="rbxassetid://110769239384778",
 Size=UDim2.new(0,21,0,21),
 BackgroundTransparency=1,
 ThemeTag={
@@ -2274,7 +2274,7 @@ LayoutOrder=-1
 g.Parent=e
 else
 
-g.Image="rbxassetid://11529076323"
+g.Image="rbxassetid://110769239384778"
 g.ImageRectSize=Vector2.new(0,0)
 g.ImageRectOffset=Vector2.new(0,0)
 g.ImageTransparency=0
