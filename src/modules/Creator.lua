@@ -28,6 +28,7 @@ local Creator = {
     FontObjects = {},
     Language = string.match(LocalizationService.SystemLocaleId , "^[a-z]+"),
     Request = http_request or (syn and syn.request) or request,
+    CustomOverrides = {}, -- Store custom theme property overrides
     DefaultProperties = {
         ScreenGui = {
             ResetOnSpawn = false,
@@ -207,6 +208,14 @@ function Creator.UpdateFont(FontId)
 end
 
 function Creator.GetThemeProperty(Property, Theme)
+    -- Check CustomOverrides first (highest priority)
+    if Creator.CustomOverrides[Property] ~= nil then
+        local overrideValue = Creator.CustomOverrides[Property]
+        if typeof(overrideValue) == "Color3" or (typeof(overrideValue) == "table" and overrideValue.Color) then
+            return overrideValue
+        end
+    end
+    
     local function getValue(prop, themeTable)
         local value = themeTable[prop]
         

@@ -274,7 +274,7 @@ dropdown:SetValues({<br>
 
         <section class="section">
             <h2>Custom Accent Customization</h2>
-            <p>Customize UI accents without creating a full theme. These overrides persist when switching themes, giving you fine-grained control over the UI appearance.</p>
+            <p>Customize UI accents without creating a full theme. These overrides persist when switching themes, giving you fine-grained control over the UI appearance. <strong>Changes are applied immediately</strong> - the UI updates automatically when you call any SetCustom method.</p>
 
             <h3>Available Methods</h3>
             <ul class="method-list">
@@ -291,22 +291,44 @@ dropdown:SetValues({<br>
             <h3>Examples</h3>
             <div class="code-block">
                 <code>
-<span class="comment">-- Solid colors</span><br>
+<span class="comment">-- Solid colors (UI updates immediately)</span><br>
 WindUI:SetCustomAccent(Color3.fromHex("#30ff6a"))<br>
 WindUI:SetCustomBackground(Color3.fromHex("#1a1a1a"))<br>
 WindUI:SetCustomText(Color3.fromHex("#ffffff"))<br>
+<span class="comment">-- All UI elements using these colors update instantly!</span><br>
 <br>
-<span class="comment">-- Gradients</span><br>
+<span class="comment">-- Gradients (UI updates immediately)</span><br>
 WindUI:SetCustomBackground(WindUI:Gradient({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;["0"] = { Color = Color3.fromHex("#0f0c29"), Transparency = 0 },<br>
 &nbsp;&nbsp;&nbsp;&nbsp;["100"] = { Color = Color3.fromHex("#302b63"), Transparency = 0.1 },<br>
 }, {<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Rotation = 45,<br>
 }))<br>
+<span class="comment">-- Backgrounds update immediately with the gradient!</span><br>
 <br>
-<span class="comment">-- Clear overrides</span><br>
+<span class="comment">-- Clear overrides (UI updates immediately)</span><br>
 WindUI:ClearCustomProperty("Accent")<br>
-WindUI:ClearCustomOverrides()
+<span class="comment">-- Accent color reverts to theme default immediately</span><br>
+WindUI:ClearCustomOverrides()<br>
+<span class="comment">-- All custom overrides cleared, UI reverts to theme defaults immediately</span>
+                </code>
+            </div>
+            
+            <h3>Immediate Updates</h3>
+            <p><strong>All SetCustom methods update the UI immediately</strong> when called. You don't need to manually refresh or rebuild any UI elements. The library automatically applies changes to all existing UI elements that use the affected theme properties.</p>
+            
+            <div class="code-block">
+                <code>
+<span class="comment">-- Example: Dynamic color changes</span><br>
+task.spawn(function()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for i = 0, 100 do<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local hue = i / 100<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local color = Color3.fromHSV(hue, 1, 1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindUI:SetCustomAccent(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- UI updates immediately with each color change!</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;task.wait(0.1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+end)
                 </code>
             </div>
         </section>

@@ -215,6 +215,64 @@ function WindUI:Popup(PopupConfig)
     return require("./components/popup/Init").new(PopupConfig)
 end
 
+-- Custom Accent Customization Methods
+-- These methods allow you to override specific theme properties without creating a full theme
+-- Changes are applied immediately to all UI elements
+
+function WindUI:SetCustomAccent(color)
+    Creator.CustomOverrides["Accent"] = color
+    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+end
+
+function WindUI:SetCustomBackground(color)
+    Creator.CustomOverrides["Background"] = color
+    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+end
+
+function WindUI:SetCustomText(color)
+    Creator.CustomOverrides["Text"] = color
+    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+end
+
+function WindUI:SetCustomButton(color)
+    Creator.CustomOverrides["Button"] = color
+    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+end
+
+function WindUI:SetCustomIcon(color)
+    Creator.CustomOverrides["Icon"] = color
+    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+end
+
+function WindUI:SetCustomDialog(color)
+    Creator.CustomOverrides["Dialog"] = color
+    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+end
+
+function WindUI:SetCustomOutline(color)
+    Creator.CustomOverrides["Outline"] = color
+    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+end
+
+function WindUI:SetCustomProperty(propertyName, value)
+    Creator.CustomOverrides[propertyName] = value
+    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+end
+
+function WindUI:ClearCustomProperty(propertyName)
+    Creator.CustomOverrides[propertyName] = nil
+    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+end
+
+function WindUI:ClearCustomOverrides()
+    Creator.CustomOverrides = {}
+    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+end
+
+function WindUI:GetCustomOverrides()
+    return Creator.CustomOverrides
+end
+
 
 WindUI.Themes = require("./themes/Init")(WindUI)
 
