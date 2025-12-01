@@ -630,9 +630,18 @@ end
 function Element:New(Config) 
     -- If ThemeProperty is provided, get the current theme color
     local defaultColor = Config.Default
-    if not defaultColor and Config.ThemeProperty then
-        local currentColor = Creator.GetThemeProperty(Config.ThemeProperty, Creator.Theme)
-        if currentColor then
+    if not defaultColor and Config.ThemeProperty and Creator and Creator.GetThemeProperty then
+        local success, currentColor = pcall(function()
+            -- Safely get theme property with fallback
+            if Creator.Theme then
+                return Creator.GetThemeProperty(Config.ThemeProperty, Creator.Theme)
+            elseif Creator.Themes and Creator.Themes["Dark"] then
+                return Creator.GetThemeProperty(Config.ThemeProperty, Creator.Themes["Dark"])
+            end
+            return nil
+        end)
+        
+        if success and currentColor then
             -- Handle gradient tables - extract Color3 if it's a gradient
             if typeof(currentColor) == "table" and currentColor.Color then
                 defaultColor = currentColor.Color
@@ -716,9 +725,18 @@ function Element:New(Config)
     Creator.AddSignal(Colorpicker.UIElements.Colorpicker.MouseButton1Click, function()
         if CanCallback then
             -- If ThemeProperty is set, get the current theme color before opening
-            if Colorpicker.ThemeProperty then
-                local currentColor = Creator.GetThemeProperty(Colorpicker.ThemeProperty, Creator.Theme)
-                if currentColor then
+            if Colorpicker.ThemeProperty and Creator and Creator.GetThemeProperty then
+                local success, currentColor = pcall(function()
+                    -- Safely get theme property with fallback
+                    if Creator.Theme then
+                        return Creator.GetThemeProperty(Colorpicker.ThemeProperty, Creator.Theme)
+                    elseif Creator.Themes and Creator.Themes["Dark"] then
+                        return Creator.GetThemeProperty(Colorpicker.ThemeProperty, Creator.Themes["Dark"])
+                    end
+                    return nil
+                end)
+                
+                if success and currentColor then
                     -- Handle gradient tables - extract Color3 if it's a gradient
                     if typeof(currentColor) == "table" and currentColor.Color then
                         Colorpicker.Default = currentColor.Color
