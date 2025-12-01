@@ -628,12 +628,27 @@ function Element:Colorpicker(Config, Window, OnApply)
 end
 
 function Element:New(Config) 
+    -- If ThemeProperty is provided, get the current theme color
+    local defaultColor = Config.Default
+    if not defaultColor and Config.ThemeProperty then
+        local currentColor = Creator.GetThemeProperty(Config.ThemeProperty, Creator.Theme)
+        if currentColor then
+            -- Handle gradient tables - extract Color3 if it's a gradient
+            if typeof(currentColor) == "table" and currentColor.Color then
+                defaultColor = currentColor.Color
+            elseif typeof(currentColor) == "Color3" then
+                defaultColor = currentColor
+            end
+        end
+    end
+    
     local Colorpicker = {
         __type = "Colorpicker",
         Title = Config.Title or "Colorpicker",
         Desc = Config.Desc or nil,
         Locked = Config.Locked or false,
-        Default = Config.Default or Color3.new(1,1,1),
+        Default = defaultColor or Color3.new(1,1,1),
+        ThemeProperty = Config.ThemeProperty, -- Store the theme property name for updates
         Callback = Config.Callback or function() end,
         --Window = Config.Window,
         UIScale = Config.UIScale,
@@ -700,6 +715,21 @@ function Element:New(Config)
     
     Creator.AddSignal(Colorpicker.UIElements.Colorpicker.MouseButton1Click, function()
         if CanCallback then
+            -- If ThemeProperty is set, get the current theme color before opening
+            if Colorpicker.ThemeProperty then
+                local currentColor = Creator.GetThemeProperty(Colorpicker.ThemeProperty, Creator.Theme)
+                if currentColor then
+                    -- Handle gradient tables - extract Color3 if it's a gradient
+                    if typeof(currentColor) == "table" and currentColor.Color then
+                        Colorpicker.Default = currentColor.Color
+                    elseif typeof(currentColor) == "Color3" then
+                        Colorpicker.Default = currentColor
+                    end
+                    Colorpicker:SetHSVFromRGB(Colorpicker.Default)
+                    Colorpicker:Update(Colorpicker.Default, Colorpicker.Transparency)
+                end
+            end
+            
             Element:Colorpicker(Colorpicker, Config.Window, function(color, transparency)
                 Colorpicker:Update(color, transparency)
                 Colorpicker.Default = color

@@ -852,6 +852,19 @@ do -- config elements
     
     -- Saving elements to the config using `Flag`
     
+    -- Example: Colorpicker with ThemeProperty to display current UI color
+    -- ConfigElementsTab:Colorpicker({
+    --     Title = "Accent Color",
+    --     Desc = "Customize the accent color",
+    --     ThemeProperty = "Accent", -- Automatically gets current Accent color from theme
+    --     Callback = function(color)
+    --         WindUI:SetCustomAccent(color)
+    --         -- UI updates immediately!
+    --     end
+    -- })
+    --
+    -- ConfigElementsTab:Space()
+    --
     ConfigElementsTab:Colorpicker({
         Flag = "ColorpickerTest",
         Title = "Colorpicker",

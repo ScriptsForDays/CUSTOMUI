@@ -457,6 +457,52 @@ WindUI:ClearCustomOverrides()<br>
                 </code>
             </div>
             
+            <h3>Colorpicker Integration</h3>
+            <p>Colorpickers can automatically display the current UI colors by using the <code>ThemeProperty</code> parameter. When you provide a theme property name, the colorpicker will automatically fetch and display the current color from the theme (including any custom overrides) before you make changes.</p>
+            
+            <div class="code-block">
+                <code>
+<span class="comment">-- Colorpicker that displays the current Accent color</span><br>
+Tab:Colorpicker({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Accent Color",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Customize the accent color",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ThemeProperty = "Accent", <span class="comment">-- Automatically gets current Accent color</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindUI:SetCustomAccent(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- UI updates immediately!</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Colorpicker that displays the current Background color</span><br>
+Tab:Colorpicker({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Background Color",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ThemeProperty = "Background", <span class="comment">-- Automatically gets current Background color</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindUI:SetCustomBackground(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Colorpicker for Window Topbar Background</span><br>
+Tab:Colorpicker({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Topbar Background",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ThemeProperty = "WindowTopbarBackground", <span class="comment">-- Gets current topbar background color</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindUI:SetCustomWindowTopbarBackground(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- You can still use Default if you want a specific starting color</span><br>
+Tab:Colorpicker({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Custom Color",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Default = Color3.fromHex("#30ff6a"), <span class="comment">-- Explicit default color</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Selected:", color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})
+                </code>
+            </div>
+            <p><strong>How it works:</strong> When you provide <code>ThemeProperty</code>, the colorpicker automatically fetches the current color from the theme (including custom overrides) every time it opens. This ensures you always see the actual color being used in the UI, not just a default value.</p>
+            
             <h3>Immediate Updates</h3>
             <p><strong>All SetCustom methods update the UI immediately</strong> when called. You don't need to manually refresh or rebuild any UI elements. The library automatically applies changes to all existing UI elements that use the affected theme properties.</p>
             
