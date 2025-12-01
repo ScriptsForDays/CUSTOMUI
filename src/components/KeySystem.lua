@@ -238,8 +238,8 @@ function KeySystem.new(Config, Filename, func)
                     -- Find the icon that was created by CreateButton
                     local iconFrame = frame:FindFirstChildOfClass("ImageLabel")
                     if iconFrame then
-                        -- Replace with Discord icon
-                        iconFrame.Image = "rbxassetid://5013032530"
+                        -- Replace with Discord icon using thumbnail format
+                        iconFrame.Image = "rbxthumb://w=150&h=150&id=5013032530"
                         iconFrame.ImageRectSize = Vector2.new(0, 0)
                         iconFrame.ImageRectOffset = Vector2.new(0, 0)
                         iconFrame.ImageTransparency = 0
@@ -249,7 +249,7 @@ function KeySystem.new(Config, Filename, func)
                     else
                         -- If no icon found, create one
                         iconFrame = New("ImageLabel", {
-                            Image = "rbxassetid://5013032530",
+                            Image = "rbxthumb://w=150&h=150&id=5013032530",
                             Size = UDim2.new(0,24-3,0,24-3),
                             BackgroundTransparency = 1,
                             ThemeTag = {
