@@ -2241,7 +2241,7 @@ end
 
 if aA and b then
 
-az=ae("Discord","",function()
+az=ae("Discord","key",function()
 if setclipboard then
 setclipboard(b)
 ag.WindUI:Notify{
@@ -2252,52 +2252,6 @@ Duration=2
 }
 end
 end,"Tertiary",aw.Frame)
-
-
-if az then
-task.spawn(function()
-task.wait(0.1)
-local e=az:FindFirstChild"Frame"
-if e then
-
-local g=ab.GetThemeProperty("Icon",ab.Theme)
-local h
-if typeof(g)=="Color3"then
-h=g
-end
-
-
-local i=ac("ImageLabel",{
-Image="rbxassetid://124135407373085",
-Size=UDim2.new(0,21,0,21),
-BackgroundTransparency=1,
-ImageTransparency=0,
-Visible=true,
-ImageColor3=h,
-LayoutOrder=-1,
-Name="DiscordIcon"
-})
-i.Parent=e
-
-
-local j
-j=i:GetPropertyChangedSignal"Image":Connect(function()
-
-if i.Image~="rbxassetid://124135407373085"then
-i.Image="rbxassetid://124135407373085"
-end
-end)
-
-
-local l
-l=i:GetPropertyChangedSignal"Visible":Connect(function()
-if not i.Visible then
-i.Visible=true
-end
-end)
-end
-end)
-end
 end
 
 if ax then
@@ -2325,7 +2279,15 @@ end
 
 if ag.KeySystem.URL then
 ae("Get key","key",function()
+if setclipboard then
 setclipboard(ag.KeySystem.URL)
+ag.WindUI:Notify{
+Title="Key System",
+Content="Key link copied to clipboard!",
+Icon="check",
+Duration=2
+}
+end
 end,"Secondary",aw.Frame)
 end
 
