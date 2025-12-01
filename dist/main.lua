@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.6.61  |  2025-11-30  |  Roblox UI Library for scripts
+    v1.6.61  |  2025-12-01  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -6213,6 +6213,9 @@ ar.AbsolutePosition.Y+ar.AbsoluteSize.Y-av+(an.MenuPadding*2)
 )
 end
 
+
+aq.UpdatePosition=UpdatePosition
+
 local ar
 
 function aq.Display(as)
@@ -6310,9 +6313,21 @@ end
 end
 
 function aq.Refresh(as,at)
+
 for au,av in next,am.UIElements.Menu.Frame.ScrollingFrame:GetChildren()do
 if not av:IsA"UIListLayout"then
 av:Destroy()
+end
+end
+
+
+if am.SearchBarEnabled and ar then
+ar.Frame.Frame.TextBox.Text=""
+
+for au,av in next,am.Tabs do
+if av and av.UIElements and av.UIElements.TabItem then
+av.UIElements.TabItem.Visible=true
+end
 end
 end
 
@@ -6727,13 +6742,95 @@ SearchBarHeight=39,
 TabIcon=18,
 }
 
+
+local function fetchDropdownData(al)
+if not al then
+return{}
+end
+
+
+if type(al)=="table"then
+return al
+end
+
+
+if type(al)=="function"then
+local am,an=pcall(al)
+if am and type(an)=="table"then
+return an
+end
+return{}
+end
+
+
+if type(al)=="string"then
+local am,an=pcall(function()
+
+local am={
+game:GetService"ReplicatedStorage",
+game:GetService"ServerStorage",
+game:GetService"StarterPlayer":FindFirstChild"StarterPlayerScripts",
+game:GetService"StarterPlayer":FindFirstChild"StarterCharacterScripts",
+game:GetService"Workspace",
+}
+
+for an,ao in ipairs(am)do
+if ao then
+local ap=ao:FindFirstChild(al,true)
+if ap and ap:IsA"ModuleScript"then
+return require(ap)
+end
+end
+end
+
+
+local an=al:split"."
+local ao=game
+for ap,aq in ipairs(an)do
+ao=ao:FindFirstChild(aq)
+if not ao then
+return nil
+end
+end
+if ao and ao:IsA"ModuleScript"then
+return require(ao)
+end
+end)
+
+if am and an then
+
+if type(an)=="function"then
+local ao,ap=pcall(an)
+if ao and type(ap)=="table"then
+return ap
+end
+
+elseif type(an)=="table"then
+return an
+end
+end
+end
+
+return{}
+end
+
 function ak.New(al,am)
-local an={
+
+local an=am.Values
+local ao=am.DataSource or am.Values
+
+
+if not an or type(an)=="function"or type(an)=="string"then
+an=fetchDropdownData(ao)
+end
+
+local ap={
 __type="Dropdown",
 Title=am.Title or"Dropdown",
 Desc=am.Desc or nil,
 Locked=am.Locked or false,
-Values=am.Values or{},
+Values=an,
+DataSource=ao,
 MenuWidth=am.MenuWidth,
 Value=am.Value,
 AllowNone=am.AllowNone,
@@ -6749,34 +6846,34 @@ Tabs={},
 Width=150,
 }
 
-if an.Multi and not an.Value then
-an.Value={}
+if ap.Multi and not ap.Value then
+ap.Value={}
 end
 
-local ao=true
+local aq=true
 
-an.DropdownFrame=a.load'z'{
-Title=an.Title,
-Desc=an.Desc,
+ap.DropdownFrame=a.load'z'{
+Title=ap.Title,
+Desc=ap.Desc,
 Parent=am.Parent,
-TextOffset=an.Callback and an.Width or 20,
-Hover=not an.Callback and true or false,
+TextOffset=ap.Callback and ap.Width or 20,
+Hover=not ap.Callback and true or false,
 Tab=am.Tab,
 Index=am.Index,
 Window=am.Window,
-ElementTable=an,
+ElementTable=ap,
 }
 
 
-if an.Callback then
-an.UIElements.Dropdown=ag("",nil,an.DropdownFrame.UIElements.Main,nil,am.Window.NewElements and 12 or 10)
+if ap.Callback then
+ap.UIElements.Dropdown=ag("",nil,ap.DropdownFrame.UIElements.Main,nil,am.Window.NewElements and 12 or 10)
 
-an.UIElements.Dropdown.Frame.Frame.TextLabel.TextTruncate="AtEnd"
-an.UIElements.Dropdown.Frame.Frame.TextLabel.Size=UDim2.new(1,an.UIElements.Dropdown.Frame.Frame.TextLabel.Size.X.Offset-18-12-12,0,0)
+ap.UIElements.Dropdown.Frame.Frame.TextLabel.TextTruncate="AtEnd"
+ap.UIElements.Dropdown.Frame.Frame.TextLabel.Size=UDim2.new(1,ap.UIElements.Dropdown.Frame.Frame.TextLabel.Size.X.Offset-18-12-12,0,0)
 
-an.UIElements.Dropdown.Size=UDim2.new(0,an.Width,0,36)
-an.UIElements.Dropdown.Position=UDim2.new(1,0,am.Window.NewElements and 0 or 0.5,0)
-an.UIElements.Dropdown.AnchorPoint=Vector2.new(1,am.Window.NewElements and 0 or 0.5)
+ap.UIElements.Dropdown.Size=UDim2.new(0,ap.Width,0,36)
+ap.UIElements.Dropdown.Position=UDim2.new(1,0,am.Window.NewElements and 0 or 0.5,0)
+ap.UIElements.Dropdown.AnchorPoint=Vector2.new(1,am.Window.NewElements and 0 or 0.5)
 
 
 
@@ -6787,14 +6884,15 @@ an.UIElements.Dropdown.AnchorPoint=Vector2.new(1,am.Window.NewElements and 0 or 
 
 end
 
-an.DropdownMenu=ai(am,an,ak,ao,"Dropdown")
+ap.DropdownMenu=ai(am,ap,ak,aq,"Dropdown")
 
 
-an.Display=an.DropdownMenu.Display
-an.Refresh=an.DropdownMenu.Refresh
-an.Select=an.DropdownMenu.Select
-an.Open=an.DropdownMenu.Open
-an.Close=an.DropdownMenu.Close
+ap.Display=ap.DropdownMenu.Display
+ap.Refresh=ap.DropdownMenu.Refresh
+ap.Select=ap.DropdownMenu.Select
+ap.Open=ap.DropdownMenu.Open
+ap.Close=ap.DropdownMenu.Close
+ap.UpdatePosition=ap.DropdownMenu.UpdatePosition
 
 ae("ImageLabel",{
 Image=ac.Icon"chevrons-up-down"[1],
@@ -6803,7 +6901,7 @@ ImageRectSize=ac.Icon"chevrons-up-down"[2].ImageRectSize,
 Size=UDim2.new(0,18,0,18),
 Position=UDim2.new(
 1,
-an.UIElements.Dropdown and-12 or 0,
+ap.UIElements.Dropdown and-12 or 0,
 0.5,
 0
 ),
@@ -6811,28 +6909,106 @@ ThemeTag={
 ImageColor3="Icon"
 },
 AnchorPoint=Vector2.new(1,0.5),
-Parent=an.UIElements.Dropdown and an.UIElements.Dropdown.Frame or an.DropdownFrame.UIElements.Main
+Parent=ap.UIElements.Dropdown and ap.UIElements.Dropdown.Frame or ap.DropdownFrame.UIElements.Main
 })
 
 
 
-function an.Lock(ap)
-an.Locked=true
-ao=false
-return an.DropdownFrame:Lock()
+function ap.Lock(ar)
+ap.Locked=true
+aq=false
+return ap.DropdownFrame:Lock()
 end
-function an.Unlock(ap)
-an.Locked=false
-ao=true
-return an.DropdownFrame:Unlock()
-end
-
-if an.Locked then
-an:Lock()
+function ap.Unlock(ar)
+ap.Locked=false
+aq=true
+return ap.DropdownFrame:Unlock()
 end
 
+if ap.Locked then
+ap:Lock()
+end
 
-return an.__type,an
+
+function ap.SetValues(ar,as)
+
+if not as and ar.DataSource then
+as=fetchDropdownData(ar.DataSource)
+end
+
+
+if type(as)~="table"then
+warn"Dropdown:SetValues - newValues must be a table"
+return false
+end
+
+
+local at=ar.Value
+local au
+
+if at then
+if type(at)=="table"then
+au=at.Title
+else
+au=tostring(at)
+end
+end
+
+
+ar.Values=as
+
+
+
+if ar.Refresh then
+ar:Refresh(as)
+end
+
+
+if au then
+local av=false
+for aw,ax in ipairs(as)do
+local ay=type(ax)=="table"and ax.Title or tostring(ax)
+if ay==au then
+ar.Value=ax
+av=true
+break
+end
+end
+if not av then
+
+if ar.Multi then
+ar.Value={}
+else
+ar.Value=nil
+end
+end
+end
+
+
+if ar.Display then
+ar:Display()
+end
+
+
+if ar.Opened and ar.UpdatePosition then
+task.spawn(function()
+task.wait(0.1)
+ar.UpdatePosition()
+end)
+end
+
+return true
+end
+
+
+function ap.RefreshData(ar)
+if ar.DataSource then
+return ar:SetValues(nil)
+end
+return false
+end
+
+return ap.__type,ap
 end
 
 return ak end function a.L()
