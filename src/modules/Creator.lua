@@ -208,10 +208,10 @@ function Creator.UpdateFont(FontId)
 end
 
 function Creator.GetThemeProperty(Property, Theme)
-    -- Check CustomOverrides first (highest priority)
+    -- Check CustomOverrides first (highest priority) - check at every level
     if Creator.CustomOverrides[Property] ~= nil then
         local overrideValue = Creator.CustomOverrides[Property]
-        if typeof(overrideValue) == "Color3" or (typeof(overrideValue) == "table" and overrideValue.Color) then
+        if typeof(overrideValue) == "Color3" or (typeof(overrideValue) == "table" and overrideValue.Color) or typeof(overrideValue) == "number" then
             return overrideValue
         end
     end
@@ -247,6 +247,13 @@ function Creator.GetThemeProperty(Property, Theme)
     local value = getValue(Property, Theme)
     if value ~= nil then
         if typeof(value) == "string" and string.sub(value, 1, 1) ~= "#" then
+            -- Check CustomOverrides for the referenced property before recursing
+            if Creator.CustomOverrides[value] ~= nil then
+                local overrideValue = Creator.CustomOverrides[value]
+                if typeof(overrideValue) == "Color3" or (typeof(overrideValue) == "table" and overrideValue.Color) or typeof(overrideValue) == "number" then
+                    return overrideValue
+                end
+            end
             local referencedValue = Creator.GetThemeProperty(value, Theme)
             if referencedValue ~= nil then
                 return referencedValue
@@ -259,6 +266,13 @@ function Creator.GetThemeProperty(Property, Theme)
     local fallbackProperty = Creator.ThemeFallbacks[Property]
     if fallbackProperty ~= nil then
         if typeof(fallbackProperty) == "string" and string.sub(fallbackProperty, 1, 1) ~= "#" then
+            -- Check CustomOverrides for the fallback property before recursing
+            if Creator.CustomOverrides[fallbackProperty] ~= nil then
+                local overrideValue = Creator.CustomOverrides[fallbackProperty]
+                if typeof(overrideValue) == "Color3" or (typeof(overrideValue) == "table" and overrideValue.Color) or typeof(overrideValue) == "number" then
+                    return overrideValue
+                end
+            end
             return Creator.GetThemeProperty(fallbackProperty, Theme)
         else
             return getValue(Property, {[Property] = fallbackProperty})
@@ -268,6 +282,13 @@ function Creator.GetThemeProperty(Property, Theme)
     value = getValue(Property, Creator.Themes["Dark"])
     if value ~= nil then
         if typeof(value) == "string" and string.sub(value, 1, 1) ~= "#" then
+            -- Check CustomOverrides for the referenced property before recursing
+            if Creator.CustomOverrides[value] ~= nil then
+                local overrideValue = Creator.CustomOverrides[value]
+                if typeof(overrideValue) == "Color3" or (typeof(overrideValue) == "table" and overrideValue.Color) or typeof(overrideValue) == "number" then
+                    return overrideValue
+                end
+            end
             local referencedValue = Creator.GetThemeProperty(value, Creator.Themes["Dark"])
             if referencedValue ~= nil then
                 return referencedValue
@@ -279,6 +300,13 @@ function Creator.GetThemeProperty(Property, Theme)
 
     if fallbackProperty ~= nil then
         if typeof(fallbackProperty) == "string" and string.sub(fallbackProperty, 1, 1) ~= "#" then
+            -- Check CustomOverrides for the fallback property before recursing
+            if Creator.CustomOverrides[fallbackProperty] ~= nil then
+                local overrideValue = Creator.CustomOverrides[fallbackProperty]
+                if typeof(overrideValue) == "Color3" or (typeof(overrideValue) == "table" and overrideValue.Color) or typeof(overrideValue) == "number" then
+                    return overrideValue
+                end
+            end
             return Creator.GetThemeProperty(fallbackProperty, Creator.Themes["Dark"])
         else
             return getValue(Property, {[Property] = fallbackProperty})
