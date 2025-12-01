@@ -2506,7 +2506,23 @@ end
 
 local function handleSuccess(e)
 ak:Close()()
-writefile((ag.Folder or"Temp").."/"..ah..".key",tostring(e))
+
+
+local g=ag.KeySystem.KeyFolder or ag.Folder or ag.Title or"Temp"
+
+
+if not isfolder"WindUI"then
+makefolder"WindUI"
+end
+if not isfolder("WindUI/"..g)then
+makefolder("WindUI/"..g)
+end
+if not isfolder(g)then
+makefolder(g)
+end
+
+
+writefile(g.."/"..ah..".key",tostring(e))
 task.wait(.4)
 ai(true)
 end
@@ -12529,16 +12545,30 @@ local function loadKeysystem()
 ai.new(at,ay,function(az)av=az end)
 end
 
-local az=(at.Folder or"Temp").."/"..ay..".key"
+
+local az=at.KeySystem.KeyFolder or at.Folder or at.Title or"Temp"
+
+
+if not isfolder"WindUI"then
+makefolder"WindUI"
+end
+if not isfolder("WindUI/"..az)then
+makefolder("WindUI/"..az)
+end
+if not isfolder(az)then
+makefolder(az)
+end
+
+local aA=az.."/"..ay..".key"
 
 if not at.KeySystem.API then
-if at.KeySystem.SaveKey and isfile(az)then
-local aA=readfile(az)
-local b=(type(at.KeySystem.Key)=="table")
-and table.find(at.KeySystem.Key,aA)
-or tostring(at.KeySystem.Key)==tostring(aA)
+if at.KeySystem.SaveKey and isfile(aA)then
+local b=readfile(aA)
+local e=(type(at.KeySystem.Key)=="table")
+and table.find(at.KeySystem.Key,b)
+or tostring(at.KeySystem.Key)==tostring(b)
 
-if b then
+if e then
 av=true
 else
 loadKeysystem()
@@ -12547,29 +12577,29 @@ else
 loadKeysystem()
 end
 else
-if isfile(az)then
-local aA=readfile(az)
-local b=false
+if isfile(aA)then
+local b=readfile(aA)
+local e=false
 
-for e,g in next,at.KeySystem.API do
-local h=ac.Services[g.Type]
-if h then
-local i={}
-for j,l in next,h.Args do
-table.insert(i,g[l])
+for g,h in next,at.KeySystem.API do
+local i=ac.Services[h.Type]
+if i then
+local j={}
+for l,m in next,i.Args do
+table.insert(j,h[m])
 end
 
-local j=h.New(table.unpack(i))
-local l=j.Verify(aA)
-if l then
-b=true
+local l=i.New(table.unpack(j))
+local m=l.Verify(b)
+if m then
+e=true
 break
 end
 end
 end
 
-av=b
-if not b then loadKeysystem()end
+av=e
+if not e then loadKeysystem()end
 else
 loadKeysystem()
 end
