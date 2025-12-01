@@ -8259,12 +8259,27 @@ return av
 end
 
 function aq.New(ar,as)
-local at={
+
+local at=as.Default
+if not at and as.ThemeProperty then
+local au=ac.GetThemeProperty(as.ThemeProperty,ac.Theme)
+if au then
+
+if typeof(au)=="table"and au.Color then
+at=au.Color
+elseif typeof(au)=="Color3"then
+at=au
+end
+end
+end
+
+local au={
 __type="Colorpicker",
 Title=as.Title or"Colorpicker",
 Desc=as.Desc or nil,
 Locked=as.Locked or false,
-Default=as.Default or Color3.new(1,1,1),
+Default=at or Color3.new(1,1,1),
+ThemeProperty=as.ThemeProperty,
 Callback=as.Callback or function()end,
 
 UIScale=as.UIScale,
@@ -8272,27 +8287,27 @@ Transparency=as.Transparency,
 UIElements={}
 }
 
-local au=true
+local av=true
 
 if as.Window.NewElements then aq.UICorner=14 end
 
-at.ColorpickerFrame=a.load'z'{
-Title=at.Title,
-Desc=at.Desc,
+au.ColorpickerFrame=a.load'z'{
+Title=au.Title,
+Desc=au.Desc,
 Parent=as.Parent,
 TextOffset=40,
 Hover=false,
 Tab=as.Tab,
 Index=as.Index,
 Window=as.Window,
-ElementTable=at,
+ElementTable=au,
 }
 
-at.UIElements.Colorpicker=ac.NewRoundFrame(aq.UICorner,"Squircle",{
+au.UIElements.Colorpicker=ac.NewRoundFrame(aq.UICorner,"Squircle",{
 ImageTransparency=0,
 Active=true,
-ImageColor3=at.Default,
-Parent=at.ColorpickerFrame.UIElements.Main,
+ImageColor3=au.Default,
+Parent=au.ColorpickerFrame.UIElements.Main,
 Size=UDim2.new(0,30,0,30),
 AnchorPoint=Vector2.new(1,0),
 Position=UDim2.new(1,0,0,0),
@@ -8300,47 +8315,62 @@ ZIndex=2
 },nil,true)
 
 
-function at.Lock(av)
-at.Locked=true
-au=false
-return at.ColorpickerFrame:Lock()
+function au.Lock(aw)
+au.Locked=true
+av=false
+return au.ColorpickerFrame:Lock()
 end
-function at.Unlock(av)
-at.Locked=false
-au=true
-return at.ColorpickerFrame:Unlock()
-end
-
-if at.Locked then
-at:Lock()
+function au.Unlock(aw)
+au.Locked=false
+av=true
+return au.ColorpickerFrame:Unlock()
 end
 
+if au.Locked then
+au:Lock()
+end
 
-function at.Update(av,aw,ax)
-at.UIElements.Colorpicker.ImageTransparency=ax or 0
-at.UIElements.Colorpicker.ImageColor3=aw
-at.Default=aw
-if ax then
-at.Transparency=ax
+
+function au.Update(aw,ax,ay)
+au.UIElements.Colorpicker.ImageTransparency=ay or 0
+au.UIElements.Colorpicker.ImageColor3=ax
+au.Default=ax
+if ay then
+au.Transparency=ay
 end
 end
 
-function at.Set(av,aw,ax)
-return at:Update(aw,ax)
+function au.Set(aw,ax,ay)
+return au:Update(ax,ay)
 end
 
-ac.AddSignal(at.UIElements.Colorpicker.MouseButton1Click,function()
-if au then
-aq:Colorpicker(at,as.Window,function(av,aw)
-at:Update(av,aw)
-at.Default=av
-at.Transparency=aw
-ac.SafeCallback(at.Callback,av,aw)
+ac.AddSignal(au.UIElements.Colorpicker.MouseButton1Click,function()
+if av then
+
+if au.ThemeProperty then
+local aw=ac.GetThemeProperty(au.ThemeProperty,ac.Theme)
+if aw then
+
+if typeof(aw)=="table"and aw.Color then
+au.Default=aw.Color
+elseif typeof(aw)=="Color3"then
+au.Default=aw
+end
+au:SetHSVFromRGB(au.Default)
+au:Update(au.Default,au.Transparency)
+end
+end
+
+aq:Colorpicker(au,as.Window,function(aw,ax)
+au:Update(aw,ax)
+au.Default=aw
+au.Transparency=ax
+ac.SafeCallback(au.Callback,aw,ax)
 end).ColorpickerFrame:Open()
 end
 end)
 
-return at.__type,at
+return au.__type,au
 end
 
 return aq end function a.P()
