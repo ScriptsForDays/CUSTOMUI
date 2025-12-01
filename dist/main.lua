@@ -2224,11 +2224,80 @@ local ay=ae("Exit","log-out",function()
 ak:Close()()
 end,"Tertiary",aw.Frame)
 
+
+local az
+local aA=false
+local b
+
+if ag.KeySystem.Discord then
+if type(ag.KeySystem.Discord)=="table"then
+aA=ag.KeySystem.Discord.Enabled~=false
+b=ag.KeySystem.Discord.URL
+elseif type(ag.KeySystem.Discord)=="string"then
+aA=true
+b=ag.KeySystem.Discord
+end
+end
+
+if aA and b then
+az=ae("Discord","discord",function()
+if setclipboard then
+setclipboard(b)
+ag.WindUI:Notify{
+Title="Discord",
+Content="Discord link copied to clipboard!",
+Icon="check",
+Duration=2
+}
+end
+end,"Tertiary",aw.Frame)
+
+
+local e=az.Frame:FindFirstChildOfClass"ImageLabel"
+if e then
+e.Image="rbxassetid://11529076323"
+e.ImageRectSize=Vector2.new(0,0)
+e.ImageRectOffset=Vector2.new(0,0)
+e.ImageTransparency=0
+e.ThemeTag={
+ImageColor3="Icon"
+}
+else
+
+e=ac("ImageLabel",{
+Image="rbxassetid://11529076323",
+Size=UDim2.new(0,21,0,21),
+BackgroundTransparency=1,
+ThemeTag={
+ImageColor3="Icon"
+}
+})
+e.Parent=az.Frame
+e.LayoutOrder=-1
+end
+end
+
 if ax then
 ay.Parent=ax
 ay.Size=UDim2.new(0,0,0,42)
 ay.Position=UDim2.new(0,10,1,-10)
 ay.AnchorPoint=Vector2.new(0,1)
+
+if az then
+az.Parent=ax
+az.Size=UDim2.new(0,0,0,42)
+az.AnchorPoint=Vector2.new(0,1)
+
+task.spawn(function()
+task.wait(0.1)
+local e=ay.AbsoluteSize.X
+az.Position=UDim2.new(0,10+e+10,1,-10)
+end)
+end
+
+
+
+
 end
 
 if ag.KeySystem.URL then
@@ -2246,11 +2315,11 @@ if ag.KeySystem.API then
 
 
 
-local az=240
-local aA=false
-local b=ae("Get key","key",nil,"Secondary",aw.Frame)
+local e=240
+local g=false
+local h=ae("Get key","key",nil,"Secondary",aw.Frame)
 
-local e=ab.NewRoundFrame(99,"Squircle",{
+local i=ab.NewRoundFrame(99,"Squircle",{
 Size=UDim2.new(0,1,1,0),
 ThemeTag={
 ImageColor3="Text",
@@ -2262,16 +2331,16 @@ ac("Frame",{
 BackgroundTransparency=1,
 Size=UDim2.new(0,0,1,0),
 AutomaticSize="X",
-Parent=b.Frame,
+Parent=h.Frame,
 },{
-e,
+i,
 ac("UIPadding",{
 PaddingLeft=UDim.new(0,5),
 PaddingRight=UDim.new(0,5),
 })
 })
 
-local g=ab.Image(
+local j=ab.Image(
 "chevron-down",
 "chevron-down",
 0,
@@ -2280,17 +2349,17 @@ local g=ab.Image(
 true
 )
 
-g.Size=UDim2.new(1,0,1,0)
+j.Size=UDim2.new(1,0,1,0)
 
 ac("Frame",{
 Size=UDim2.new(0,21,0,21),
-Parent=b.Frame,
+Parent=h.Frame,
 BackgroundTransparency=1,
 },{
-g
+j
 })
 
-local h=ab.NewRoundFrame(15,"Squircle",{
+local l=ab.NewRoundFrame(15,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
 ThemeTag={
@@ -2309,15 +2378,15 @@ Padding=UDim.new(0,5),
 })
 })
 
-local i=ac("Frame",{
+local m=ac("Frame",{
 BackgroundTransparency=1,
-Size=UDim2.new(0,az,0,0),
+Size=UDim2.new(0,e,0,0),
 ClipsDescendants=true,
 AnchorPoint=Vector2.new(1,0),
-Parent=b,
+Parent=h,
 Position=UDim2.new(1,0,1,15)
 },{
-h
+l
 })
 
 ac("TextLabel",{
@@ -2331,7 +2400,7 @@ Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
 TextWrapped=true,
 TextXAlignment="Left",
-Parent=h,
+Parent=l,
 },{
 ac("UIPadding",{
 PaddingTop=UDim.new(0,10),
@@ -2341,33 +2410,33 @@ PaddingBottom=UDim.new(0,10),
 })
 })
 
-for j,l in next,ag.KeySystem.API do
-local m=ag.WindUI.Services[l.Type]
-if m then
-local p={}
-for r,u in next,m.Args do
-table.insert(p,l[u])
+for p,r in next,ag.KeySystem.API do
+local u=ag.WindUI.Services[r.Type]
+if u then
+local v={}
+for x,z in next,u.Args do
+table.insert(v,r[z])
 end
 
-local r=m.New(table.unpack(p))
-r.Type=l.Type
-table.insert(al,r)
+local x=u.New(table.unpack(v))
+x.Type=r.Type
+table.insert(al,x)
 
-local u=ab.Image(
-l.Icon or m.Icon or Icons[l.Type]or"user",
-l.Icon or m.Icon or Icons[l.Type]or"user",
+local z=ab.Image(
+r.Icon or u.Icon or Icons[r.Type]or"user",
+r.Icon or u.Icon or Icons[r.Type]or"user",
 0,
 "Temp",
 "KeySystem",
 true
 )
-u.Size=UDim2.new(0,24,0,24)
+z.Size=UDim2.new(0,24,0,24)
 
-local v=ab.NewRoundFrame(10,"Squircle",{
+local A=ab.NewRoundFrame(10,"Squircle",{
 Size=UDim2.new(1,0,0,0),
 ThemeTag={ImageColor3="Text"},
 ImageTransparency=1,
-Parent=h,
+Parent=l,
 AutomaticSize="Y",
 },{
 ac("UIListLayout",{
@@ -2375,7 +2444,7 @@ FillDirection="Horizontal",
 Padding=UDim.new(0,10),
 VerticalAlignment="Center",
 }),
-u,
+z,
 ac("UIPadding",{
 PaddingTop=UDim.new(0,10),
 PaddingLeft=UDim.new(0,10),
@@ -2393,7 +2462,7 @@ Padding=UDim.new(0,5),
 HorizontalAlignment="Center",
 }),
 ac("TextLabel",{
-Text=l.Title or m.Name,
+Text=r.Title or u.Name,
 BackgroundTransparency=1,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Medium),
 ThemeTag={TextColor3="Text"},
@@ -2405,7 +2474,7 @@ TextWrapped=true,
 TextXAlignment="Left",
 }),
 ac("TextLabel",{
-Text=l.Desc or"",
+Text=r.Desc or"",
 BackgroundTransparency=1,
 FontFace=Font.new(ab.Font,Enum.FontWeight.Regular),
 ThemeTag={TextColor3="Text"},
@@ -2414,20 +2483,20 @@ TextSize=16,
 Size=UDim2.new(1,0,0,0),
 AutomaticSize="Y",
 TextWrapped=true,
-Visible=l.Desc and true or false,
+Visible=r.Desc and true or false,
 TextXAlignment="Left",
 })
 })
 },true)
 
-ab.AddSignal(v.MouseEnter,function()
-ad(v,0.08,{ImageTransparency=.95}):Play()
+ab.AddSignal(A.MouseEnter,function()
+ad(A,0.08,{ImageTransparency=.95}):Play()
 end)
-ab.AddSignal(v.InputEnded,function()
-ad(v,0.08,{ImageTransparency=1}):Play()
+ab.AddSignal(A.InputEnded,function()
+ad(A,0.08,{ImageTransparency=1}):Play()
 end)
-ab.AddSignal(v.MouseButton1Click,function()
-r.Copy()
+ab.AddSignal(A.MouseButton1Click,function()
+x.Copy()
 ag.WindUI:Notify{
 Title="Key System",
 Content="Key link copied to clipboard.",
@@ -2437,38 +2506,38 @@ end)
 end
 end
 
-ab.AddSignal(b.MouseButton1Click,function()
-if not aA then
-ad(i,.3,{Size=UDim2.new(0,az,0,h.AbsoluteSize.Y+1)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
-ad(g,.3,{Rotation=180},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ab.AddSignal(h.MouseButton1Click,function()
+if not g then
+ad(m,.3,{Size=UDim2.new(0,e,0,l.AbsoluteSize.Y+1)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ad(j,.3,{Rotation=180},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 else
-ad(i,.25,{Size=UDim2.new(0,az,0,0)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
-ad(g,.25,{Rotation=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ad(m,.25,{Size=UDim2.new(0,e,0,0)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+ad(j,.25,{Rotation=0},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 end
-aA=not aA
+g=not g
 end)
 
 end
 
-local function handleSuccess(az)
+local function handleSuccess(e)
 ak:Close()()
-writefile((ag.Folder or"Temp").."/"..ah..".key",tostring(az))
+writefile((ag.Folder or"Temp").."/"..ah..".key",tostring(e))
 task.wait(.4)
 ai(true)
 end
 
-local az=ae("Submit","arrow-right",function()
-local az=tostring(am or"empty")local aA=
+local e=ae("Submit","arrow-right",function()
+local e=tostring(am or"empty")local g=
 ag.Folder or ag.Title
 
 if not ag.KeySystem.API then
-local b=type(ag.KeySystem.Key)=="table"
-and table.find(ag.KeySystem.Key,az)
-or ag.KeySystem.Key==az
+local h=type(ag.KeySystem.Key)=="table"
+and table.find(ag.KeySystem.Key,e)
+or ag.KeySystem.Key==e
 
-if b then
+if h then
 if ag.KeySystem.SaveKey then
-handleSuccess(az)
+handleSuccess(e)
 else
 ak:Close()()
 task.wait(.4)
@@ -2476,30 +2545,30 @@ ai(true)
 end
 end
 else
-local b,e
-for g,h in next,al do
-local i,j=h.Verify(az)
-if i then
-b,e=true,j
+local h,i
+for j,l in next,al do
+local m,p=l.Verify(e)
+if m then
+h,i=true,p
 break
 end
-e=j
+i=p
 end
 
-if b then
-handleSuccess(az)
+if h then
+handleSuccess(e)
 else
 ag.WindUI:Notify{
 Title="Key System. Error",
-Content=e,
+Content=i,
 Icon="triangle-alert",
 }
 end
 end
 end,"Primary",aw)
 
-az.AnchorPoint=Vector2.new(1,0.5)
-az.Position=UDim2.new(1,0,0.5,0)
+e.AnchorPoint=Vector2.new(1,0.5)
+e.Position=UDim2.new(1,0,0.5,0)
 
 
 
