@@ -606,9 +606,10 @@ local dropdown = Tab:Dropdown({<br>
             <h2>WindUI Custom Methods</h2>
             <p>Custom enhancement methods for theme customization.</p>
             
-            <h3>Custom Accent Methods</h3>
-            <p><strong>Note:</strong> All SetCustom methods update the UI immediately when called. Changes are applied to all existing UI elements automatically.</p>
+            <h3>Custom Theme Methods</h3>
+            <p><strong>Note:</strong> All SetCustom methods update the UI immediately when called. Changes are applied to all existing UI elements automatically. All methods return <code>true</code> on success, <code>false</code> on failure.</p>
             
+            <h4>Basic Theme Properties</h4>
             <div class="method">
                 <h4>WindUI:SetCustomAccent(color)</h4>
                 <p>Sets a custom accent color. Accepts Color3 or Gradient. <strong>UI updates immediately.</strong></p>
@@ -641,9 +642,148 @@ local dropdown = Tab:Dropdown({<br>
             </div>
             <div class="method">
                 <h4>WindUI:SetCustomOutline(color)</h4>
-                <p>Sets a custom outline color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p>Sets a custom outline/border color. Accepts Color3. <strong>UI updates immediately.</strong></p>
                 <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
             </div>
+            <div class="method">
+                <h4>WindUI:SetCustomHover(color)</h4>
+                <p>Sets a custom hover state color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomPlaceholder(color)</h4>
+                <p>Sets a custom input placeholder color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+
+            <h4>Window Topbar Properties</h4>
+            <div class="method">
+                <h4>WindUI:SetCustomWindowTopbarTitle(color)</h4>
+                <p>Sets the window topbar title color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomWindowTopbarAuthor(color)</h4>
+                <p>Sets the window topbar author color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomWindowTopbarIcon(color)</h4>
+                <p>Sets the window topbar icon color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomWindowTopbarButtonIcon(color)</h4>
+                <p>Sets the window topbar button icon color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomWindowBackground(color)</h4>
+                <p>Sets the window background color. Accepts Color3 or Gradient. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3 or Gradient table)</p>
+            </div>
+
+            <h4>Tab Properties</h4>
+            <div class="method">
+                <h4>WindUI:SetCustomTabBackground(color)</h4>
+                <p>Sets the tab background color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomTabTitle(color)</h4>
+                <p>Sets the tab title color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomTabIcon(color)</h4>
+                <p>Sets the tab icon color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+
+            <h4>Element Properties</h4>
+            <div class="method">
+                <h4>WindUI:SetCustomElementBackground(color)</h4>
+                <p>Sets the element background color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomElementTitle(color)</h4>
+                <p>Sets the element title color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomElementDesc(color)</h4>
+                <p>Sets the element description color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomElementIcon(color)</h4>
+                <p>Sets the element icon color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+
+            <h4>Popup Properties</h4>
+            <div class="method">
+                <h4>WindUI:SetCustomPopupBackground(color)</h4>
+                <p>Sets the popup background color. Accepts Color3 or Gradient. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3 or Gradient table)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomPopupTitle(color)</h4>
+                <p>Sets the popup title color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomPopupContent(color)</h4>
+                <p>Sets the popup content color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomPopupIcon(color)</h4>
+                <p>Sets the popup icon color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+
+            <h4>Dialog Properties</h4>
+            <div class="method">
+                <h4>WindUI:SetCustomDialogBackground(color)</h4>
+                <p>Sets the dialog background color. Accepts Color3 or Gradient. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3 or Gradient table)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomDialogTitle(color)</h4>
+                <p>Sets the dialog title color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomDialogContent(color)</h4>
+                <p>Sets the dialog content color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomDialogIcon(color)</h4>
+                <p>Sets the dialog icon color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+
+            <h4>Toggle & Checkbox Properties</h4>
+            <div class="method">
+                <h4>WindUI:SetCustomToggle(color)</h4>
+                <p>Sets the toggle color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomCheckbox(color)</h4>
+                <p>Sets the checkbox color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomCheckboxIcon(color)</h4>
+                <p>Sets the checkbox icon color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+
+            <h4>Generic & Utility Methods</h4>
             <div class="method">
                 <h4>WindUI:SetCustomProperty(name, value)</h4>
                 <p>Sets any custom theme property by name. <strong>UI updates immediately.</strong></p>

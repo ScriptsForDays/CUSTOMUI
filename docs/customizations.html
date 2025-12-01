@@ -273,10 +273,10 @@ dropdown:SetValues({<br>
         </section>
 
         <section class="section">
-            <h2>Custom Accent Customization</h2>
-            <p>Customize UI accents without creating a full theme. These overrides persist when switching themes, giving you fine-grained control over the UI appearance. <strong>Changes are applied immediately</strong> - the UI updates automatically when you call any SetCustom method.</p>
+            <h2>Custom Theme Customization</h2>
+            <p>Customize UI components without creating a full theme. These overrides persist when switching themes, giving you fine-grained control over the UI appearance. <strong>Changes are applied immediately</strong> - the UI updates automatically when you call any SetCustom method.</p>
 
-            <h3>Available Methods</h3>
+            <h3>Basic Theme Properties</h3>
             <ul class="method-list">
                 <li><code>WindUI:SetCustomAccent(color)</code> - Set the accent color</li>
                 <li><code>WindUI:SetCustomBackground(color)</code> - Set the background color (supports gradients)</li>
@@ -284,17 +284,76 @@ dropdown:SetValues({<br>
                 <li><code>WindUI:SetCustomButton(color)</code> - Set the button color (supports gradients)</li>
                 <li><code>WindUI:SetCustomIcon(color)</code> - Set the icon color</li>
                 <li><code>WindUI:SetCustomDialog(color)</code> - Set the dialog background color</li>
-                <li><code>WindUI:SetCustomOutline(color)</code> - Set the outline color</li>
-                <li><code>WindUI:SetCustomProperty(name, value)</code> - Set any custom theme property</li>
+                <li><code>WindUI:SetCustomOutline(color)</code> - Set the outline/border color</li>
+                <li><code>WindUI:SetCustomHover(color)</code> - Set the hover state color</li>
+                <li><code>WindUI:SetCustomPlaceholder(color)</code> - Set the input placeholder color</li>
+            </ul>
+
+            <h3>Window Topbar Properties</h3>
+            <ul class="method-list">
+                <li><code>WindUI:SetCustomWindowTopbarTitle(color)</code> - Set the window topbar title color</li>
+                <li><code>WindUI:SetCustomWindowTopbarAuthor(color)</code> - Set the window topbar author color</li>
+                <li><code>WindUI:SetCustomWindowTopbarIcon(color)</code> - Set the window topbar icon color</li>
+                <li><code>WindUI:SetCustomWindowTopbarButtonIcon(color)</code> - Set the window topbar button icon color</li>
+                <li><code>WindUI:SetCustomWindowBackground(color)</code> - Set the window background color</li>
+            </ul>
+
+            <h3>Tab Properties</h3>
+            <ul class="method-list">
+                <li><code>WindUI:SetCustomTabBackground(color)</code> - Set the tab background color</li>
+                <li><code>WindUI:SetCustomTabTitle(color)</code> - Set the tab title color</li>
+                <li><code>WindUI:SetCustomTabIcon(color)</code> - Set the tab icon color</li>
+            </ul>
+
+            <h3>Element Properties</h3>
+            <ul class="method-list">
+                <li><code>WindUI:SetCustomElementBackground(color)</code> - Set the element background color</li>
+                <li><code>WindUI:SetCustomElementTitle(color)</code> - Set the element title color</li>
+                <li><code>WindUI:SetCustomElementDesc(color)</code> - Set the element description color</li>
+                <li><code>WindUI:SetCustomElementIcon(color)</code> - Set the element icon color</li>
+            </ul>
+
+            <h3>Popup Properties</h3>
+            <ul class="method-list">
+                <li><code>WindUI:SetCustomPopupBackground(color)</code> - Set the popup background color</li>
+                <li><code>WindUI:SetCustomPopupTitle(color)</code> - Set the popup title color</li>
+                <li><code>WindUI:SetCustomPopupContent(color)</code> - Set the popup content color</li>
+                <li><code>WindUI:SetCustomPopupIcon(color)</code> - Set the popup icon color</li>
+            </ul>
+
+            <h3>Dialog Properties</h3>
+            <ul class="method-list">
+                <li><code>WindUI:SetCustomDialogBackground(color)</code> - Set the dialog background color</li>
+                <li><code>WindUI:SetCustomDialogTitle(color)</code> - Set the dialog title color</li>
+                <li><code>WindUI:SetCustomDialogContent(color)</code> - Set the dialog content color</li>
+                <li><code>WindUI:SetCustomDialogIcon(color)</code> - Set the dialog icon color</li>
+            </ul>
+
+            <h3>Toggle & Checkbox Properties</h3>
+            <ul class="method-list">
+                <li><code>WindUI:SetCustomToggle(color)</code> - Set the toggle color</li>
+                <li><code>WindUI:SetCustomCheckbox(color)</code> - Set the checkbox color</li>
+                <li><code>WindUI:SetCustomCheckboxIcon(color)</code> - Set the checkbox icon color</li>
+            </ul>
+
+            <h3>Generic & Utility Methods</h3>
+            <ul class="method-list">
+                <li><code>WindUI:SetCustomProperty(name, value)</code> - Set any custom theme property (for properties not covered above)</li>
+                <li><code>WindUI:ClearCustomProperty(name)</code> - Clear a specific custom property</li>
+                <li><code>WindUI:ClearCustomOverrides()</code> - Clear all custom overrides</li>
+                <li><code>WindUI:GetCustomOverrides()</code> - Get all current custom overrides</li>
             </ul>
 
             <h3>Examples</h3>
+            
+            <h4>Basic Properties</h4>
             <div class="code-block">
                 <code>
 <span class="comment">-- Solid colors (UI updates immediately)</span><br>
 WindUI:SetCustomAccent(Color3.fromHex("#30ff6a"))<br>
 WindUI:SetCustomBackground(Color3.fromHex("#1a1a1a"))<br>
 WindUI:SetCustomText(Color3.fromHex("#ffffff"))<br>
+WindUI:SetCustomOutline(Color3.fromHex("#FFFFFF"))<br>
 <span class="comment">-- All UI elements using these colors update instantly!</span><br>
 <br>
 <span class="comment">-- Gradients (UI updates immediately)</span><br>
@@ -304,11 +363,87 @@ WindUI:SetCustomBackground(WindUI:Gradient({<br>
 }, {<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Rotation = 45,<br>
 }))<br>
-<span class="comment">-- Backgrounds update immediately with the gradient!</span><br>
+<span class="comment">-- Backgrounds update immediately with the gradient!</span>
+                </code>
+            </div>
+
+            <h4>Window Topbar Customization</h4>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Customize the window topbar</span><br>
+WindUI:SetCustomWindowTopbarTitle(Color3.fromHex("#ffffff"))<br>
+WindUI:SetCustomWindowTopbarAuthor(Color3.fromHex("#a1a1aa"))<br>
+WindUI:SetCustomWindowTopbarIcon(Color3.fromHex("#30ff6a"))<br>
+WindUI:SetCustomWindowTopbarButtonIcon(Color3.fromHex("#a1a1aa"))<br>
+WindUI:SetCustomWindowBackground(Color3.fromHex("#0f172a"))<br>
+<span class="comment">-- Topbar updates immediately!</span>
+                </code>
+            </div>
+
+            <h4>Tab Customization</h4>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Customize tabs</span><br>
+WindUI:SetCustomTabBackground(Color3.fromHex("#1e293b"))<br>
+WindUI:SetCustomTabTitle(Color3.fromHex("#ffffff"))<br>
+WindUI:SetCustomTabIcon(Color3.fromHex("#60a5fa"))<br>
+<span class="comment">-- All tabs update immediately!</span>
+                </code>
+            </div>
+
+            <h4>Element Customization</h4>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Customize UI elements</span><br>
+WindUI:SetCustomElementBackground(Color3.fromHex("#1e293b"))<br>
+WindUI:SetCustomElementTitle(Color3.fromHex("#ffffff"))<br>
+WindUI:SetCustomElementDesc(Color3.fromHex("#cbd5e1"))<br>
+WindUI:SetCustomElementIcon(Color3.fromHex("#60a5fa"))<br>
+<span class="comment">-- All elements update immediately!</span>
+                </code>
+            </div>
+
+            <h4>Popup & Dialog Customization</h4>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Customize popups</span><br>
+WindUI:SetCustomPopupBackground(Color3.fromHex("#1a1a1a"))<br>
+WindUI:SetCustomPopupTitle(Color3.fromHex("#ffffff"))<br>
+WindUI:SetCustomPopupContent(Color3.fromHex("#a1a1aa"))<br>
+WindUI:SetCustomPopupIcon(Color3.fromHex("#30ff6a"))<br>
 <br>
-<span class="comment">-- Clear overrides (UI updates immediately)</span><br>
+<span class="comment">-- Customize dialogs</span><br>
+WindUI:SetCustomDialogBackground(Color3.fromHex("#161616"))<br>
+WindUI:SetCustomDialogTitle(Color3.fromHex("#ffffff"))<br>
+WindUI:SetCustomDialogContent(Color3.fromHex("#a1a1aa"))<br>
+WindUI:SetCustomDialogIcon(Color3.fromHex("#30ff6a"))<br>
+<span class="comment">-- Popups and dialogs update immediately!</span>
+                </code>
+            </div>
+
+            <h4>Toggle & Checkbox Customization</h4>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Customize toggles and checkboxes</span><br>
+WindUI:SetCustomToggle(Color3.fromHex("#33C759"))<br>
+WindUI:SetCustomCheckbox(Color3.fromHex("#0091ff"))<br>
+WindUI:SetCustomCheckboxIcon(Color3.fromHex("#ffffff"))<br>
+<span class="comment">-- Toggles and checkboxes update immediately!</span>
+                </code>
+            </div>
+
+            <h4>Utility Methods</h4>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Get all current overrides</span><br>
+local overrides = WindUI:GetCustomOverrides()<br>
+print("Current overrides:", overrides)<br>
+<br>
+<span class="comment">-- Clear a specific property (UI updates immediately)</span><br>
 WindUI:ClearCustomProperty("Accent")<br>
 <span class="comment">-- Accent color reverts to theme default immediately</span><br>
+<br>
+<span class="comment">-- Clear all overrides (UI updates immediately)</span><br>
 WindUI:ClearCustomOverrides()<br>
 <span class="comment">-- All custom overrides cleared, UI reverts to theme defaults immediately</span>
                 </code>
