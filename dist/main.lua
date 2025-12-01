@@ -2263,7 +2263,7 @@ if e then
 local g=e:FindFirstChildOfClass"ImageLabel"
 if g then
 
-g.Image="rbxthumb://w=150&h=150&id=5013032530"
+g.Image="rbxthumb://w=150&h=150&id=124135407373085"
 g.ImageRectSize=Vector2.new(0,0)
 g.ImageRectOffset=Vector2.new(0,0)
 g.ImageTransparency=0
@@ -2273,7 +2273,7 @@ ImageColor3="Icon"
 else
 
 g=ac("ImageLabel",{
-Image="rbxthumb://w=150&h=150&id=5013032530",
+Image="rbxthumb://w=150&h=150&id=124135407373085",
 Size=UDim2.new(0,21,0,21),
 BackgroundTransparency=1,
 ThemeTag={
