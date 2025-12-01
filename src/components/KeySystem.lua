@@ -249,6 +249,12 @@ function KeySystem.new(Config, Filename, func)
                         iconFrame.ImageRectOffset = Vector2.new(0, 0)
                         iconFrame.ImageTransparency = 0
                         iconFrame.Visible = true
+                        iconFrame.ZIndex = frame.ZIndex + 1 -- Ensure icon is above frame
+                        -- Ensure parent frame is visible
+                        if frame.Parent then
+                            frame.Parent.Visible = true
+                        end
+                        frame.Visible = true
                     else
                         -- Get Icon color from theme
                         local iconColor = Creator.GetThemeProperty("Icon", Creator.Theme)
@@ -264,10 +270,25 @@ function KeySystem.new(Config, Filename, func)
                             ImageTransparency = 0,
                             Visible = true,
                             ImageColor3 = imageColor3,
-                            LayoutOrder = -1
+                            LayoutOrder = -1,
+                            ZIndex = frame.ZIndex + 1
                         })
                         iconFrame.Parent = frame
+                        -- Ensure parent frame is visible
+                        if frame.Parent then
+                            frame.Parent.Visible = true
+                        end
+                        frame.Visible = true
                     end
+                    -- Keep checking and ensuring visibility
+                    task.spawn(function()
+                        while iconFrame and iconFrame.Parent do
+                            if not iconFrame.Visible then
+                                iconFrame.Visible = true
+                            end
+                            task.wait(0.1)
+                        end
+                    end)
                 end
             end)
         end
