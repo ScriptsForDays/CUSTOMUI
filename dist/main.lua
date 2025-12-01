@@ -3888,11 +3888,14 @@ ac.Folder=ab.Folder
 ac.Path=tostring(ac.Folder).."/config/"
 
 
+
 if not isfolder(ac.Folder.."/config/")then
 if not isfolder(ac.Folder)then
 makefolder(ac.Folder)
 end
+if not isfolder(ac.Folder.."/config/")then
 makefolder(ac.Folder.."/config/")
+end
 end
 
 local af=ac:AllConfigs()
@@ -12499,10 +12502,15 @@ function ac.CreateWindow(as,at)
 local au=a.load'X'
 
 
+
 if at.Folder then
+if not isfolder(at.Folder)then
 makefolder(at.Folder)
+end
 else
+if not isfolder(at.Title)then
 makefolder(at.Title)
+end
 end
 
 at.WindUI=ac
