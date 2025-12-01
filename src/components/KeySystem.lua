@@ -216,7 +216,7 @@ function KeySystem.new(Config, Filename, func)
     end
     
     if discordEnabled and discordURL then
-        DiscordButton = CreateButton("Discord", "", function()
+        DiscordButton = CreateButton("Discord", "discord", function()
             if setclipboard then
                 setclipboard(discordURL)
                 Config.WindUI:Notify({
@@ -228,7 +228,7 @@ function KeySystem.new(Config, Filename, func)
             end
         end, "Tertiary", ButtonsContainer.Frame)
         
-        -- Replace the icon with the Discord icon (grey)
+        -- Replace the icon with the Discord icon from Roblox asset (grey)
         local iconFrame = DiscordButton.Frame:FindFirstChildOfClass("ImageLabel")
         if iconFrame then
             iconFrame.Image = "rbxassetid://11529076323"
@@ -238,6 +238,18 @@ function KeySystem.new(Config, Filename, func)
             iconFrame.ThemeTag = {
                 ImageColor3 = "Icon"
             }
+        else
+            -- Create icon if it doesn't exist
+            iconFrame = New("ImageLabel", {
+                Image = "rbxassetid://11529076323",
+                Size = UDim2.new(0,24-3,0,24-3),
+                BackgroundTransparency = 1,
+                ThemeTag = {
+                    ImageColor3 = "Icon"
+                }
+            })
+            iconFrame.Parent = DiscordButton.Frame
+            iconFrame.LayoutOrder = -1
         end
     end
     
