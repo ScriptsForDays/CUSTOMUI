@@ -2509,11 +2509,16 @@ ak:Close()()
 
 
 
-local g=ag.KeySystem.KeyFolder or ag.Title or"WindUIKeys"
+local g=ag.KeySystem.KeyFolder
 
 
+if g then
 if not isfolder(g)then
 makefolder(g)
+end
+else
+
+g="WindUIKeys"
 end
 
 
@@ -12536,11 +12541,16 @@ end
 
 
 
-local az=at.KeySystem.KeyFolder or at.Title or"WindUIKeys"
+local az=at.KeySystem.KeyFolder
 
 
+if az then
 if not isfolder(az)then
 makefolder(az)
+end
+else
+
+az="WindUIKeys"
 end
 
 local aA=az.."/"..ay..".key"
