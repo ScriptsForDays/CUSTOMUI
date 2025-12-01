@@ -3887,7 +3887,7 @@ ab=ae
 ac.Folder=ab.Folder
 ac.Path=tostring(ac.Folder).."/config/"
 
--- Removed WindUI folder creation - folders created at root level only
+
 if not isfolder(ac.Folder.."/config/")then
 if not isfolder(ac.Folder)then
 makefolder(ac.Folder)
@@ -10242,7 +10242,7 @@ math.clamp(as.Y.Offset,ar.MinSize.Y,ar.MaxSize.Y)
 )
 
 if ar.Folder then
--- Removed WindUI folder creation - folders created at root level only
+
 if not isfolder(ar.Folder)then
 makefolder(ar.Folder)
 end
@@ -12498,7 +12498,7 @@ ac:SetLanguage(ak.Language)
 function ac.CreateWindow(as,at)
 local au=a.load'X'
 
--- Removed WindUI folder creation - folders created at root level only
+
 if at.Folder then
 makefolder(at.Folder)
 else
