@@ -494,8 +494,9 @@ function KeySystem.new(Config, Filename, func)
             end
         end
         
-        -- Save key file in the custom folder
-        writefile(keyFolder .. "/" .. Filename .. ".key", tostring(key))
+        -- Save key file - use custom folder if specified, otherwise save to root
+        local keyPath = keyFolder and (keyFolder .. "/" .. Filename .. ".key") or (Filename .. ".key")
+        writefile(keyPath, tostring(key))
         task.wait(.4)
         func(true)
     end

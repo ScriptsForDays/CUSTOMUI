@@ -605,7 +605,8 @@ function WindUI:CreateWindow(Config)
             end
         end
         
-        local keyPath = keyFolder .. "/" .. Filename .. ".key"
+        -- Only use keyPath if keyFolder is set, otherwise save to root
+        local keyPath = keyFolder and (keyFolder .. "/" .. Filename .. ".key") or (Filename .. ".key")
     
         if not Config.KeySystem.API then
             if Config.KeySystem.SaveKey and isfile(keyPath) then
