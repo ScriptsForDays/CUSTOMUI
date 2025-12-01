@@ -215,58 +215,325 @@ function WindUI:Popup(PopupConfig)
     return require("./components/popup/Init").new(PopupConfig)
 end
 
--- Custom Accent Customization Methods
+-- Custom Theme Customization Methods
 -- These methods allow you to override specific theme properties without creating a full theme
 -- Changes are applied immediately to all UI elements
 
+-- Basic Theme Properties
 function WindUI:SetCustomAccent(color)
-    Creator.CustomOverrides["Accent"] = color
-    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["Accent"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
 end
 
 function WindUI:SetCustomBackground(color)
-    Creator.CustomOverrides["Background"] = color
-    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["Background"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
 end
 
 function WindUI:SetCustomText(color)
-    Creator.CustomOverrides["Text"] = color
-    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["Text"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
 end
 
 function WindUI:SetCustomButton(color)
-    Creator.CustomOverrides["Button"] = color
-    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["Button"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
 end
 
 function WindUI:SetCustomIcon(color)
-    Creator.CustomOverrides["Icon"] = color
-    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["Icon"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
 end
 
 function WindUI:SetCustomDialog(color)
-    Creator.CustomOverrides["Dialog"] = color
-    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["Dialog"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
 end
 
 function WindUI:SetCustomOutline(color)
-    Creator.CustomOverrides["Outline"] = color
-    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["Outline"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
 end
 
+function WindUI:SetCustomHover(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["Hover"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomPlaceholder(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["Placeholder"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+-- Window Topbar Properties
+function WindUI:SetCustomWindowTopbarTitle(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["WindowTopbarTitle"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomWindowTopbarAuthor(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["WindowTopbarAuthor"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomWindowTopbarIcon(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["WindowTopbarIcon"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomWindowTopbarButtonIcon(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["WindowTopbarButtonIcon"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomWindowBackground(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["WindowBackground"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+-- Tab Properties
+function WindUI:SetCustomTabBackground(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["TabBackground"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomTabTitle(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["TabTitle"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomTabIcon(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["TabIcon"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+-- Element Properties
+function WindUI:SetCustomElementBackground(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["ElementBackground"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomElementTitle(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["ElementTitle"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomElementDesc(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["ElementDesc"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomElementIcon(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["ElementIcon"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+-- Popup Properties
+function WindUI:SetCustomPopupBackground(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["PopupBackground"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomPopupTitle(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["PopupTitle"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomPopupContent(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["PopupContent"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomPopupIcon(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["PopupIcon"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+-- Dialog Properties
+function WindUI:SetCustomDialogBackground(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["DialogBackground"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomDialogTitle(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["DialogTitle"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomDialogContent(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["DialogContent"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomDialogIcon(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["DialogIcon"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+-- Toggle & Checkbox Properties
+function WindUI:SetCustomToggle(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["Toggle"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomCheckbox(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["Checkbox"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+function WindUI:SetCustomCheckboxIcon(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["CheckboxIcon"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
+-- Generic Property Setter (for any property not covered above)
 function WindUI:SetCustomProperty(propertyName, value)
-    Creator.CustomOverrides[propertyName] = value
-    Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+    if typeof(value) == "Color3" or (typeof(value) == "table" and value.Color and value.Transparency) or typeof(value) == "number" then
+        Creator.CustomOverrides[propertyName] = value
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
 end
 
 function WindUI:ClearCustomProperty(propertyName)
     Creator.CustomOverrides[propertyName] = nil
     Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+    return true
 end
 
 function WindUI:ClearCustomOverrides()
     Creator.CustomOverrides = {}
     Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+    return true
 end
 
 function WindUI:GetCustomOverrides()

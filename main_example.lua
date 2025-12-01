@@ -103,12 +103,17 @@ do
     -- WindUI:SetTheme("Stylish")
 end
 
--- */  Custom Accent Customization  /* --
+-- */  Custom Theme Customization  /* --
 do
     --[[
-        Custom accent customization allows you to override specific theme properties
-        without creating a full custom theme. These overrides persist when switching themes.
-    --]]
+        Custom theme customization allows you to override specific theme properties
+        without creating a full theme. Changes are applied immediately to all UI elements.
+        All methods return true on success, false on failure.
+    ]]
+    
+    -- ============================================
+    -- Basic Theme Properties
+    -- ============================================
     
     -- Example: Set custom accent color
     -- WindUI:SetCustomAccent(Color3.fromHex("#30ff6a"))
@@ -144,10 +149,113 @@ do
     -- Example: Set custom dialog background
     -- WindUI:SetCustomDialog(Color3.fromHex("#161616"))
     
-    -- Example: Set custom outline color
+    -- Example: Set custom outline color (used for borders, outlines, etc.)
     -- WindUI:SetCustomOutline(Color3.fromHex("#FFFFFF"))
     
-    -- Example: Set any custom theme property (generic method)
+    -- Example: Set custom hover color (used for hover states)
+    -- WindUI:SetCustomHover(Color3.fromHex("#3a3a3a"))
+    
+    -- Example: Set custom placeholder color (used for input placeholders)
+    -- WindUI:SetCustomPlaceholder(Color3.fromHex("#7a7a7a"))
+    
+    -- ============================================
+    -- Window Topbar Properties
+    -- ============================================
+    
+    -- Example: Set custom window topbar title color
+    -- WindUI:SetCustomWindowTopbarTitle(Color3.fromHex("#ffffff"))
+    
+    -- Example: Set custom window topbar author color
+    -- WindUI:SetCustomWindowTopbarAuthor(Color3.fromHex("#a1a1aa"))
+    
+    -- Example: Set custom window topbar icon color
+    -- WindUI:SetCustomWindowTopbarIcon(Color3.fromHex("#30ff6a"))
+    
+    -- Example: Set custom window topbar button icon color
+    -- WindUI:SetCustomWindowTopbarButtonIcon(Color3.fromHex("#a1a1aa"))
+    
+    -- Example: Set custom window background color
+    -- WindUI:SetCustomWindowBackground(Color3.fromHex("#0f172a"))
+    
+    -- ============================================
+    -- Tab Properties
+    -- ============================================
+    
+    -- Example: Set custom tab background color
+    -- WindUI:SetCustomTabBackground(Color3.fromHex("#1e293b"))
+    
+    -- Example: Set custom tab title color
+    -- WindUI:SetCustomTabTitle(Color3.fromHex("#ffffff"))
+    
+    -- Example: Set custom tab icon color
+    -- WindUI:SetCustomTabIcon(Color3.fromHex("#60a5fa"))
+    
+    -- ============================================
+    -- Element Properties
+    -- ============================================
+    
+    -- Example: Set custom element background color
+    -- WindUI:SetCustomElementBackground(Color3.fromHex("#1e293b"))
+    
+    -- Example: Set custom element title color
+    -- WindUI:SetCustomElementTitle(Color3.fromHex("#ffffff"))
+    
+    -- Example: Set custom element description color
+    -- WindUI:SetCustomElementDesc(Color3.fromHex("#cbd5e1"))
+    
+    -- Example: Set custom element icon color
+    -- WindUI:SetCustomElementIcon(Color3.fromHex("#60a5fa"))
+    
+    -- ============================================
+    -- Popup Properties
+    -- ============================================
+    
+    -- Example: Set custom popup background color
+    -- WindUI:SetCustomPopupBackground(Color3.fromHex("#1a1a1a"))
+    
+    -- Example: Set custom popup title color
+    -- WindUI:SetCustomPopupTitle(Color3.fromHex("#ffffff"))
+    
+    -- Example: Set custom popup content color
+    -- WindUI:SetCustomPopupContent(Color3.fromHex("#a1a1aa"))
+    
+    -- Example: Set custom popup icon color
+    -- WindUI:SetCustomPopupIcon(Color3.fromHex("#30ff6a"))
+    
+    -- ============================================
+    -- Dialog Properties
+    -- ============================================
+    
+    -- Example: Set custom dialog background color
+    -- WindUI:SetCustomDialogBackground(Color3.fromHex("#161616"))
+    
+    -- Example: Set custom dialog title color
+    -- WindUI:SetCustomDialogTitle(Color3.fromHex("#ffffff"))
+    
+    -- Example: Set custom dialog content color
+    -- WindUI:SetCustomDialogContent(Color3.fromHex("#a1a1aa"))
+    
+    -- Example: Set custom dialog icon color
+    -- WindUI:SetCustomDialogIcon(Color3.fromHex("#30ff6a"))
+    
+    -- ============================================
+    -- Toggle & Checkbox Properties
+    -- ============================================
+    
+    -- Example: Set custom toggle color
+    -- WindUI:SetCustomToggle(Color3.fromHex("#33C759"))
+    
+    -- Example: Set custom checkbox color
+    -- WindUI:SetCustomCheckbox(Color3.fromHex("#0091ff"))
+    
+    -- Example: Set custom checkbox icon color
+    -- WindUI:SetCustomCheckboxIcon(Color3.fromHex("#ffffff"))
+    
+    -- ============================================
+    -- Generic Property Setter & Utilities
+    -- ============================================
+    
+    -- Example: Set any custom property (for properties not covered above)
     -- WindUI:SetCustomProperty("WindowBackground", Color3.fromHex("#0f172a"))
     -- WindUI:SetCustomProperty("TabBackground", Color3.fromHex("#1e293b"))
     -- WindUI:SetCustomProperty("ElementBackground", Color3.fromHex("#1e293b"))
