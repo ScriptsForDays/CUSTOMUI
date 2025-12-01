@@ -216,8 +216,8 @@ function KeySystem.new(Config, Filename, func)
     end
     
     if discordEnabled and discordURL then
-        -- Create button with a placeholder icon so the icon frame structure exists
-        DiscordButton = CreateButton("Discord", "user", function()
+        -- Create button without icon first, then add Discord icon directly
+        DiscordButton = CreateButton("Discord", "", function()
             if setclipboard then
                 setclipboard(discordURL)
                 Config.WindUI:Notify({
@@ -229,64 +229,36 @@ function KeySystem.new(Config, Filename, func)
             end
         end, "Tertiary", ButtonsContainer.Frame)
         
-        -- Replace placeholder icon with Discord icon
+        -- Add Discord icon directly to the button
         if DiscordButton then
             task.spawn(function()
-                task.wait(0.2) -- Wait for button structure to be fully created
+                task.wait(0.1) -- Wait for button structure to be fully created
                 local frame = DiscordButton:FindFirstChild("Frame")
                 if frame then
-                    -- Find the icon that was created by CreateButton
-                    local iconFrame = frame:FindFirstChildOfClass("ImageLabel")
-                    if iconFrame then
-                        -- Get Icon color from theme
-                        local iconColor = Creator.GetThemeProperty("Icon", Creator.Theme)
-                        if typeof(iconColor) == "Color3" then
-                            iconFrame.ImageColor3 = iconColor
-                        end
-                        -- Replace with Discord icon using direct asset ID
-                        iconFrame.Image = "rbxassetid://124135407373085"
-                        iconFrame.ImageRectSize = Vector2.new(0, 0)
-                        iconFrame.ImageRectOffset = Vector2.new(0, 0)
-                        iconFrame.ImageTransparency = 0
-                        iconFrame.Visible = true
-                        iconFrame.ZIndex = frame.ZIndex + 1 -- Ensure icon is above frame
-                        -- Ensure parent frame is visible
-                        if frame.Parent then
-                            frame.Parent.Visible = true
-                        end
-                        frame.Visible = true
-                    else
-                        -- Get Icon color from theme
-                        local iconColor = Creator.GetThemeProperty("Icon", Creator.Theme)
-                        local imageColor3 = nil
-                        if typeof(iconColor) == "Color3" then
-                            imageColor3 = iconColor
-                        end
-                        -- If no icon found, create one
-                        iconFrame = New("ImageLabel", {
-                            Image = "rbxassetid://124135407373085",
-                            Size = UDim2.new(0,24-3,0,24-3),
-                            BackgroundTransparency = 1,
-                            ImageTransparency = 0,
-                            Visible = true,
-                            ImageColor3 = imageColor3,
-                            LayoutOrder = -1,
-                            ZIndex = frame.ZIndex + 1
-                        })
-                        iconFrame.Parent = frame
-                        -- Ensure parent frame is visible
-                        if frame.Parent then
-                            frame.Parent.Visible = true
-                        end
-                        frame.Visible = true
+                    -- Get Icon color from theme
+                    local iconColor = Creator.GetThemeProperty("Icon", Creator.Theme)
+                    local imageColor3 = nil
+                    if typeof(iconColor) == "Color3" then
+                        imageColor3 = iconColor
                     end
-                    -- Keep checking and ensuring visibility
-                    task.spawn(function()
-                        while iconFrame and iconFrame.Parent do
-                            if not iconFrame.Visible then
-                                iconFrame.Visible = true
-                            end
-                            task.wait(0.1)
+                    
+                    -- Create Discord icon directly (no placeholder to replace)
+                    local iconFrame = New("ImageLabel", {
+                        Image = "rbxassetid://124135407373085",
+                        Size = UDim2.new(0,24-3,0,24-3),
+                        BackgroundTransparency = 1,
+                        ImageTransparency = 0,
+                        Visible = true,
+                        ImageColor3 = imageColor3,
+                        LayoutOrder = -1
+                    })
+                    iconFrame.Parent = frame
+                    
+                    -- Ensure visibility is maintained
+                    local connection
+                    connection = iconFrame:GetPropertyChangedSignal("Visible"):Connect(function()
+                        if not iconFrame.Visible then
+                            iconFrame.Visible = true
                         end
                     end)
                 end
