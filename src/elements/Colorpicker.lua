@@ -743,7 +743,7 @@ function Element:New(Config)
                     elseif typeof(currentColor) == "Color3" then
                         Colorpicker.Default = currentColor
                     end
-                    Colorpicker:SetHSVFromRGB(Colorpicker.Default)
+                    -- Update the colorpicker display with the new default color
                     Colorpicker:Update(Colorpicker.Default, Colorpicker.Transparency)
                 end
             end
