@@ -200,11 +200,64 @@ function KeySystem.new(Config, Filename, func)
         KeyDialog:Close()()
     end, "Tertiary", ButtonsContainer.Frame)
     
+    -- Discord button (if enabled)
+    local DiscordButton
+    local discordEnabled = false
+    local discordURL = nil
+    
+    if Config.KeySystem.Discord then
+        if type(Config.KeySystem.Discord) == "table" then
+            discordEnabled = Config.KeySystem.Discord.Enabled ~= false
+            discordURL = Config.KeySystem.Discord.URL
+        elseif type(Config.KeySystem.Discord) == "string" then
+            discordEnabled = true
+            discordURL = Config.KeySystem.Discord
+        end
+    end
+    
+    if discordEnabled and discordURL then
+        DiscordButton = CreateButton("Discord", "", function()
+            if setclipboard then
+                setclipboard(discordURL)
+                Config.WindUI:Notify({
+                    Title = "Discord",
+                    Content = "Discord link copied to clipboard!",
+                    Icon = "check",
+                    Duration = 2
+                })
+            end
+        end, "Tertiary", ButtonsContainer.Frame)
+        
+        -- Replace the icon with the Discord icon (grey)
+        local iconFrame = DiscordButton.Frame:FindFirstChildOfClass("ImageLabel")
+        if iconFrame then
+            iconFrame.Image = "rbxassetid://11529076323"
+            iconFrame.ImageRectSize = Vector2.new(0, 0)
+            iconFrame.ImageRectOffset = Vector2.new(0, 0)
+            iconFrame.ImageTransparency = 0
+            iconFrame.ThemeTag = {
+                ImageColor3 = "Icon"
+            }
+        end
+    end
+    
     if ThumbnailFrame then
         ExitButton.Parent = ThumbnailFrame
         ExitButton.Size = UDim2.new(0,0,0,42)
         ExitButton.Position = UDim2.new(0,10,1,-10)
         ExitButton.AnchorPoint = Vector2.new(0,1)
+        
+        if DiscordButton then
+            DiscordButton.Parent = ThumbnailFrame
+            DiscordButton.Size = UDim2.new(0,0,0,42)
+            DiscordButton.AnchorPoint = Vector2.new(0,1)
+            -- Wait for Exit button to size, then position Discord button next to it
+            task.spawn(function()
+                task.wait(0.1) -- Wait for Exit button to render
+                local exitButtonWidth = ExitButton.AbsoluteSize.X
+                DiscordButton.Position = UDim2.new(0,10 + exitButtonWidth + 10,1,-10)
+            end)
+        end
     end
     
     if Config.KeySystem.URL then

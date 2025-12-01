@@ -271,6 +271,43 @@ local Window = WindUI:CreateWindow({<br>
                 </code>
             </div>
 
+            <h3>Key System with Discord Button</h3>
+            <p>Add a Discord button next to the Exit button that copies your Discord link to clipboard:</p>
+            
+            <div class="code-block">
+                <code>
+<span class="comment">-- Simple: Just provide the Discord URL string</span><br>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Author = "by YourName",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Folder = "myscript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;KeySystem = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key = "YOUR-KEY-HERE",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Discord = "https://discord.gg/yourserver", <span class="comment">-- Discord button enabled with this URL</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SaveKey = true<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+})<br>
+<br>
+<span class="comment">-- Advanced: Control with table</span><br>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Author = "by YourName",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Folder = "myscript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;KeySystem = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key = "YOUR-KEY-HERE",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Discord = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enabled = true, <span class="comment">-- Enable/disable Discord button</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URL = "https://discord.gg/yourserver" <span class="comment">-- Discord invite link</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SaveKey = true<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+})
+                </code>
+            </div>
+            <p><strong>Note:</strong> The Discord button appears next to the Exit button with a Discord icon on the left. When clicked, it copies the Discord URL to clipboard and shows a notification.</p>
+
             <h3>Key System with Thumbnail</h3>
             <p>Add a custom thumbnail image to the key system dialog:</p>
             
@@ -366,6 +403,11 @@ local Window = WindUI:CreateWindow({<br>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>API</code></td>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">table</td>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Array of API service configurations. Supported types: "platoboost", "pandadevelopment", "luarmor".</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>Discord</code></td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">string/table</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Discord button configuration. Can be a string (Discord URL) or table with <code>Enabled</code> (boolean) and <code>URL</code> (string). When enabled, adds a Discord button next to the Exit button that copies the Discord link to clipboard.</td>
                 </tr>
             </table>
 
