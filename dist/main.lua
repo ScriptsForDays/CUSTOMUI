@@ -2256,32 +2256,43 @@ end,"Tertiary",aw.Frame)
 
 if az then
 task.spawn(function()
-task.wait(0.1)
+task.wait(0.2)
 local e=az:FindFirstChild"Frame"
 if e then
 
 local g=e:FindFirstChildOfClass"ImageLabel"
 if g then
 
-g.Image="rbxthumb://w=150&h=150&id=124135407373085"
+g.Image="rbxassetid://124135407373085"
 g.ImageRectSize=Vector2.new(0,0)
 g.ImageRectOffset=Vector2.new(0,0)
 g.ImageTransparency=0
+g.Visible=true
 g.ThemeTag={
 ImageColor3="Icon"
 }
+
+if ab.UpdateTheme then
+ab.UpdateTheme(g,false)
+end
 else
 
 g=ac("ImageLabel",{
-Image="rbxthumb://w=150&h=150&id=124135407373085",
+Image="rbxassetid://124135407373085",
 Size=UDim2.new(0,21,0,21),
 BackgroundTransparency=1,
+ImageTransparency=0,
+Visible=true,
 ThemeTag={
 ImageColor3="Icon"
 },
 LayoutOrder=-1
 })
 g.Parent=e
+
+if ab.UpdateTheme then
+ab.UpdateTheme(g,false)
+end
 end
 end
 end)
