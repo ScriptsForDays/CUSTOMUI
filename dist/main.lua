@@ -6822,6 +6822,15 @@ local ao=am.DataSource or am.Values
 
 if not an or type(an)=="function"or type(an)=="string"then
 an=fetchDropdownData(ao)
+
+if not an or#an==0 then
+an={{Title="--"}}
+end
+end
+
+
+if not an or#an==0 then
+an={{Title="--"}}
 end
 
 local ap={
@@ -6938,8 +6947,14 @@ end
 
 
 if type(as)~="table"then
-warn"Dropdown:SetValues - newValues must be a table"
+warn("Dropdown:SetValues - newValues must be a table, got: "..tostring(type(as)))
 return false
+end
+
+
+if#as==0 then
+warn"Dropdown:SetValues - newValues is empty, using placeholder"
+as={{Title="--"}}
 end
 
 
@@ -6981,6 +6996,10 @@ ar.Value={}
 else
 ar.Value=nil
 end
+
+if ar.Display then
+ar:Display()
+end
 end
 end
 
@@ -7003,9 +7022,26 @@ end
 
 function ap.RefreshData(ar)
 if ar.DataSource then
-return ar:SetValues(nil)
-end
+local as=fetchDropdownData(ar.DataSource)
+
+if not as or#as==0 then
+warn"Dropdown:RefreshData - DataSource returned empty table, keeping current values"
 return false
+end
+return ar:SetValues(as)
+elseif type(ar.Values)=="function"then
+
+local as,at=pcall(ar.Values)
+if as and type(at)=="table"and#at>0 then
+return ar:SetValues(at)
+else
+warn"Dropdown:RefreshData - Values function returned invalid data"
+return false
+end
+else
+warn"Dropdown:RefreshData - No DataSource or function-based Values available"
+return false
+end
 end
 
 return ap.__type,ap
