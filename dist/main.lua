@@ -275,7 +275,7 @@ function m.GetThemeProperty(p,r)
 
 if m.CustomOverrides[p]~=nil then
 local u=m.CustomOverrides[p]
-if typeof(u)=="Color3"or(typeof(u)=="table"and u.Color)then
+if typeof(u)=="Color3"or(typeof(u)=="table"and u.Color)or typeof(u)=="number"then
 return u
 end
 end
@@ -311,6 +311,13 @@ end
 local u=getValue(p,r)
 if u~=nil then
 if typeof(u)=="string"and string.sub(u,1,1)~="#"then
+
+if m.CustomOverrides[u]~=nil then
+local v=m.CustomOverrides[u]
+if typeof(v)=="Color3"or(typeof(v)=="table"and v.Color)or typeof(v)=="number"then
+return v
+end
+end
 local v=m.GetThemeProperty(u,r)
 if v~=nil then
 return v
@@ -323,6 +330,13 @@ end
 local v=m.ThemeFallbacks[p]
 if v~=nil then
 if typeof(v)=="string"and string.sub(v,1,1)~="#"then
+
+if m.CustomOverrides[v]~=nil then
+local x=m.CustomOverrides[v]
+if typeof(x)=="Color3"or(typeof(x)=="table"and x.Color)or typeof(x)=="number"then
+return x
+end
+end
 return m.GetThemeProperty(v,r)
 else
 return getValue(p,{[p]=v})
@@ -332,6 +346,13 @@ end
 u=getValue(p,m.Themes.Dark)
 if u~=nil then
 if typeof(u)=="string"and string.sub(u,1,1)~="#"then
+
+if m.CustomOverrides[u]~=nil then
+local x=m.CustomOverrides[u]
+if typeof(x)=="Color3"or(typeof(x)=="table"and x.Color)or typeof(x)=="number"then
+return x
+end
+end
 local x=m.GetThemeProperty(u,m.Themes.Dark)
 if x~=nil then
 return x
@@ -343,6 +364,13 @@ end
 
 if v~=nil then
 if typeof(v)=="string"and string.sub(v,1,1)~="#"then
+
+if m.CustomOverrides[v]~=nil then
+local x=m.CustomOverrides[v]
+if typeof(x)=="Color3"or(typeof(x)=="table"and x.Color)or typeof(x)=="number"then
+return x
+end
+end
 return m.GetThemeProperty(v,m.Themes.Dark)
 else
 return getValue(p,{[p]=v})
@@ -12015,54 +12043,321 @@ end
 
 
 
+
 function ac.SetCustomAccent(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
 ak.CustomOverrides.Accent=at
 ak.UpdateTheme(nil,false)
+return true
+end
+return false
 end
 
 function ac.SetCustomBackground(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
 ak.CustomOverrides.Background=at
 ak.UpdateTheme(nil,false)
+return true
+end
+return false
 end
 
 function ac.SetCustomText(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
 ak.CustomOverrides.Text=at
 ak.UpdateTheme(nil,false)
+return true
+end
+return false
 end
 
 function ac.SetCustomButton(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
 ak.CustomOverrides.Button=at
 ak.UpdateTheme(nil,false)
+return true
+end
+return false
 end
 
 function ac.SetCustomIcon(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
 ak.CustomOverrides.Icon=at
 ak.UpdateTheme(nil,false)
+return true
+end
+return false
 end
 
 function ac.SetCustomDialog(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
 ak.CustomOverrides.Dialog=at
 ak.UpdateTheme(nil,false)
+return true
+end
+return false
 end
 
 function ac.SetCustomOutline(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
 ak.CustomOverrides.Outline=at
 ak.UpdateTheme(nil,false)
+return true
+end
+return false
 end
 
+function ac.SetCustomHover(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.Hover=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomPlaceholder(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.Placeholder=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+
+function ac.SetCustomWindowTopbarTitle(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.WindowTopbarTitle=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomWindowTopbarAuthor(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.WindowTopbarAuthor=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomWindowTopbarIcon(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.WindowTopbarIcon=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomWindowTopbarButtonIcon(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.WindowTopbarButtonIcon=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomWindowBackground(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.WindowBackground=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+
+function ac.SetCustomTabBackground(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.TabBackground=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomTabTitle(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.TabTitle=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomTabIcon(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.TabIcon=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+
+function ac.SetCustomElementBackground(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.ElementBackground=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomElementTitle(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.ElementTitle=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomElementDesc(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.ElementDesc=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomElementIcon(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.ElementIcon=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+
+function ac.SetCustomPopupBackground(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.PopupBackground=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomPopupTitle(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.PopupTitle=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomPopupContent(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.PopupContent=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomPopupIcon(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.PopupIcon=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+
+function ac.SetCustomDialogBackground(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.DialogBackground=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomDialogTitle(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.DialogTitle=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomDialogContent(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.DialogContent=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomDialogIcon(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.DialogIcon=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+
+function ac.SetCustomToggle(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.Toggle=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomCheckbox(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.Checkbox=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomCheckboxIcon(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.CheckboxIcon=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+
 function ac.SetCustomProperty(as,at,au)
+if typeof(au)=="Color3"or(typeof(au)=="table"and au.Color and au.Transparency)or typeof(au)=="number"then
 ak.CustomOverrides[at]=au
 ak.UpdateTheme(nil,false)
+return true
+end
+return false
 end
 
 function ac.ClearCustomProperty(as,at)
 ak.CustomOverrides[at]=nil
 ak.UpdateTheme(nil,false)
+return true
 end
 
 function ac.ClearCustomOverrides(as)
 ak.CustomOverrides={}
 ak.UpdateTheme(nil,false)
+return true
 end
 
 function ac.GetCustomOverrides(as)
