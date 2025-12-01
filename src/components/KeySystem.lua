@@ -483,9 +483,9 @@ function KeySystem.new(Config, Filename, func)
     local function handleSuccess(key)
         KeyDialog:Close()()
         
-        -- Get the key folder name (customizable, only create if KeyFolder is explicitly set)
-        -- Don't use Config.Folder or Config.Title to avoid creating unwanted folders
-        local keyFolder = Config.KeySystem.KeyFolder or "WindUIKeys"
+        -- Get the key folder name (only from KeyFolder or Folder parameter, not from Title)
+        -- Don't use Config.Title as fallback - only use folder parameters
+        local keyFolder = Config.KeySystem.KeyFolder or Config.Folder or "WindUIKeys"
         
         -- Create folder at root level (not inside WindUI)
         if not isfolder(keyFolder) then
@@ -500,7 +500,7 @@ function KeySystem.new(Config, Filename, func)
     
     local SubmitButton = CreateButton("Submit", "arrow-right", function()
         local key = tostring(EnteredKey or "empty")
-        local folder = Config.Folder or Config.Title
+        local folder = Config.Folder
     
         if not Config.KeySystem.API then
             local isKey = type(Config.KeySystem.Key) == "table"

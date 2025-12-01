@@ -594,9 +594,9 @@ function WindUI:CreateWindow(Config)
             KeySystem.new(Config, Filename, function(c) CanLoadWindow = c end)
         end
     
-        -- Get the key folder name (customizable, only create if KeyFolder is explicitly set)
-        -- Don't use Config.Folder or Config.Title to avoid creating unwanted folders
-        local keyFolder = Config.KeySystem.KeyFolder or "WindUIKeys"
+        -- Get the key folder name (only from KeyFolder or Folder parameter, not from Title)
+        -- Don't use Config.Title as fallback - only use folder parameters
+        local keyFolder = Config.KeySystem.KeyFolder or Config.Folder or "WindUIKeys"
         
         -- Create folder at root level (not inside WindUI)
         if not isfolder(keyFolder) then

@@ -284,12 +284,12 @@ local Window = WindUI:CreateWindow({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;KeySystem = {<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key = "YOUR-KEY-HERE",<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SaveKey = true,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KeyFolder = "MyKeyFolder" <span class="comment">-- Custom folder name (optional, defaults to Config.Folder or Config.Title)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KeyFolder = "MyKeyFolder" <span class="comment">-- Custom folder name (optional, defaults to Config.Folder)</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;}<br>
 })
                 </code>
             </div>
-            <p><strong>Note:</strong> If <code>KeyFolder</code> is not specified, it defaults to <code>Config.Folder</code> or <code>Config.Title</code>. The key file is saved as <code>{KeyFolder}/{hwid}.key</code> at the root level.</p>
+            <p><strong>Note:</strong> If <code>KeyFolder</code> is not specified, it defaults to <code>Config.Folder</code> (or "WindUIKeys" if neither is provided). The key file is saved as <code>{KeyFolder}/{hwid}.key</code> at the root level.</p>
 
             <h3>Key System with Discord Button</h3>
             <p>Add a Discord button next to the Exit button that copies your Discord link to clipboard:</p>
@@ -432,7 +432,7 @@ local Window = WindUI:CreateWindow({<br>
                 <tr>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>KeyFolder</code></td>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">string</td>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Custom folder name for saving keys. If not specified, defaults to <code>Config.Folder</code> or <code>Config.Title</code>. The folder is created at the root level (not inside WindUI). The key file is saved as <code>{KeyFolder}/{hwid}.key</code>.</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Custom folder name for saving keys. If not specified, defaults to <code>Config.Folder</code> (or "WindUIKeys" if neither is provided). The folder is created at the root level (not inside WindUI). The key file is saved as <code>{KeyFolder}/{hwid}.key</code>.</td>
                 </tr>
             </table>
 
@@ -441,7 +441,7 @@ local Window = WindUI:CreateWindow({<br>
                 <li>When <code>KeySystem</code> is provided, the window will not load until a valid key is entered</li>
                 <li>If <code>SaveKey</code> is true, the key is saved locally and automatically loaded on next run</li>
                 <li>If <code>KeyFolder</code> is specified, keys are saved in that custom folder at the root level (not inside WindUI)</li>
-                <li>If <code>KeyFolder</code> is not specified, it defaults to <code>Config.Folder</code> or <code>Config.Title</code></li>
+                <li>If <code>KeyFolder</code> is not specified, it defaults to <code>Config.Folder</code> (or "WindUIKeys" if neither is provided)</li>
                 <li>If <code>API</code> is provided, keys are validated through the specified service(s)</li>
                 <li>If <code>URL</code> is provided, users can click to open the link and get their key</li>
                 <li>The key system dialog appears before the main window, blocking access until a valid key is entered</li>
