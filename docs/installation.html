@@ -306,7 +306,7 @@ local Window = WindUI:CreateWindow({<br>
 })
                 </code>
             </div>
-            <p><strong>Note:</strong> The Discord button appears next to the Exit button with a Discord icon on the left. When clicked, it copies the Discord URL to clipboard and shows a notification.</p>
+            <p><strong>Note:</strong> The Discord button appears next to the Exit button with a Discord icon on the left. When clicked, it copies the Discord URL to clipboard and shows a notification. The Discord icon is automatically created with the asset ID <code>rbxassetid://124135407373085</code> and is internally named <code>DiscordIcon</code> to prevent it from being overridden by the settings/icon system.</p>
 
             <h3>Key System with Thumbnail</h3>
             <p>Add a custom thumbnail image to the key system dialog:</p>
@@ -407,7 +407,7 @@ local Window = WindUI:CreateWindow({<br>
                 <tr>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>Discord</code></td>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">string/table</td>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Discord button configuration. Can be a string (Discord URL) or table with <code>Enabled</code> (boolean) and <code>URL</code> (string). When enabled, adds a Discord button next to the Exit button that copies the Discord link to clipboard.</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Discord button configuration. Can be a string (Discord URL) or table with <code>Enabled</code> (boolean) and <code>URL</code> (string). When enabled, adds a Discord button next to the Exit button that copies the Discord link to clipboard. The Discord icon (asset ID: <code>rbxassetid://124135407373085</code>) is automatically created and protected from being overridden by the icon system (internally named <code>DiscordIcon</code>).</td>
                 </tr>
             </table>
 
