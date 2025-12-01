@@ -682,6 +682,16 @@ local dropdown = Tab:Dropdown({<br>
                 <p>Sets the window background color. Accepts Color3 or Gradient. <strong>UI updates immediately.</strong></p>
                 <p><strong>Parameters:</strong> <code>color</code> (Color3 or Gradient table)</p>
             </div>
+            <div class="method">
+                <h4>WindUI:SetCustomWindowShadow(color)</h4>
+                <p>Sets the window shadow color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomBackgroundTransparency(transparency)</h4>
+                <p>Sets the background transparency. Accepts number (0-1, where 0 is opaque, 1 is fully transparent). <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>transparency</code> (number) - Transparency value from 0 to 1</p>
+            </div>
 
             <h4>Tab Properties</h4>
             <div class="method">
@@ -743,6 +753,11 @@ local dropdown = Tab:Dropdown({<br>
                 <p>Sets the popup icon color. Accepts Color3. <strong>UI updates immediately.</strong></p>
                 <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
             </div>
+            <div class="method">
+                <h4>WindUI:SetCustomPopupBackgroundTransparency(transparency)</h4>
+                <p>Sets the popup background transparency. Accepts number (0-1). <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>transparency</code> (number) - Transparency value from 0 to 1</p>
+            </div>
 
             <h4>Dialog Properties</h4>
             <div class="method">
@@ -764,6 +779,11 @@ local dropdown = Tab:Dropdown({<br>
                 <h4>WindUI:SetCustomDialogIcon(color)</h4>
                 <p>Sets the dialog icon color. Accepts Color3. <strong>UI updates immediately.</strong></p>
                 <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
+            </div>
+            <div class="method">
+                <h4>WindUI:SetCustomDialogBackgroundTransparency(transparency)</h4>
+                <p>Sets the dialog background transparency. Accepts number (0-1). <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>transparency</code> (number) - Transparency value from 0 to 1</p>
             </div>
 
             <h4>Toggle & Checkbox Properties</h4>
