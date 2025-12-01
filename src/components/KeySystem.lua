@@ -250,13 +250,23 @@ function KeySystem.new(Config, Filename, func)
                         ImageTransparency = 0,
                         Visible = true,
                         ImageColor3 = imageColor3,
-                        LayoutOrder = -1
+                        LayoutOrder = -1,
+                        Name = "DiscordIcon" -- Give it a unique name to identify it
                     })
                     iconFrame.Parent = frame
                     
+                    -- Protect the icon from being changed by settings/theme system
+                    local imageConnection
+                    imageConnection = iconFrame:GetPropertyChangedSignal("Image"):Connect(function()
+                        -- If something tries to change the image to something other than our Discord icon, restore it
+                        if iconFrame.Image ~= "rbxassetid://124135407373085" then
+                            iconFrame.Image = "rbxassetid://124135407373085"
+                        end
+                    end)
+                    
                     -- Ensure visibility is maintained
-                    local connection
-                    connection = iconFrame:GetPropertyChangedSignal("Visible"):Connect(function()
+                    local visibilityConnection
+                    visibilityConnection = iconFrame:GetPropertyChangedSignal("Visible"):Connect(function()
                         if not iconFrame.Visible then
                             iconFrame.Visible = true
                         end
