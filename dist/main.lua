@@ -6629,6 +6629,75 @@ RecalculateCanvasSize()
 
 function aq.Open(as)
 if ao then
+
+if am._valuesFunction and type(am._valuesFunction)=="function"then
+local at,au=pcall(am._valuesFunction)
+if at and type(au)=="table"and#au>0 then
+
+am.Values=au
+aq:Refresh(au)
+elseif at and type(au)=="table"and#au==0 then
+
+am.Values={{Title="--"}}
+aq:Refresh(am.Values)
+end
+elseif am.DataSource and(type(am.DataSource)=="function"or type(am.DataSource)=="string")then
+
+local at,au=pcall(function()
+local at=am.DataSource
+
+
+if type(at)=="function"then
+local au,av=pcall(at)
+if au and type(av)=="table"then
+return av
+end
+return{}
+end
+
+
+if type(at)=="string"then
+local au={
+game:GetService"ReplicatedStorage",
+game:GetService"ServerStorage",
+game:GetService"StarterPlayer":FindFirstChild"StarterPlayerScripts",
+game:GetService"StarterPlayer":FindFirstChild"StarterCharacterScripts",
+game:GetService"Workspace",
+}
+
+for av,aw in ipairs(au)do
+if aw then
+local ax=aw:FindFirstChild(at,true)
+if ax and ax:IsA"ModuleScript"then
+local ay=require(ax)
+
+if type(ay)=="function"then
+local az,aA=pcall(ay)
+if az and type(aA)=="table"then
+return aA
+end
+
+elseif type(ay)=="table"then
+return ay
+end
+end
+end
+end
+end
+
+return{}
+end)
+
+if at and type(au)=="table"and#au>0 then
+am.Values=au
+aq:Refresh(au)
+elseif at and type(au)=="table"and#au==0 then
+
+am.Values={{Title="--"}}
+aq:Refresh(am.Values)
+end
+end
+
 am.UIElements.Menu.Visible=true
 am.UIElements.MenuCanvas.Visible=true
 am.UIElements.MenuCanvas.Active=true
@@ -6833,13 +6902,22 @@ if not an or#an==0 then
 an={{Title="--"}}
 end
 
-local ap={
+
+local ap
+if type(am.Values)=="function"then
+ap=am.Values
+elseif type(ao)=="function"then
+ap=ao
+end
+
+local aq={
 __type="Dropdown",
 Title=am.Title or"Dropdown",
 Desc=am.Desc or nil,
 Locked=am.Locked or false,
 Values=an,
 DataSource=ao,
+_valuesFunction=ap,
 MenuWidth=am.MenuWidth,
 Value=am.Value,
 AllowNone=am.AllowNone,
@@ -6855,34 +6933,34 @@ Tabs={},
 Width=150,
 }
 
-if ap.Multi and not ap.Value then
-ap.Value={}
+if aq.Multi and not aq.Value then
+aq.Value={}
 end
 
-local aq=true
+local ar=true
 
-ap.DropdownFrame=a.load'z'{
-Title=ap.Title,
-Desc=ap.Desc,
+aq.DropdownFrame=a.load'z'{
+Title=aq.Title,
+Desc=aq.Desc,
 Parent=am.Parent,
-TextOffset=ap.Callback and ap.Width or 20,
-Hover=not ap.Callback and true or false,
+TextOffset=aq.Callback and aq.Width or 20,
+Hover=not aq.Callback and true or false,
 Tab=am.Tab,
 Index=am.Index,
 Window=am.Window,
-ElementTable=ap,
+ElementTable=aq,
 }
 
 
-if ap.Callback then
-ap.UIElements.Dropdown=ag("",nil,ap.DropdownFrame.UIElements.Main,nil,am.Window.NewElements and 12 or 10)
+if aq.Callback then
+aq.UIElements.Dropdown=ag("",nil,aq.DropdownFrame.UIElements.Main,nil,am.Window.NewElements and 12 or 10)
 
-ap.UIElements.Dropdown.Frame.Frame.TextLabel.TextTruncate="AtEnd"
-ap.UIElements.Dropdown.Frame.Frame.TextLabel.Size=UDim2.new(1,ap.UIElements.Dropdown.Frame.Frame.TextLabel.Size.X.Offset-18-12-12,0,0)
+aq.UIElements.Dropdown.Frame.Frame.TextLabel.TextTruncate="AtEnd"
+aq.UIElements.Dropdown.Frame.Frame.TextLabel.Size=UDim2.new(1,aq.UIElements.Dropdown.Frame.Frame.TextLabel.Size.X.Offset-18-12-12,0,0)
 
-ap.UIElements.Dropdown.Size=UDim2.new(0,ap.Width,0,36)
-ap.UIElements.Dropdown.Position=UDim2.new(1,0,am.Window.NewElements and 0 or 0.5,0)
-ap.UIElements.Dropdown.AnchorPoint=Vector2.new(1,am.Window.NewElements and 0 or 0.5)
+aq.UIElements.Dropdown.Size=UDim2.new(0,aq.Width,0,36)
+aq.UIElements.Dropdown.Position=UDim2.new(1,0,am.Window.NewElements and 0 or 0.5,0)
+aq.UIElements.Dropdown.AnchorPoint=Vector2.new(1,am.Window.NewElements and 0 or 0.5)
 
 
 
@@ -6893,15 +6971,15 @@ ap.UIElements.Dropdown.AnchorPoint=Vector2.new(1,am.Window.NewElements and 0 or 
 
 end
 
-ap.DropdownMenu=ai(am,ap,ak,aq,"Dropdown")
+aq.DropdownMenu=ai(am,aq,ak,ar,"Dropdown")
 
 
-ap.Display=ap.DropdownMenu.Display
-ap.Refresh=ap.DropdownMenu.Refresh
-ap.Select=ap.DropdownMenu.Select
-ap.Open=ap.DropdownMenu.Open
-ap.Close=ap.DropdownMenu.Close
-ap.UpdatePosition=ap.DropdownMenu.UpdatePosition
+aq.Display=aq.DropdownMenu.Display
+aq.Refresh=aq.DropdownMenu.Refresh
+aq.Select=aq.DropdownMenu.Select
+aq.Open=aq.DropdownMenu.Open
+aq.Close=aq.DropdownMenu.Close
+aq.UpdatePosition=aq.DropdownMenu.UpdatePosition
 
 ae("ImageLabel",{
 Image=ac.Icon"chevrons-up-down"[1],
@@ -6910,7 +6988,7 @@ ImageRectSize=ac.Icon"chevrons-up-down"[2].ImageRectSize,
 Size=UDim2.new(0,18,0,18),
 Position=UDim2.new(
 1,
-ap.UIElements.Dropdown and-12 or 0,
+aq.UIElements.Dropdown and-12 or 0,
 0.5,
 0
 ),
@@ -6918,101 +6996,101 @@ ThemeTag={
 ImageColor3="Icon"
 },
 AnchorPoint=Vector2.new(1,0.5),
-Parent=ap.UIElements.Dropdown and ap.UIElements.Dropdown.Frame or ap.DropdownFrame.UIElements.Main
+Parent=aq.UIElements.Dropdown and aq.UIElements.Dropdown.Frame or aq.DropdownFrame.UIElements.Main
 })
 
 
 
-function ap.Lock(ar)
-ap.Locked=true
-aq=false
-return ap.DropdownFrame:Lock()
+function aq.Lock(as)
+aq.Locked=true
+ar=false
+return aq.DropdownFrame:Lock()
 end
-function ap.Unlock(ar)
-ap.Locked=false
-aq=true
-return ap.DropdownFrame:Unlock()
-end
-
-if ap.Locked then
-ap:Lock()
+function aq.Unlock(as)
+aq.Locked=false
+ar=true
+return aq.DropdownFrame:Unlock()
 end
 
-
-function ap.SetValues(ar,as)
-
-if not as and ar.DataSource then
-as=fetchDropdownData(ar.DataSource)
+if aq.Locked then
+aq:Lock()
 end
 
 
-if type(as)~="table"then
-warn("Dropdown:SetValues - newValues must be a table, got: "..tostring(type(as)))
+function aq.SetValues(as,at)
+
+if not at and as.DataSource then
+at=fetchDropdownData(as.DataSource)
+end
+
+
+if type(at)~="table"then
+warn("Dropdown:SetValues - newValues must be a table, got: "..tostring(type(at)))
 return false
 end
 
 
-if#as==0 then
+if#at==0 then
 warn"Dropdown:SetValues - newValues is empty, using placeholder"
-as={{Title="--"}}
+at={{Title="--"}}
 end
 
 
-local at=ar.Value
-local au
-
-if at then
-if type(at)=="table"then
-au=at.Title
-else
-au=tostring(at)
-end
-end
-
-
-ar.Values=as
-
-
-
-if ar.Refresh then
-ar:Refresh(as)
-end
-
+local au=as.Value
+local av
 
 if au then
-local av=false
-for aw,ax in ipairs(as)do
-local ay=type(ax)=="table"and ax.Title or tostring(ax)
-if ay==au then
-ar.Value=ax
-av=true
+if type(au)=="table"then
+av=au.Title
+else
+av=tostring(au)
+end
+end
+
+
+as.Values=at
+
+
+
+if as.Refresh then
+as:Refresh(at)
+end
+
+
+if av then
+local aw=false
+for ax,ay in ipairs(at)do
+local az=type(ay)=="table"and ay.Title or tostring(ay)
+if az==av then
+as.Value=ay
+aw=true
 break
 end
 end
-if not av then
+if not aw then
 
-if ar.Multi then
-ar.Value={}
+if as.Multi then
+as.Value={}
 else
-ar.Value=nil
+as.Value=nil
 end
 
-if ar.Display then
-ar:Display()
+if as.Display then
+as:Display()
 end
 end
-end
-
-
-if ar.Display then
-ar:Display()
 end
 
 
-if ar.Opened and ar.UpdatePosition then
+if as.Display then
+as:Display()
+end
+
+
+if as.Opened and as.UpdatePosition then
 task.spawn(function()
 task.wait(0.1)
-ar.UpdatePosition()
+as.UpdatePosition()
 end)
 end
 
@@ -7020,20 +7098,40 @@ return true
 end
 
 
-function ap.RefreshData(ar)
-if ar.DataSource then
-local as=fetchDropdownData(ar.DataSource)
+function aq.RefreshData(as)
 
-if not as or#as==0 then
-warn"Dropdown:RefreshData - DataSource returned empty table, keeping current values"
+if as._valuesFunction and type(as._valuesFunction)=="function"then
+local at,au=pcall(as._valuesFunction)
+if at and type(au)=="table"then
+if#au>0 then
+return as:SetValues(au)
+else
+warn"Dropdown:RefreshData - Function returned empty table, using placeholder"
+return as:SetValues{{Title="--"}}
+end
+else
+warn("Dropdown:RefreshData - Function returned invalid data: "..tostring(au))
 return false
 end
-return ar:SetValues(as)
-elseif type(ar.Values)=="function"then
 
-local as,at=pcall(ar.Values)
-if as and type(at)=="table"and#at>0 then
-return ar:SetValues(at)
+elseif as.DataSource then
+local at=fetchDropdownData(as.DataSource)
+
+if not at or#at==0 then
+warn"Dropdown:RefreshData - DataSource returned empty table, using placeholder"
+return as:SetValues{{Title="--"}}
+end
+return as:SetValues(at)
+
+elseif type(as.Values)=="function"then
+local at,au=pcall(as.Values)
+if at and type(au)=="table"then
+if#au>0 then
+return as:SetValues(au)
+else
+warn"Dropdown:RefreshData - Values function returned empty table, using placeholder"
+return as:SetValues{{Title="--"}}
+end
 else
 warn"Dropdown:RefreshData - Values function returned invalid data"
 return false
@@ -7044,7 +7142,7 @@ return false
 end
 end
 
-return ap.__type,ap
+return aq.__type,aq
 end
 
 return ak end function a.L()
