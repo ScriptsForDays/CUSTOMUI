@@ -603,6 +603,110 @@ local dropdown = Tab:Dropdown({<br>
         </section>
 
         <section class="section">
+            <h2>Tab:Colorpicker</h2>
+            <p>Creates a color picker element for selecting colors.</p>
+            
+            <h3>Parameters</h3>
+            <table class="param-table">
+                <tr>
+                    <th>Parameter</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>Title</code></td>
+                    <td>string</td>
+                    <td>Colorpicker label</td>
+                </tr>
+                <tr>
+                    <td><code>Desc</code></td>
+                    <td>string</td>
+                    <td>Optional description</td>
+                </tr>
+                <tr>
+                    <td><code>Default</code></td>
+                    <td>Color3</td>
+                    <td>Initial/default color (default: white)</td>
+                </tr>
+                <tr>
+                    <td><code>ThemeProperty</code></td>
+                    <td>string</td>
+                    <td><strong>Custom Enhancement:</strong> Theme property name (e.g., "Accent", "Background"). Automatically fetches and displays the current theme color when the colorpicker opens. If provided, overrides <code>Default</code> unless <code>Default</code> is explicitly set.</td>
+                </tr>
+                <tr>
+                    <td><code>Transparency</code></td>
+                    <td>number</td>
+                    <td>Enable transparency slider (0-1, default: nil/disabled)</td>
+                </tr>
+                <tr>
+                    <td><code>Locked</code></td>
+                    <td>boolean</td>
+                    <td>Disable the colorpicker (default: false)</td>
+                </tr>
+                <tr>
+                    <td><code>Callback</code></td>
+                    <td>function</td>
+                    <td>Function called when color is applied: <code>function(color, transparency)</code></td>
+                </tr>
+            </table>
+
+            <h3>Methods</h3>
+            <div class="method">
+                <h4>Colorpicker:Update(color, transparency)</h4>
+                <p>Updates the colorpicker display with a new color.</p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3), <code>transparency</code> (number, optional)</p>
+            </div>
+            <div class="method">
+                <h4>Colorpicker:Set(color, transparency)</h4>
+                <p>Alias for <code>Update</code>.</p>
+            </div>
+            <div class="method">
+                <h4>Colorpicker:Lock()</h4>
+                <p>Locks the colorpicker, preventing interaction.</p>
+            </div>
+            <div class="method">
+                <h4>Colorpicker:Unlock()</h4>
+                <p>Unlocks the colorpicker, allowing interaction.</p>
+            </div>
+
+            <h3>ThemeProperty Feature</h3>
+            <p><strong>Custom Enhancement:</strong> The <code>ThemeProperty</code> parameter allows colorpickers to automatically display the current UI color before changes. This is perfect for creating UI customization interfaces.</p>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Colorpicker that displays current Accent color</span><br>
+Tab:Colorpicker({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Accent Color",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Customize the accent color",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ThemeProperty = "Accent", <span class="comment">-- Automatically gets current Accent color</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindUI:SetCustomAccent(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- UI updates immediately!</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Colorpicker for Window Topbar Background</span><br>
+Tab:Colorpicker({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Topbar Background",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ThemeProperty = "WindowTopbarBackground",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindUI:SetCustomWindowTopbarBackground(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Standard colorpicker with explicit default</span><br>
+Tab:Colorpicker({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Pick Color",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Default = Color3.fromHex("#30ff6a"),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Selected:", color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})
+                </code>
+            </div>
+            <p><strong>How it works:</strong> When <code>ThemeProperty</code> is provided, the colorpicker automatically fetches the current color from the theme (including custom overrides) every time it opens. This ensures you always see the actual color being used in the UI. The feature includes error handling and fallbacks for compatibility.</p>
+        </section>
+
+        <section class="section">
             <h2>WindUI Custom Methods</h2>
             <p>Custom enhancement methods for theme customization.</p>
             

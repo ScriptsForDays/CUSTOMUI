@@ -501,7 +501,8 @@ Tab:Colorpicker({<br>
 })
                 </code>
             </div>
-            <p><strong>How it works:</strong> When you provide <code>ThemeProperty</code>, the colorpicker automatically fetches the current color from the theme (including custom overrides) every time it opens. This ensures you always see the actual color being used in the UI, not just a default value.</p>
+            <p><strong>How it works:</strong> When you provide <code>ThemeProperty</code>, the colorpicker automatically fetches the current color from the theme (including custom overrides) every time it opens. This ensures you always see the actual color being used in the UI, not just a default value. The feature includes comprehensive error handling and fallbacks for full compatibility with all WindUI versions.</p>
+            <p><strong>Compatibility:</strong> The ThemeProperty feature is fully compatible with all WindUI versions. It includes error handling to gracefully fall back to default colors if the theme system isn't fully initialized, ensuring no errors occur.</p>
             
             <h3>Immediate Updates</h3>
             <p><strong>All SetCustom methods update the UI immediately</strong> when called. You don't need to manually refresh or rebuild any UI elements. The library automatically applies changes to all existing UI elements that use the affected theme properties.</p>
