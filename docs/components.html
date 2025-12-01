@@ -358,12 +358,23 @@ dropdown:SetValues({<br>
             <h3>Advanced Components</h3>
             <div class="code-block">
                 <code>
-<span class="comment">-- Colorpicker</span><br>
+<span class="comment">-- Colorpicker with explicit default color</span><br>
 local colorpicker = MainTab:Colorpicker({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Title = "Pick Color",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Value = Color3.fromHex("#30ff6a"),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Default = Color3.fromHex("#30ff6a"),<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Callback = function(color)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Color:", color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Colorpicker that displays current UI color (ThemeProperty)</span><br>
+local accentColorpicker = MainTab:Colorpicker({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Accent Color",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Customize the accent color",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ThemeProperty = "Accent", <span class="comment">-- Automatically gets current Accent color</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindUI:SetCustomAccent(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- UI updates immediately!</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;end<br>
 })<br>
 <br>
