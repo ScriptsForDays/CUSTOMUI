@@ -115,6 +115,33 @@
             left: 0;
             color: #30ff6a;
         }
+
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .param-table th,
+        .param-table td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid #27272a;
+        }
+
+        .param-table th {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .param-table td {
+            color: #a1a1aa;
+        }
+
+        .param-table code {
+            color: #30ff6a;
+            font-family: 'Courier New', monospace;
+        }
     </style>
 </head>
 <body>
@@ -186,6 +213,170 @@ Tab:Button({<br>
 loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/refs/heads/main/main_example.lua'))()
                 </code>
             </div>
+        </section>
+
+        <section class="section">
+            <h2>Key System</h2>
+            <p>WindUI includes a built-in key system to protect your scripts. You can add it when creating a window by including the <code>KeySystem</code> parameter in your configuration.</p>
+            
+            <h3>Basic Key System</h3>
+            <p>The simplest way to add a key system is with a single key or multiple keys:</p>
+            
+            <div class="code-block">
+                <code>
+<span class="comment">-- Single key</span><br>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Author = "by YourName",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Folder = "myscript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;KeySystem = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key = "YOUR-KEY-HERE",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SaveKey = true, <span class="comment">-- Save key locally (optional)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note = "Enter your key to access the script" <span class="comment">-- Optional note text</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+})<br>
+<br>
+<span class="comment">-- Multiple keys (array)</span><br>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Author = "by YourName",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Folder = "myscript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;KeySystem = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key = {"KEY-1", "KEY-2", "KEY-3"}, <span class="comment">-- Multiple valid keys</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SaveKey = true<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+})
+                </code>
+            </div>
+
+            <h3>Key System with URL</h3>
+            <p>You can add a URL where users can get their key (Discord, Linkvertise, Pastebin, etc.):</p>
+            
+            <div class="code-block">
+                <code>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Author = "by YourName",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Folder = "myscript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;KeySystem = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key = "YOUR-KEY-HERE",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;URL = "https://discord.gg/yourserver", <span class="comment">-- Link to get key</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SaveKey = true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note = "Join our Discord to get your key!"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+})
+                </code>
+            </div>
+
+            <h3>Key System with Thumbnail</h3>
+            <p>Add a custom thumbnail image to the key system dialog:</p>
+            
+            <div class="code-block">
+                <code>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Author = "by YourName",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Folder = "myscript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;KeySystem = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Key = "YOUR-KEY-HERE",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Thumbnail = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Image = "rbxassetid://123456789", <span class="comment">-- Roblox asset ID or image URL</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script", <span class="comment">-- Optional title</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Width = 200 <span class="comment">-- Optional width (default: 200)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SaveKey = true<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+})
+                </code>
+            </div>
+
+            <h3>API-Based Key System</h3>
+            <p>WindUI supports integration with key system services like PlatoBoost, Panda Development, and Luarmor:</p>
+            
+            <div class="code-block">
+                <code>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Author = "by YourName",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Folder = "myscript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;KeySystem = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Note = "Enter your key to access the script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SaveKey = true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;API = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- PlatoBoost</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type = "platoboost",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServiceId = 1234,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Secret = "your-secret-key"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- Panda Development</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type = "pandadevelopment",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServiceId = "your-service-id"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- Luarmor</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type = "luarmor",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ServiceId = "your-service-id"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+})
+                </code>
+            </div>
+
+            <h3>Key System Parameters</h3>
+            <table class="param-table" style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+                <tr>
+                    <th style="text-align: left; padding: 0.5rem; border-bottom: 1px solid #27272a;">Parameter</th>
+                    <th style="text-align: left; padding: 0.5rem; border-bottom: 1px solid #27272a;">Type</th>
+                    <th style="text-align: left; padding: 0.5rem; border-bottom: 1px solid #27272a;">Description</th>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>Key</code></td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">string/table</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Valid key(s). Can be a single string or table of strings for multiple keys.</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>SaveKey</code></td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">boolean</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Automatically save and load the key locally (default: false). If true, users won't need to enter the key again.</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>Note</code></td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">string</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Optional note text displayed in the key system dialog.</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>URL</code></td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">string</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Link where users can get their key (Discord, Linkvertise, Pastebin, etc.).</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>Thumbnail</code></td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">table</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Custom thumbnail image. Contains <code>Image</code> (string), <code>Title</code> (string, optional), and <code>Width</code> (number, optional, default: 200).</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>API</code></td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">table</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Array of API service configurations. Supported types: "platoboost", "pandadevelopment", "luarmor".</td>
+                </tr>
+            </table>
+
+            <h3>How It Works</h3>
+            <ul>
+                <li>When <code>KeySystem</code> is provided, the window will not load until a valid key is entered</li>
+                <li>If <code>SaveKey</code> is true, the key is saved locally and automatically loaded on next run</li>
+                <li>If <code>API</code> is provided, keys are validated through the specified service(s)</li>
+                <li>If <code>URL</code> is provided, users can click to open the link and get their key</li>
+                <li>The key system dialog appears before the main window, blocking access until a valid key is entered</li>
+            </ul>
         </section>
 
         <section class="section">
