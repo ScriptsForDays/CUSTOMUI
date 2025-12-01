@@ -559,13 +559,58 @@ function DropdownMenu.New(Config, Dropdown, Element, CanCallback, Type)
                 end
             elseif Dropdown.DataSource and (type(Dropdown.DataSource) == "function" or type(Dropdown.DataSource) == "string") then
                 -- Try to fetch from DataSource if it's a function or ModuleScript path
-                local fetchDropdownData = require("../../elements/Dropdown").fetchDropdownData
-                if fetchDropdownData then
-                    local newValues = fetchDropdownData(Dropdown.DataSource)
-                    if newValues and #newValues > 0 then
-                        Dropdown.Values = newValues
-                        DropdownModule:Refresh(newValues)
+                local success, newValues = pcall(function()
+                    local dataSource = Dropdown.DataSource
+                    
+                    -- If it's a function, call it
+                    if type(dataSource) == "function" then
+                        local success2, result = pcall(dataSource)
+                        if success2 and type(result) == "table" then
+                            return result
+                        end
+                        return {}
                     end
+                    
+                    -- If it's a string, try to require it as a ModuleScript
+                    if type(dataSource) == "string" then
+                        local locations = {
+                            game:GetService("ReplicatedStorage"),
+                            game:GetService("ServerStorage"),
+                            game:GetService("StarterPlayer"):FindFirstChild("StarterPlayerScripts"),
+                            game:GetService("StarterPlayer"):FindFirstChild("StarterCharacterScripts"),
+                            game:GetService("Workspace"),
+                        }
+                        
+                        for _, location in ipairs(locations) do
+                            if location then
+                                local module = location:FindFirstChild(dataSource, true)
+                                if module and module:IsA("ModuleScript") then
+                                    local moduleResult = require(module)
+                                    -- If module returns a function, call it
+                                    if type(moduleResult) == "function" then
+                                        local success3, result = pcall(moduleResult)
+                                        if success3 and type(result) == "table" then
+                                            return result
+                                        end
+                                    -- If module returns a table, use it
+                                    elseif type(moduleResult) == "table" then
+                                        return moduleResult
+                                    end
+                                end
+                            end
+                        end
+                    end
+                    
+                    return {}
+                end)
+                
+                if success and type(newValues) == "table" and #newValues > 0 then
+                    Dropdown.Values = newValues
+                    DropdownModule:Refresh(newValues)
+                elseif success and type(newValues) == "table" and #newValues == 0 then
+                    -- Empty result, use placeholder
+                    Dropdown.Values = {{Title = "--"}}
+                    DropdownModule:Refresh(Dropdown.Values)
                 end
             end
             
