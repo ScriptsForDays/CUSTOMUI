@@ -98,7 +98,7 @@ function ConfigManager:Init(WindowTable)
     
     Window = WindowTable
     ConfigManager.Folder = Window.Folder
-    ConfigManager.Path = "WindUI/" .. tostring(ConfigManager.Folder) .. "/config/"
+    ConfigManager.Path = tostring(ConfigManager.Folder) .. "/config/"
     
     -- Removed WindUI folder creation - folders created at root level only
     if not isfolder(ConfigManager.Folder .. "/config/") then
