@@ -27,6 +27,7 @@ BackgroundTransparency=0,
 Hover="Text",
 
 WindowBackground="Background",
+WindowTopbarBackground="Background",
 
 WindowShadow="Black",
 
@@ -10710,7 +10711,9 @@ aA,
 aj("Frame",{
 Size=UDim2.new(1,0,0,52),
 BackgroundTransparency=1,
-BackgroundColor3=Color3.fromRGB(50,50,50),
+ThemeTag={
+BackgroundColor3="WindowTopbarBackground"
+},
 Name="Topbar"
 },{
 az,
@@ -12165,6 +12168,15 @@ end
 function ac.SetCustomWindowBackground(as,at)
 if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
 ak.CustomOverrides.WindowBackground=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomWindowTopbarBackground(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.WindowTopbarBackground=at
 ak.UpdateTheme(nil,false)
 return true
 end
