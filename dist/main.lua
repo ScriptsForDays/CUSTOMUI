@@ -2508,7 +2508,8 @@ local function handleSuccess(e)
 ak:Close()()
 
 
-local g=ag.KeySystem.KeyFolder or ag.Folder or ag.Title or"Temp"
+
+local g=ag.KeySystem.KeyFolder or ag.Title or"WindUIKeys"
 
 
 if not isfolder(g)then
@@ -12540,7 +12541,8 @@ ai.new(at,ay,function(az)av=az end)
 end
 
 
-local az=at.KeySystem.KeyFolder or at.Folder or at.Title or"Temp"
+
+local az=at.KeySystem.KeyFolder or at.Title or"WindUIKeys"
 
 
 if not isfolder(az)then
