@@ -431,12 +431,25 @@ local Window = WindUI:CreateWindow({<br>
             <h3>Methods</h3>
             <div class="method">
                 <h4>Dropdown:SetValues(newValues)</h4>
-                <p><strong>Custom Enhancement:</strong> Updates dropdown options dynamically while preserving selection when possible.</p>
+                <p><strong>Custom Enhancement:</strong> Updates dropdown options dynamically. If <code>newValues</code> is nil and a DataSource exists, it will refresh from the original source. Preserves selection when possible.</p>
+            </div>
+            <div class="method">
+                <h4>Dropdown:RefreshData()</h4>
+                <p><strong>Custom Enhancement:</strong> Refetches data from the original DataSource (function or ModuleScript). Returns true if successful.</p>
             </div>
             <div class="method">
                 <h4>Dropdown:LockValues(values)</h4>
                 <p>Locks specific values from being selected.</p>
             </div>
+
+            <h3>Dynamic Data Sources</h3>
+            <p><strong>Custom Enhancement:</strong> The <code>Values</code> parameter can be:</p>
+            <ul class="feature-list">
+                <li><strong>Table:</strong> Static list of options (default behavior)</li>
+                <li><strong>Function:</strong> Function that returns a table of options - called automatically</li>
+                <li><strong>String:</strong> ModuleScript name/path - searches game and requires the module</li>
+            </ul>
+            <p>When using a function or ModuleScript, the dropdown automatically fetches data on creation and can be refreshed with <code>:RefreshData()</code>.</p>
         </section>
 
         <section class="section">
