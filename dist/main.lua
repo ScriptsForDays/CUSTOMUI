@@ -8261,14 +8261,23 @@ end
 function aq.New(ar,as)
 
 local at=as.Default
-if not at and as.ThemeProperty then
-local au=ac.GetThemeProperty(as.ThemeProperty,ac.Theme)
-if au then
+if not at and as.ThemeProperty and ac and ac.GetThemeProperty then
+local au,av=pcall(function()
 
-if typeof(au)=="table"and au.Color then
-at=au.Color
-elseif typeof(au)=="Color3"then
-at=au
+if ac.Theme then
+return ac.GetThemeProperty(as.ThemeProperty,ac.Theme)
+elseif ac.Themes and ac.Themes.Dark then
+return ac.GetThemeProperty(as.ThemeProperty,ac.Themes.Dark)
+end
+return nil
+end)
+
+if au and av then
+
+if typeof(av)=="table"and av.Color then
+at=av.Color
+elseif typeof(av)=="Color3"then
+at=av
 end
 end
 end
@@ -8347,14 +8356,23 @@ end
 ac.AddSignal(au.UIElements.Colorpicker.MouseButton1Click,function()
 if av then
 
-if au.ThemeProperty then
-local aw=ac.GetThemeProperty(au.ThemeProperty,ac.Theme)
-if aw then
+if au.ThemeProperty and ac and ac.GetThemeProperty then
+local aw,ax=pcall(function()
 
-if typeof(aw)=="table"and aw.Color then
-au.Default=aw.Color
-elseif typeof(aw)=="Color3"then
-au.Default=aw
+if ac.Theme then
+return ac.GetThemeProperty(au.ThemeProperty,ac.Theme)
+elseif ac.Themes and ac.Themes.Dark then
+return ac.GetThemeProperty(au.ThemeProperty,ac.Themes.Dark)
+end
+return nil
+end)
+
+if aw and ax then
+
+if typeof(ax)=="table"and ax.Color then
+au.Default=ax.Color
+elseif typeof(ax)=="Color3"then
+au.Default=ax
 end
 au:SetHSVFromRGB(au.Default)
 au:Update(au.Default,au.Transparency)
