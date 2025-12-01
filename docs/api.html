@@ -607,49 +607,61 @@ local dropdown = Tab:Dropdown({<br>
             <p>Custom enhancement methods for theme customization.</p>
             
             <h3>Custom Accent Methods</h3>
+            <p><strong>Note:</strong> All SetCustom methods update the UI immediately when called. Changes are applied to all existing UI elements automatically.</p>
+            
             <div class="method">
                 <h4>WindUI:SetCustomAccent(color)</h4>
-                <p>Sets a custom accent color. Accepts Color3 or Gradient.</p>
+                <p>Sets a custom accent color. Accepts Color3 or Gradient. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3 or Gradient table)</p>
             </div>
             <div class="method">
                 <h4>WindUI:SetCustomBackground(color)</h4>
-                <p>Sets a custom background color. Accepts Color3 or Gradient.</p>
+                <p>Sets a custom background color. Accepts Color3 or Gradient. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3 or Gradient table)</p>
             </div>
             <div class="method">
                 <h4>WindUI:SetCustomText(color)</h4>
-                <p>Sets a custom text color.</p>
+                <p>Sets a custom text color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
             </div>
             <div class="method">
                 <h4>WindUI:SetCustomButton(color)</h4>
-                <p>Sets a custom button color. Accepts Color3 or Gradient.</p>
+                <p>Sets a custom button color. Accepts Color3 or Gradient. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3 or Gradient table)</p>
             </div>
             <div class="method">
                 <h4>WindUI:SetCustomIcon(color)</h4>
-                <p>Sets a custom icon color.</p>
+                <p>Sets a custom icon color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
             </div>
             <div class="method">
                 <h4>WindUI:SetCustomDialog(color)</h4>
-                <p>Sets a custom dialog background color.</p>
+                <p>Sets a custom dialog background color. Accepts Color3 or Gradient. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3 or Gradient table)</p>
             </div>
             <div class="method">
                 <h4>WindUI:SetCustomOutline(color)</h4>
-                <p>Sets a custom outline color.</p>
+                <p>Sets a custom outline color. Accepts Color3. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>color</code> (Color3)</p>
             </div>
             <div class="method">
                 <h4>WindUI:SetCustomProperty(name, value)</h4>
-                <p>Sets any custom theme property by name.</p>
+                <p>Sets any custom theme property by name. <strong>UI updates immediately.</strong></p>
+                <p><strong>Parameters:</strong> <code>name</code> (string) - Property name, <code>value</code> (Color3, Gradient, or number)</p>
             </div>
             <div class="method">
                 <h4>WindUI:ClearCustomProperty(name)</h4>
-                <p>Clears a specific custom property.</p>
+                <p>Clears a specific custom property. <strong>UI updates immediately</strong> to revert to theme default.</p>
+                <p><strong>Parameters:</strong> <code>name</code> (string) - Property name to clear</p>
             </div>
             <div class="method">
                 <h4>WindUI:ClearCustomOverrides()</h4>
-                <p>Clears all custom property overrides.</p>
+                <p>Clears all custom property overrides. <strong>UI updates immediately</strong> to revert all properties to theme defaults.</p>
             </div>
             <div class="method">
                 <h4>WindUI:GetCustomOverrides()</h4>
                 <p>Returns a table of all current custom overrides.</p>
+                <p><strong>Returns:</strong> table - Dictionary of property names to override values</p>
             </div>
         </section>
     </div>
