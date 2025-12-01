@@ -232,32 +232,43 @@ function KeySystem.new(Config, Filename, func)
         -- Replace placeholder icon with Discord icon
         if DiscordButton then
             task.spawn(function()
-                task.wait(0.1) -- Wait for button structure to be fully created
+                task.wait(0.2) -- Wait for button structure to be fully created
                 local frame = DiscordButton:FindFirstChild("Frame")
                 if frame then
                     -- Find the icon that was created by CreateButton
                     local iconFrame = frame:FindFirstChildOfClass("ImageLabel")
                     if iconFrame then
-                        -- Replace with Discord icon using thumbnail format
-                        iconFrame.Image = "rbxthumb://w=150&h=150&id=124135407373085"
+                        -- Replace with Discord icon using direct asset ID
+                        iconFrame.Image = "rbxassetid://124135407373085"
                         iconFrame.ImageRectSize = Vector2.new(0, 0)
                         iconFrame.ImageRectOffset = Vector2.new(0, 0)
                         iconFrame.ImageTransparency = 0
+                        iconFrame.Visible = true
                         iconFrame.ThemeTag = {
                             ImageColor3 = "Icon"
                         }
+                        -- Force update theme
+                        if Creator.UpdateTheme then
+                            Creator.UpdateTheme(iconFrame, false)
+                        end
                     else
                         -- If no icon found, create one
                         iconFrame = New("ImageLabel", {
-                            Image = "rbxthumb://w=150&h=150&id=124135407373085",
+                            Image = "rbxassetid://124135407373085",
                             Size = UDim2.new(0,24-3,0,24-3),
                             BackgroundTransparency = 1,
+                            ImageTransparency = 0,
+                            Visible = true,
                             ThemeTag = {
                                 ImageColor3 = "Icon"
                             },
                             LayoutOrder = -1
                         })
                         iconFrame.Parent = frame
+                        -- Force update theme
+                        if Creator.UpdateTheme then
+                            Creator.UpdateTheme(iconFrame, false)
+                        end
                     end
                 end
             end)
