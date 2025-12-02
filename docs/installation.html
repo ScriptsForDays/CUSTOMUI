@@ -602,11 +602,19 @@ configFile:Register("featureToggle", myToggle)<br>
 configFile:Set("playerName", "Player1")<br>
 configFile:Set("lastSave", os.date())<br>
 <br>
-<span class="comment">-- Save the config</span><br>
-configFile:Save()<br>
+<span class="comment">-- Save the config (returns success, errorMessage)</span><br>
+local success, errorMsg = configFile:Save()<br>
+if success then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("Config saved successfully!")<br>
+else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;warn("Failed to save config:", errorMsg)<br>
+end<br>
 <br>
 <span class="comment">-- Load the config</span><br>
-configFile:Load()
+local loadSuccess, loadResult = configFile:Load()<br>
+if not loadSuccess then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;warn("Failed to load config:", loadResult)<br>
+end
                 </code>
             </div>
 
@@ -622,13 +630,18 @@ local configName = "default"<br>
 local allConfigs = ConfigManager:AllConfigs()<br>
 print("Available configs:", table.concat(allConfigs, ", "))<br>
 <br>
-<span class="comment">-- Create or load a config by name</span><br>
+<span class="comment">-- Create or get existing config by name</span><br>
 local configFile = ConfigManager:CreateConfig(configName)<br>
 <br>
-<span class="comment">-- Save the config</span><br>
-configFile:Save()<br>
+<span class="comment">-- Save the config (returns success, errorMessage)</span><br>
+local success, errorMsg = configFile:Save()<br>
+if success then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("Config saved successfully!")<br>
+else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;warn("Failed to save config:", errorMsg)<br>
+end<br>
 <br>
-<span class="comment">-- Load a config by name (creates if doesn't exist)</span><br>
+<span class="comment">-- Load a config by name</span><br>
 local success, result = ConfigManager:LoadConfigByName("myconfig")<br>
 if success then<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print("Config loaded successfully!")<br>
@@ -640,6 +653,35 @@ end<br>
 if ConfigManager:ConfigExists("myconfig") then<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print("Config exists!")<br>
 end
+                </code>
+            </div>
+            
+            <h4>Config Overwriting Behavior</h4>
+            <p><strong>Important:</strong> When you save a config with a name that already exists, it will automatically overwrite the existing config file. This means:</p>
+            <ul style="color: #a1a1aa; margin-left: 2rem; margin-bottom: 1rem;">
+                <li><strong>No confirmation needed:</strong> Saving a config with an existing name immediately replaces the old config</li>
+                <li><strong>All data is replaced:</strong> The old config's UI element values, custom data, and theme colors are completely replaced with the new values</li>
+                <li><strong>No backup created:</strong> The previous config data is not backed up - make sure you want to overwrite before saving</li>
+            </ul>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Example: Overwriting a config</span><br>
+local ConfigManager = Window.ConfigManager<br>
+<br>
+<span class="comment">-- Save a config named "myconfig"</span><br>
+local config1 = ConfigManager:CreateConfig("myconfig")<br>
+config1:Set("setting1", "value1")<br>
+config1:Save()<br>
+<br>
+<span class="comment">-- Later, save another config with the same name</span><br>
+<span class="comment">-- This will OVERWRITE the previous "myconfig"</span><br>
+local config2 = ConfigManager:CreateConfig("myconfig")<br>
+config2:Set("setting1", "value2") <span class="comment">-- Different value</span><br>
+config2:Set("setting2", "new") <span class="comment">-- New setting</span><br>
+config2:Save()<br>
+<span class="comment">-- ✅ The old "myconfig" is now replaced with the new data</span><br>
+<span class="comment">-- ✅ setting1 is now "value2" (not "value1")</span><br>
+<span class="comment">-- ✅ setting2 is now "new"</span>
                 </code>
             </div>
 
@@ -667,25 +709,51 @@ local saveNameInput = ConfigTab:Input({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;end<br>
 })<br>
 <br>
-<span class="comment">-- Input field for loading configs by name</span><br>
+<span class="comment">-- Dropdown to see all available configs (optional - for loading)</span><br>
+local configDropdown<br>
+local selectedConfigFromDropdown = nil<br>
+local function UpdateConfigDropdown()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;local allConfigs = ConfigManager:AllConfigs()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- Convert array of strings to dropdown format</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;local dropdownValues = {}<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for _, configName in ipairs(allConfigs) do<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;table.insert(dropdownValues, {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title = configName,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon = "file"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;})<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if configDropdown then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;configDropdown:SetValues(dropdownValues)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;configDropdown = ConfigTab:Dropdown({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title = "Select Config (Optional)",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Choose a config from the dropdown, or type one below",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Values = dropdownValues,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(option)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;selectedConfigFromDropdown = option and option.Title or nil<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if selectedConfigFromDropdown then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loadNameInput:Set(selectedConfigFromDropdown)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loadConfigName = selectedConfigFromDropdown<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;})<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+end<br>
+<br>
+<span class="comment">-- Initialize dropdown</span><br>
+UpdateConfigDropdown()<br>
+<br>
+<span class="comment">-- Input field for loading configs by name (optional - user can type here)</span><br>
 local loadNameInput = ConfigTab:Input({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Title = "Load Config by Name",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Type the name of the config to load",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Type the name of the config to load, or select from dropdown above",<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Value = loadConfigName,<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Callback = function(value)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loadConfigName = value or ""<br>
-&nbsp;&nbsp;&nbsp;&nbsp;end<br>
-})<br>
-<br>
-<span class="comment">-- Dropdown to see all available configs</span><br>
-local allConfigs = ConfigManager:AllConfigs()<br>
-ConfigTab:Dropdown({<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Title = "All Configs",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Select existing configs to load",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Values = allConfigs,<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(value)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loadConfigName = value<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loadNameInput:Set(value)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- Clear dropdown selection when user types manually</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;selectedConfigFromDropdown = nil<br>
 &nbsp;&nbsp;&nbsp;&nbsp;end<br>
 })<br>
 <br>
@@ -693,53 +761,80 @@ ConfigTab:Dropdown({<br>
 ConfigTab:Button({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Title = "Save Config",<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Icon = "save",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Justify = "Center",<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Callback = function()<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if not saveConfigName or saveConfigName == "" then<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindUI:Notify({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title = "Error",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Content = "Please enter a config name",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon = "x"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Please enter a config name",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon = "x",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duration = 3<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;})<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end<br>
 <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- Create or get existing config (will overwrite if exists)</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Window.CurrentConfig = ConfigManager:CreateConfig(saveConfigName)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if Window.CurrentConfig:Save() then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- Save returns (success, errorMessage)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local success, errorMsg = Window.CurrentConfig:Save()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if success then<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindUI:Notify({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title = "Config Saved",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Content = "Config '" .. saveConfigName .. "' saved successfully",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon = "check"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Config '" .. saveConfigName .. "' saved successfully",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon = "check",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duration = 3<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;})<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- Update dropdown to show new config</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;UpdateConfigDropdown()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindUI:Notify({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title = "Error",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Desc = errorMsg or "Failed to save config",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon = "x",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duration = 3<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;})<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end<br>
 &nbsp;&nbsp;&nbsp;&nbsp;end<br>
 })<br>
 <br>
-<span class="comment">-- Load Config Button</span><br>
+<span class="comment">-- Load Config Button (uses dropdown selection if available, otherwise uses textbox)</span><br>
 ConfigTab:Button({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Title = "Load Config",<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Icon = "refresh-cw",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Justify = "Center",<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Callback = function()<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if not loadConfigName or loadConfigName == "" then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- Priority: Use dropdown selection if available, otherwise use textbox value</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local configToLoad = selectedConfigFromDropdown or loadConfigName<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if not configToLoad or configToLoad == "" then<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindUI:Notify({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title = "Error",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Content = "Please enter a config name to load",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon = "x"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Please select a config from the dropdown or enter a config name",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon = "x",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duration = 3<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;})<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end<br>
 <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local success, result = ConfigManager:LoadConfigByName(loadConfigName)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- LoadConfigByName returns (success, result)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local success, result = ConfigManager:LoadConfigByName(configToLoad)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if success then<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindUI:Notify({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title = "Config Loaded",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Content = "Config '" .. loadConfigName .. "' loaded successfully",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon = "check"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Config '" .. configToLoad .. "' loaded successfully",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon = "check",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duration = 3<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;})<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- Update save name to match loaded config</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;saveConfigName = configToLoad<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;saveNameInput:Set(saveConfigName)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindUI:Notify({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title = "Error",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Content = result or "Failed to load config",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon = "x"<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Desc = result or "Failed to load config",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Icon = "x",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Duration = 3<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;})<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end<br>
 &nbsp;&nbsp;&nbsp;&nbsp;end<br>
@@ -861,7 +956,7 @@ ConfigManager:LoadConfigByName("mytheme")<br>
                 </tr>
                 <tr>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>ConfigManager:CreateConfig(name)</code></td>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Creates a new config module with the specified name. Returns a config object with Save(), Load(), Register(), Set(), Get() methods.</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Creates a new config module with the specified name (or gets existing one). Returns a config object with Save(), Load(), Register(), Set(), Get() methods. <strong>Note:</strong> If a config with this name already exists, saving will overwrite it.</td>
                 </tr>
                 <tr>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>ConfigManager:LoadConfigByName(name)</code></td>
@@ -885,7 +980,7 @@ ConfigManager:LoadConfigByName("mytheme")<br>
                 </tr>
                 <tr>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>configFile:Save()</code></td>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Saves the config. Automatically includes all registered UI elements and custom theme colors.</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Saves the config. Returns (success, errorMessage). Automatically includes all registered UI elements and custom theme colors. <strong>Overwrites existing configs with the same name.</strong></td>
                 </tr>
                 <tr>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>configFile:Load()</code></td>
@@ -916,6 +1011,7 @@ ConfigManager:LoadConfigByName("mytheme")<br>
             <h3>Config File Location</h3>
             <p>Configs are saved in: <code>{Folder}/config/{configName}.json</code></p>
             <p>For example, if your folder is "myscript" and config name is "default", the file will be saved at: <code>myscript/config/default.json</code></p>
+            <p><strong>Note:</strong> Saving a config with the same name will overwrite the existing file at that location. The old config data will be completely replaced.</p>
         </section>
 
         <section class="section">
