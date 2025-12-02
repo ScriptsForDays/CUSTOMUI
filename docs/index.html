@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WindUI Custom - Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #27272a;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #30ff6a, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #a1a1aa;
+            font-size: 1.2rem;
+        }
+
+        .nav {
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .nav a {
+            color: #30ff6a;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 0 1rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid #27272a;
+            border-radius: 6px;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+
+        .nav a:hover {
+            border-color: #30ff6a;
+            background: rgba(48, 255, 106, 0.1);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: #1a1a1a;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: #30ff6a;
+            transform: translateY(-2px);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .feature-card p {
+            color: #a1a1aa;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card a {
+            color: #30ff6a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .feature-card a:hover {
+            text-decoration: underline;
+        }
+
+        .quick-start {
+            background: #1a1a1a;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .quick-start h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .code-block {
+            background: #0a0a0a;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: #71717a;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .section p {
+            color: #a1a1aa;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>WindUI Custom</h1>
+            <p>Enhanced Roblox UI Library with Dynamic Updates & Custom Theme Customization</p>
+        </div>
+
+        <div class="nav">
+            <a href="installation.html">Installation</a>
+            <a href="components.html">Components</a>
+            <a href="api.html">API Reference</a>
+            <a href="customizations.html">Custom Enhancements</a>
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>🚀 Quick Start</h3>
+                <p>Get started with WindUI in minutes. Load the library and create your first window.</p>
+                <a href="installation.html">View Installation Guide →</a>
+            </div>
+
+            <div class="feature-card">
+                <h3>🧩 Components</h3>
+                <p>Comprehensive guide to all UI components: Buttons, Toggles, Sliders, Dropdowns, and more.</p>
+                <a href="components.html">Browse Components →</a>
+            </div>
+
+            <div class="feature-card">
+                <h3>📚 API Reference</h3>
+                <p>Complete API documentation with method signatures, parameters, and examples.</p>
+                <a href="api.html">View API Docs →</a>
+            </div>
+
+            <div class="feature-card">
+                <h3>🎨 Customization</h3>
+                <p>Learn how to customize themes, colors, and create unique UI experiences.</p>
+                <a href="customizations.html">Explore Customizations →</a>
+            </div>
+
+            <div class="feature-card">
+                <h3>💾 Config System</h3>
+                <p>Save and load user settings with named configs. All theme colors are automatically saved.</p>
+                <a href="installation.html#config-system">Learn About Configs →</a>
+            </div>
+
+            <div class="feature-card">
+                <h3>🔑 Key System</h3>
+                <p>Built-in key system to protect your scripts with Discord integration and API support.</p>
+                <a href="installation.html#key-system">View Key System →</a>
+            </div>
+        </div>
+
+        <div class="quick-start">
+            <h2>Quick Start</h2>
+            <p style="color: #a1a1aa; margin-bottom: 1rem;">Load WindUI Custom and create your first window:</p>
+            
+            <div class="code-block">
+                <code>
+<span class="comment">-- Load WindUI</span><br>
+local WindUI = loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/refs/heads/main/dist/main.lua'))()<br>
+<br>
+<span class="comment">-- Create a window</span><br>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Author = "by YourName",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Folder = "myscript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings"<br>
+})<br>
+<br>
+<span class="comment">-- Create a tab</span><br>
+local Tab = Window:Tab({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Main",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "home"<br>
+})<br>
+<br>
+<span class="comment">-- Add a button</span><br>
+Tab:Button({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Click Me",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "mouse-pointer-click",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Button clicked!")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})
+                </code>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Key Features</h2>
+            <ul style="color: #a1a1aa; margin-left: 2rem;">
+                <li><strong>Custom Theme Customization:</strong> Override any theme property with methods like <code>SetCustomAccent()</code>, <code>SetCustomDropdownSelected()</code>, etc.</li>
+                <li><strong>Automatic Config Saving:</strong> All custom theme colors are automatically saved and loaded with configs</li>
+                <li><strong>Named Configs:</strong> Users can create multiple named configs and load them by typing the name</li>
+                <li><strong>Dynamic Updates:</strong> UI updates immediately when you change colors or settings</li>
+                <li><strong>Gradient Support:</strong> Use gradients for backgrounds, buttons, and other elements</li>
+                <li><strong>Key System:</strong> Built-in key system with Discord integration and API support</li>
+                <li><strong>ThemeProperty Feature:</strong> Colorpickers automatically display current UI colors</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Documentation</h2>
+            <p style="color: #a1a1aa;">Explore the documentation to learn more:</p>
+            <ul style="color: #a1a1aa; margin-left: 2rem; margin-top: 1rem;">
+                <li><a href="installation.html" style="color: #30ff6a;">Installation Guide</a> - Get started with WindUI</li>
+                <li><a href="components.html" style="color: #30ff6a;">Components</a> - All UI components and their usage</li>
+                <li><a href="api.html" style="color: #30ff6a;">API Reference</a> - Complete method documentation</li>
+                <li><a href="customizations.html" style="color: #30ff6a;">Custom Enhancements</a> - Theme customization guide</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Example Script</h2>
+            <p style="color: #a1a1aa;">Check out the complete example script to see all features in action:</p>
+            <div class="code-block">
+                <code>
+loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/refs/heads/main/main_example.lua'))()
+                </code>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
