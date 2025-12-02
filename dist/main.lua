@@ -4015,12 +4015,22 @@ end
 local ai={}
 local aj=a.load'b'
 if aj and aj.CustomOverrides then
-for ak,al in pairs(aj.CustomOverrides)do
-local am=serializeColor(al)
-if am then
-ai[ak]=am
+
+local ak=0
+for al,am in pairs(aj.CustomOverrides)do
+ak=ak+1
+local an=serializeColor(am)
+if an then
+ai[al]=an
+else
+warn("[ WindUI.ConfigManager ] Failed to serialize color for property: "..tostring(al))
 end
 end
+if ak>0 then
+print("[ WindUI.ConfigManager ] Saving "..ak.." custom theme overrides")
+end
+else
+warn"[ WindUI.ConfigManager ] Creator.CustomOverrides is nil or not accessible"
 end
 
 local ak={
@@ -4099,47 +4109,54 @@ if aj.__themeOverrides then
 local ak=a.load'b'
 if ak and ak.CustomOverrides then
 
+local al=0
+for am in pairs(aj.__themeOverrides)do
+al=al+1
+end
+print("[ WindUI.ConfigManager ] Loading "..al.." custom theme overrides")
+
+
 ak.CustomOverrides={}
 
 
-local function deserializeColor(al)
-if not al or not al.__type then
+local function deserializeColor(am)
+if not am or not am.__type then
 return nil
 end
 
-if al.__type=="Color3"then
-return Color3.fromHex(al.value)
-elseif al.__type=="Gradient"then
+if am.__type=="Color3"then
+return Color3.fromHex(am.value)
+elseif am.__type=="Gradient"then
 
-local am=ac
-if not am and ab and ab.WindUI then
-am=ab.WindUI
+local an=ac
+if not an and ab and ab.WindUI then
+an=ab.WindUI
 end
 
-if am and am.Gradient then
+if an and an.Gradient then
 
-local an={}
-for ao,ap in pairs(al.stops or{})do
-an[ao]={
-Color=Color3.fromHex(ap.Color),
-Transparency=ap.Transparency or 0
+local ao={}
+for ap,aq in pairs(am.stops or{})do
+ao[ap]={
+Color=Color3.fromHex(aq.Color),
+Transparency=aq.Transparency or 0
 }
 end
-return am:Gradient(an,{
-Rotation=al.rotation or 0
+return an:Gradient(ao,{
+Rotation=am.rotation or 0
 })
 else
 
 if ak.Gradient then
-local an={}
-for ao,ap in pairs(al.stops or{})do
-an[ao]={
-Color=Color3.fromHex(ap.Color),
-Transparency=ap.Transparency or 0
+local ao={}
+for ap,aq in pairs(am.stops or{})do
+ao[ap]={
+Color=Color3.fromHex(aq.Color),
+Transparency=aq.Transparency or 0
 }
 end
-return ak.Gradient(an,{
-Rotation=al.rotation or 0
+return ak.Gradient(ao,{
+Rotation=am.rotation or 0
 })
 end
 end
@@ -4148,17 +4165,26 @@ return nil
 end
 
 
-for al,am in pairs(aj.__themeOverrides)do
-local an=deserializeColor(am)
-if an then
-ak.CustomOverrides[al]=an
+local am=0
+for an,ao in pairs(aj.__themeOverrides)do
+local ap=deserializeColor(ao)
+if ap then
+ak.CustomOverrides[an]=ap
+am=am+1
+else
+warn("[ WindUI.ConfigManager ] Failed to deserialize color for property: "..tostring(an))
 end
 end
+
+print("[ WindUI.ConfigManager ] Restored "..am.." custom theme overrides")
 
 
 
 if ak.UpdateTheme then
+print"[ WindUI.ConfigManager ] Calling UpdateTheme to apply custom colors"
 ak.UpdateTheme(nil,false)
+else
+warn"[ WindUI.ConfigManager ] Creator.UpdateTheme is nil"
 end
 
 
@@ -4168,7 +4194,11 @@ if ak.UpdateTheme then
 ak.UpdateTheme(nil,false)
 end
 end)
+else
+warn"[ WindUI.ConfigManager ] Creator.CustomOverrides is nil or not accessible when loading"
 end
+else
+print"[ WindUI.ConfigManager ] No theme overrides found in config file"
 end
 
 return ag.CustomData
