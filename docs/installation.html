@@ -916,7 +916,34 @@ ConfigManager:LoadConfigByName("myconfig")<br>
                 <li><strong>Immediate Application:</strong> When you load a config, all custom colors are immediately applied to the UI - no manual refresh needed</li>
                 <li><strong>Complete Persistence:</strong> All custom theme overrides are preserved, so users can have different color schemes for different configs</li>
                 <li><strong>Works with All Methods:</strong> Any color set with <code>SetCustomAccent()</code>, <code>SetCustomDropdownSelected()</code>, <code>SetCustomProperty()</code>, etc. is automatically included</li>
+                <li><strong>Topbar and All UI Elements:</strong> Custom colors for window topbar (title, author, icon, background), tabs, elements, popups, dialogs, and all other UI components are automatically saved and restored</li>
             </ul>
+            
+            <h4>Troubleshooting: Custom Colors Not Saving/Loading</h4>
+            <p>If your custom theme colors aren't being saved or loaded correctly, check the following:</p>
+            <ul style="color: #a1a1aa; margin-left: 2rem; margin-bottom: 1rem;">
+                <li><strong>Ensure colors are set before saving:</strong> Make sure you've called <code>WindUI:SetCustomAccent()</code>, <code>WindUI:SetCustomWindowTopbarBackground()</code>, etc. <strong>before</strong> calling <code>configFile:Save()</code></li>
+                <li><strong>Check the console:</strong> The config system prints debug messages showing how many custom theme overrides are being saved/loaded. If you see "CustomOverrides table is empty", it means no custom colors were set before saving</li>
+                <li><strong>Verify the config file:</strong> Check the saved config JSON file - it should have a <code>__themeOverrides</code> section with your custom colors</li>
+                <li><strong>Load timing:</strong> Custom colors are applied immediately when loading a config, but if you have UI elements created after loading, they may need a moment to register. The system automatically updates the theme again after a short delay to catch late-registered elements</li>
+            </ul>
+            
+            <div class="code-block">
+                <code>
+<span class="comment">-- ✅ CORRECT: Set colors BEFORE saving</span><br>
+WindUI:SetCustomAccent(Color3.fromHex("#30ff6a"))<br>
+WindUI:SetCustomWindowTopbarBackground(Color3.fromHex("#0f0f0f"))<br>
+WindUI:SetCustomBackground(Color3.fromHex("#1a1a1a"))<br>
+<br>
+<span class="comment">-- Now save - all colors will be included</span><br>
+local configFile = ConfigManager:CreateConfig("myconfig")<br>
+configFile:Save()<br>
+<br>
+<span class="comment">-- ❌ WRONG: Setting colors AFTER saving won't work</span><br>
+<span class="comment">-- configFile:Save()</span><br>
+<span class="comment">-- WindUI:SetCustomAccent(Color3.fromHex("#30ff6a")) -- Too late!</span>
+                </code>
+            </div>
             
             <h4>Example: Complete Theme Customization Workflow</h4>
             <div class="code-block">
