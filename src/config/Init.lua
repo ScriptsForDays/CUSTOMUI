@@ -339,6 +339,20 @@ function ConfigManager:CreateConfig(configFilename)
                             return windUI:Gradient(convertedStops, {
                                 Rotation = data.rotation or 0
                             })
+                        else
+                            -- Fallback: Use Creator.Gradient if WindUI.Gradient is not available
+                            if Creator.Gradient then
+                                local convertedStops = {}
+                                for pos, stop in pairs(data.stops or {}) do
+                                    convertedStops[pos] = {
+                                        Color = Color3.fromHex(stop.Color),
+                                        Transparency = stop.Transparency or 0
+                                    }
+                                end
+                                return Creator.Gradient(convertedStops, {
+                                    Rotation = data.rotation or 0
+                                })
+                            end
                         end
                     end
                     return nil
@@ -352,10 +366,19 @@ function ConfigManager:CreateConfig(configFilename)
                     end
                 end
                 
-                -- Update theme to apply all overrides (including DropdownSelected)
+                -- Update theme to apply all overrides immediately
+                -- This ensures custom colors are applied right away
                 if Creator.UpdateTheme then
                     Creator.UpdateTheme(nil, false)
                 end
+                
+                -- Also update theme after a small delay to catch any elements that might be created later
+                task.spawn(function()
+                    task.wait(0.1)
+                    if Creator.UpdateTheme then
+                        Creator.UpdateTheme(nil, false)
+                    end
+                end)
             end
         end
         
