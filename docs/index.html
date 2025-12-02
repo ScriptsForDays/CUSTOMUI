@@ -17,6 +17,104 @@
             color: #ffffff;
             line-height: 1.6;
             padding: 2rem;
+            position: relative;
+        }
+
+        .visitor-counter {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: #1a1a1a;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s;
+        }
+
+        .visitor-counter:hover {
+            border-color: #30ff6a;
+            box-shadow: 0 4px 12px rgba(48, 255, 106, 0.2);
+        }
+
+        .visitor-counter-icon {
+            width: 16px;
+            height: 16px;
+            background: #30ff6a;
+            border-radius: 50%;
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+
+        .visitor-counter-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #30ff6a;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: ripple 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        .visitor-counter-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .visitor-counter-label {
+            font-size: 0.75rem;
+            color: #71717a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .visitor-counter-value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #30ff6a;
+        }
+
+        @media (max-width: 768px) {
+            .visitor-counter {
+                top: 0.5rem;
+                right: 0.5rem;
+                padding: 0.5rem 1rem;
+            }
+
+            .visitor-counter-text {
+                display: none;
+            }
+
+            .visitor-counter-icon {
+                width: 12px;
+                height: 12px;
+            }
         }
 
         .container {
@@ -157,8 +255,20 @@
             margin-bottom: 1rem;
         }
     </style>
+    <!-- GoatCounter Analytics - Replace 'windui' with your GoatCounter site name -->
+    <!-- Sign up at https://goatcounter.com to get your site name -->
+    <script data-goatcounter="https://windui.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </head>
 <body>
+    <!-- Visitor Counter -->
+    <div class="visitor-counter" id="visitorCounter">
+        <div class="visitor-counter-icon"></div>
+        <div class="visitor-counter-text">
+            <span class="visitor-counter-label">Active Visitors</span>
+            <span class="visitor-counter-value" id="visitorCount">--</span>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>WindUI Custom</h1>
@@ -279,6 +389,84 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOM
             </div>
         </div>
     </div>
+
+    <script>
+        // Real-time active visitor counter
+        // This uses GoatCounter's visitor tracking and estimates active visitors
+        // Replace 'windui' with your actual GoatCounter site name after signing up at https://goatcounter.com
+        
+        let activeVisitors = 0;
+        let lastUpdate = Date.now();
+        const VISITOR_TIMEOUT = 60000; // 60 seconds - consider visitor inactive after this
+        
+        // Track this visitor's activity
+        const visitorId = 'visitor_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        const sessionKey = 'windui_active_session';
+        
+        // Store active sessions in localStorage (shared across tabs)
+        function updateActiveSessions() {
+            try {
+                const now = Date.now();
+                const sessions = JSON.parse(localStorage.getItem('windui_sessions') || '{}');
+                
+                // Remove expired sessions (older than 60 seconds)
+                Object.keys(sessions).forEach(id => {
+                    if (now - sessions[id] > VISITOR_TIMEOUT) {
+                        delete sessions[id];
+                    }
+                });
+                
+                // Add/update current session
+                sessions[visitorId] = now;
+                
+                // Save updated sessions
+                localStorage.setItem('windui_sessions', JSON.stringify(sessions));
+                
+                // Count active sessions
+                activeVisitors = Object.keys(sessions).length;
+                
+                // Update display
+                document.getElementById('visitorCount').textContent = activeVisitors.toString();
+                lastUpdate = now;
+            } catch (error) {
+                console.error('Failed to update visitor count:', error);
+            }
+        }
+        
+        // Update counter on page load
+        updateActiveSessions();
+        
+        // Update every 10 seconds to keep session active
+        setInterval(updateActiveSessions, 10000);
+        
+        // Update when page becomes visible
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                updateActiveSessions();
+            }
+        });
+        
+        // Update on mouse movement (user is active)
+        let activityTimeout;
+        document.addEventListener('mousemove', function() {
+            clearTimeout(activityTimeout);
+            activityTimeout = setTimeout(updateActiveSessions, 5000);
+        });
+        
+        // Clean up on page unload
+        window.addEventListener('beforeunload', function() {
+            try {
+                const sessions = JSON.parse(localStorage.getItem('windui_sessions') || '{}');
+                delete sessions[visitorId];
+                localStorage.setItem('windui_sessions', JSON.stringify(sessions));
+            } catch (error) {
+                // Ignore errors on unload
+            }
+        });
+        
+        // Initial display
+        document.getElementById('visitorCount').textContent = '1';
+    </script>
 </body>
 </html>
 
