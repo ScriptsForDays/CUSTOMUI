@@ -10433,9 +10433,8 @@ as.Y.Scale,
 math.clamp(as.Y.Offset,ar.MinSize.Y,ar.MaxSize.Y)
 )
 
+if ar.Folder then
 
-
-if ar.Folder and aq.Folder then
 if not isfolder(ar.Folder)then
 makefolder(ar.Folder)
 end
@@ -12704,6 +12703,15 @@ local au=a.load'X'
 
 
 
+if at.Folder then
+if not isfolder(at.Folder)then
+makefolder(at.Folder)
+end
+else
+if not isfolder(at.Title)then
+makefolder(at.Title)
+end
+end
 
 at.WindUI=ac
 at.Parent=ac.ScreenGui.Window

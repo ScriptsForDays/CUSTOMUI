@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Components - WindUI Custom</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #27272a;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #30ff6a, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav {
+            margin-bottom: 2rem;
+        }
+
+        .nav a {
+            color: #30ff6a;
+            text-decoration: none;
+            font-weight: 500;
+            margin-right: 1rem;
+        }
+
+        .nav a:hover {
+            text-decoration: underline;
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .component-card {
+            background: #1a1a1a;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+        }
+
+        .component-card:hover {
+            border-color: #30ff6a;
+            transform: translateY(-2px);
+        }
+
+        .component-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+
+        .component-card p {
+            color: #a1a1aa;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .component-card code {
+            background: #0a0a0a;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #30ff6a;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .code-block {
+            background: #1a1a1a;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .code-block .comment {
+            color: #71717a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="index.html">← Home</a>
+            <a href="installation.html">Installation</a>
+            <a href="api.html">API Reference</a>
+            <a href="customizations.html">Custom Enhancements</a>
+        </div>
+        
+        <div class="header">
+            <h1>Components</h1>
+            <p style="color: #a1a1aa;">All available UI components in WindUI</p>
+        </div>
+
+        <section class="section">
+            <h2>Core Components</h2>
+            <div class="component-grid">
+                <div class="component-card">
+                    <h3>Window</h3>
+                    <p>Create the main UI window container</p>
+                    <code>WindUI:CreateWindow({...})</code>
+                </div>
+                <div class="component-card">
+                    <h3>Tab</h3>
+                    <p>Create tabs within a window</p>
+                    <code>Window:Tab({...})</code>
+                </div>
+                <div class="component-card">
+                    <h3>Section</h3>
+                    <p>Organize elements into sections</p>
+                    <code>Tab:Section({...})</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Interactive Elements</h2>
+            <div class="component-grid">
+                <div class="component-card">
+                    <h3>Button</h3>
+                    <p>Clickable button with icon and callback</p>
+                    <code>Tab:Button({...})</code>
+                </div>
+                <div class="component-card">
+                    <h3>Toggle</h3>
+                    <p>On/off toggle switch</p>
+                    <code>Tab:Toggle({...})</code>
+                </div>
+                <div class="component-card">
+                    <h3>Dropdown</h3>
+                    <p>Select from a list of options (supports dynamic updates)</p>
+                    <code>Tab:Dropdown({...})</code>
+                </div>
+                <div class="component-card">
+                    <h3>Input</h3>
+                    <p>Text input field</p>
+                    <code>Tab:Input({...})</code>
+                </div>
+                <div class="component-card">
+                    <h3>Slider</h3>
+                    <p>Numeric slider for values</p>
+                    <code>Tab:Slider({...})</code>
+                </div>
+                <div class="component-card">
+                    <h3>Keybind</h3>
+                    <p>Capture keyboard input</p>
+                    <code>Tab:Keybind({...})</code>
+                </div>
+                <div class="component-card">
+                    <h3>Colorpicker</h3>
+                    <p>Color selection picker</p>
+                    <code>Tab:Colorpicker({...})</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Display Elements</h2>
+            <div class="component-grid">
+                <div class="component-card">
+                    <h3>Paragraph</h3>
+                    <p>Text paragraph with optional buttons</p>
+                    <code>Tab:Paragraph({...})</code>
+                </div>
+                <div class="component-card">
+                    <h3>Code</h3>
+                    <p>Display code snippets</p>
+                    <code>Tab:Code({...})</code>
+                </div>
+                <div class="component-card">
+                    <h3>Image</h3>
+                    <p>Display images with aspect ratio control</p>
+                    <code>Tab:Image({...})</code>
+                </div>
+                <div class="component-card">
+                    <h3>Divider</h3>
+                    <p>Visual separator line</p>
+                    <code>Tab:Divider()</code>
+                </div>
+                <div class="component-card">
+                    <h3>Space</h3>
+                    <p>Add spacing between elements</p>
+                    <code>Tab:Space({...})</code>
+                </div>
+                <div class="component-card">
+                    <h3>Group</h3>
+                    <p>Group elements horizontally</p>
+                    <code>Tab:Group({...})</code>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Detailed Examples</h2>
+            
+            <h3>Complete Window Setup</h3>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Load WindUI</span><br>
+local WindUI = loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOMUI/refs/heads/main/dist/main.lua'))()<br>
+<br>
+<span class="comment">-- Create window with custom open button</span><br>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Author = "by Developer",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Folder = "myscript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;NewElements = true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OpenButton = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Title = "Open UI",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Enabled = true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Draggable = true<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+})<br>
+<br>
+<span class="comment">-- Add window tag</span><br>
+Window:Tag({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "v1.0",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "github",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Color = Color3.fromHex("#6b31ff")<br>
+})<br>
+<br>
+<span class="comment">-- Create tabs</span><br>
+local MainTab = Window:Tab({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Main",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "home"<br>
+})<br>
+<br>
+local SettingsTab = Window:Tab({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Settings",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings"<br>
+})
+                </code>
+            </div>
+
+            <h3>Interactive Elements</h3>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Button with highlight</span><br>
+local button = MainTab:Button({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Click Me",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Desc = "This button does something",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "mouse-pointer-click",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Color = Color3.fromHex("#30ff6a"),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;button:Highlight()<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Button clicked!")<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Toggle with state management</span><br>
+local toggle = MainTab:Toggle({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Enable Feature",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Turn this feature on/off",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Value = false,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Type = "Toggle",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(value)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Feature enabled:", value)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Slider with range</span><br>
+local slider = MainTab:Slider({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Volume",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Adjust volume level",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Value = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Min = 0,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Max = 100,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Default = 50<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Step = 1,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(value)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Volume:", value)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Input field</span><br>
+local input = MainTab:Input({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Player Name",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Placeholder = "Enter player name...",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Type = "Input",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(value)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Input:", value)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Dropdown with dynamic updates (Custom Enhancement)</span><br>
+local dropdown = MainTab:Dropdown({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Select Option",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Values = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ Title = "Option 1", Icon = "file" },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ Title = "Option 2", Icon = "folder" }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;SearchBarEnabled = true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(option)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Selected:", option.Title)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Update dropdown dynamically later</span><br>
+task.wait(5)<br>
+dropdown:SetValues({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ Title = "New Option A", Icon = "star" },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ Title = "New Option B", Icon = "heart" },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;{ Title = "New Option C", Icon = "zap" }<br>
+})
+                </code>
+            </div>
+
+            <h3>Advanced Components</h3>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Colorpicker with explicit default color</span><br>
+local colorpicker = MainTab:Colorpicker({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Pick Color",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Default = Color3.fromHex("#30ff6a"),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Color:", color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Colorpicker that displays current UI color (ThemeProperty)</span><br>
+local accentColorpicker = MainTab:Colorpicker({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Accent Color",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Desc = "Customize the accent color",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;ThemeProperty = "Accent", <span class="comment">-- Automatically gets current Accent color</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WindUI:SetCustomAccent(color)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- UI updates immediately!</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Keybind</span><br>
+local keybind = MainTab:Keybind({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Toggle Key",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Value = Enum.KeyCode.F,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(key)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Key pressed:", key)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Section with collapsible content</span><br>
+local section = MainTab:Section({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Advanced Settings",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Opened = false,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Box = true<br>
+})<br>
+<br>
+<span class="comment">-- Paragraph with buttons</span><br>
+MainTab:Paragraph({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Information",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Desc = "This is some important information",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Buttons = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ Title = "Learn More", Icon = "info", Callback = function() end },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ Title = "Close", Icon = "x", Callback = function() end }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+})<br>
+<br>
+<span class="comment">-- Image display</span><br>
+MainTab:Image({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Image = "rbxassetid://123456789",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;AspectRatio = "16:9",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Radius = 9<br>
+})<br>
+<br>
+<span class="comment">-- Group elements horizontally</span><br>
+MainTab:Group({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Elements = {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ Type = "Button", Title = "Button 1" },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ Type = "Button", Title = "Button 2" },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ Type = "Button", Title = "Button 3" }<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+})
+                </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Saving Elements to Configs</h2>
+            <p>All interactive elements (Toggle, Slider, Dropdown, Input, Keybind, Colorpicker) can be saved to configs using the <code>Flag</code> parameter. When a config is saved, all registered elements are automatically included. When a config is loaded, all element values are automatically restored.</p>
+            <p><strong>Important:</strong> All custom theme colors (set with <code>SetCustomAccent()</code>, <code>SetCustomDropdownSelected()</code>, etc.) are <strong>automatically saved and loaded with configs</strong>. You don't need to register them - they're included automatically when you save a config!</p>
+            
+            <div class="code-block">
+                <code>
+<span class="comment">-- Create elements with Flag parameter for config saving</span><br>
+local myToggle = MainTab:Toggle({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Enable Feature",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Flag = "featureToggle" <span class="comment">-- Register with a flag name</span><br>
+})<br>
+<br>
+local mySlider = MainTab:Slider({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Volume",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Value = { Min = 0, Max = 100, Default = 50 },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Flag = "volumeSlider" <span class="comment">-- Register with a flag name</span><br>
+})<br>
+<br>
+local myDropdown = MainTab:Dropdown({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Select Option",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Values = { "Option 1", "Option 2", "Option 3" },<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Flag = "optionDropdown" <span class="comment">-- Register with a flag name</span><br>
+})<br>
+<br>
+<span class="comment">-- Create and save config</span><br>
+local ConfigManager = Window.ConfigManager<br>
+local configFile = ConfigManager:CreateConfig("myconfig")<br>
+<br>
+<span class="comment">-- Register elements with the config</span><br>
+configFile:Register("featureToggle", myToggle)<br>
+configFile:Register("volumeSlider", mySlider)<br>
+configFile:Register("optionDropdown", myDropdown)<br>
+<br>
+<span class="comment">-- Save the config</span><br>
+configFile:Save()<br>
+<span class="comment">-- ✅ All registered element values are saved</span><br>
+<span class="comment">-- ✅ All custom theme colors are automatically saved too!</span><br>
+<br>
+<span class="comment">-- Load the config</span><br>
+configFile:Load()<br>
+<span class="comment">-- ✅ All element values are restored</span><br>
+<span class="comment">-- ✅ All custom theme colors are automatically restored!</span>
+                </code>
+            </div>
+
+            <h3>Automatic Theme Color Saving</h3>
+            <p>When you save a config, <strong>all custom theme colors are automatically included</strong> - no registration needed! This includes:</p>
+            <ul style="color: #a1a1aa; margin-left: 2rem; margin-bottom: 1rem;">
+                <li>All colors set with <code>SetCustomAccent()</code>, <code>SetCustomBackground()</code>, <code>SetCustomText()</code>, etc.</li>
+                <li>All colors set with <code>SetCustomDropdownSelected()</code> and other component methods</li>
+                <li>Both Color3 and Gradient colors are fully supported</li>
+            </ul>
+            
+            <div class="code-block">
+                <code>
+<span class="comment">-- User customizes colors</span><br>
+WindUI:SetCustomAccent(Color3.fromHex("#30ff6a"))<br>
+WindUI:SetCustomDropdownSelected(Color3.fromHex("#60a5fa"))<br>
+WindUI:SetCustomBackground(Color3.fromHex("#1a1a1a"))<br>
+<br>
+<span class="comment">-- Save config - colors are automatically included!</span><br>
+local configFile = ConfigManager:CreateConfig("myconfig")<br>
+configFile:Register("myToggle", myToggle) <span class="comment">-- Register elements</span><br>
+configFile:Save()<br>
+<span class="comment">-- ✅ Element values saved</span><br>
+<span class="comment">-- ✅ Custom colors automatically saved (no registration needed!)</span><br>
+<br>
+<span class="comment">-- Load config - colors are automatically restored!</span><br>
+ConfigManager:LoadConfigByName("myconfig")<br>
+<span class="comment">-- ✅ Element values restored</span><br>
+<span class="comment">-- ✅ Custom colors automatically restored and applied!</span>
+                </code>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Learn More</h2>
+            <p style="color: #a1a1aa;">
+                For detailed examples and API reference, check out the 
+                <a href="https://github.com/ScriptsForDays/CUSTOMUI/blob/main/main_example.lua" target="_blank" style="color: #30ff6a;">example script</a>.
+            </p>
+        </section>
+    </div>
+</body>
+</html>
+
