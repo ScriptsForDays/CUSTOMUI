@@ -249,10 +249,18 @@ function ConfigManager:CreateConfig(configFilename)
         
         local jsonData = HttpService:JSONEncode(saveData)
         if writefile then 
-            writefile(ConfigModule.Path, jsonData)
+            local success, err = pcall(function()
+                writefile(ConfigModule.Path, jsonData)
+            end)
+            if not success then
+                warn("[ WindUI.ConfigManager ] Failed to save config: " .. tostring(err))
+                return false, "Failed to write config file: " .. tostring(err)
+            end
+            return true
+        else
+            warn("[ WindUI.ConfigManager ] writefile is not available. Config cannot be saved.")
+            return false, "writefile function is not available"
         end
-        
-        return saveData
     end
     
     function ConfigModule:Load()

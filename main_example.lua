@@ -1099,7 +1099,8 @@ do -- config panel
             end
 
             Window.CurrentConfig = ConfigManager:CreateConfig(SaveConfigName)
-            if Window.CurrentConfig:Save() then
+            local success, errorMsg = Window.CurrentConfig:Save()
+            if success then
                 WindUI:Notify({
                     Title = "Config Saved",
                     Desc = "Config '" .. SaveConfigName .. "' saved successfully",
@@ -1111,7 +1112,7 @@ do -- config panel
             else
                 WindUI:Notify({
                     Title = "Error",
-                    Desc = "Failed to save config",
+                    Desc = errorMsg or "Failed to save config",
                     Icon = "x",
                     Duration = 3
                 })
