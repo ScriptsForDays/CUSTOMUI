@@ -142,6 +142,7 @@
                 display: flex;
                 flex-direction: column;
                 gap: 0.5rem;
+                margin-left: -4px;
             }
 
             .nav a {
@@ -607,6 +608,24 @@ loadstring(game:HttpGet('https://raw.githubusercontent.com/ScriptsForDays/CUSTOM
         
         // Initial display
         document.getElementById('visitorCount').textContent = '1';
+        
+        // Make visitor counter clickable on mobile to show count
+        const visitorCounter = document.getElementById('visitorCounter');
+        const visitorCountElement = document.getElementById('visitorCount');
+        
+        visitorCounter.addEventListener('click', function() {
+            const count = visitorCountElement.textContent;
+            alert('Active Visitors: ' + count);
+        });
+        
+        // Add touch feedback
+        visitorCounter.addEventListener('touchstart', function() {
+            this.style.opacity = '0.7';
+        });
+        
+        visitorCounter.addEventListener('touchend', function() {
+            this.style.opacity = '1';
+        });
     </script>
 </body>
 </html>
