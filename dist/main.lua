@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.6.61  |  2025-12-01  |  Roblox UI Library for scripts
+    v1.6.61  |  2025-12-02  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -62,6 +62,8 @@ Toggle="Button",
 
 Checkbox="Button",
 CheckboxIcon="White",
+
+DropdownSelected="Text",
 }end function a.b()
 local b=game:GetService"RunService"local d=
 b.Heartbeat
@@ -3788,317 +3790,493 @@ return aa end function a.w()
 local aa=game:GetService"HttpService"
 
 local ab
-
 local ac
-ac={
+
+local ad
+ad={
 Folder=nil,
 Path=nil,
 Configs={},
 Parser={
 Colorpicker={
-Save=function(ad)
+Save=function(ae)
 return{
-__type=ad.__type,
-value=ad.Default:ToHex(),
-transparency=ad.Transparency or nil,
+__type=ae.__type,
+value=ae.Default:ToHex(),
+transparency=ae.Transparency or nil,
 }
 end,
-Load=function(ad,ae)
-if ad and ad.Update then
-ad:Update(Color3.fromHex(ae.value),ae.transparency or nil)
+Load=function(ae,af)
+if ae and ae.Update then
+ae:Update(Color3.fromHex(af.value),af.transparency or nil)
 end
 end
 },
 Dropdown={
-Save=function(ad)
+Save=function(ae)
 return{
-__type=ad.__type,
-value=ad.Value,
+__type=ae.__type,
+value=ae.Value,
 }
 end,
-Load=function(ad,ae)
-if ad and ad.Select then
-ad:Select(ae.value)
+Load=function(ae,af)
+if ae and ae.Select then
+ae:Select(af.value)
 end
 end
 },
 Input={
-Save=function(ad)
+Save=function(ae)
 return{
-__type=ad.__type,
-value=ad.Value,
+__type=ae.__type,
+value=ae.Value,
 }
 end,
-Load=function(ad,ae)
-if ad and ad.Set then
-ad:Set(ae.value)
+Load=function(ae,af)
+if ae and ae.Set then
+ae:Set(af.value)
 end
 end
 },
 Keybind={
-Save=function(ad)
+Save=function(ae)
 return{
-__type=ad.__type,
-value=ad.Value,
+__type=ae.__type,
+value=ae.Value,
 }
 end,
-Load=function(ad,ae)
-if ad and ad.Set then
-ad:Set(ae.value)
+Load=function(ae,af)
+if ae and ae.Set then
+ae:Set(af.value)
 end
 end
 },
 Slider={
-Save=function(ad)
+Save=function(ae)
 return{
-__type=ad.__type,
-value=ad.Value.Default,
+__type=ae.__type,
+value=ae.Value.Default,
 }
 end,
-Load=function(ad,ae)
-if ad and ad.Set then
-ad:Set(tonumber(ae.value))
+Load=function(ae,af)
+if ae and ae.Set then
+ae:Set(tonumber(af.value))
 end
 end
 },
 Toggle={
-Save=function(ad)
+Save=function(ae)
 return{
-__type=ad.__type,
-value=ad.Value,
+__type=ae.__type,
+value=ae.Value,
 }
 end,
-Load=function(ad,ae)
-if ad and ad.Set then
-ad:Set(ae.value)
+Load=function(ae,af)
+if ae and ae.Set then
+ae:Set(af.value)
 end
 end
 },
 }
 }
 
-function ac.Init(ad,ae)
-if not ae.Folder then
+function ad.Init(ae,af)
+if not af.Folder then
 warn"[ WindUI.ConfigManager ] Window.Folder is not specified."
 return false
 end
 
-ab=ae
-ac.Folder=ab.Folder
-ac.Path=tostring(ac.Folder).."/config/"
+ab=af
 
-
-
-if not isfolder(ac.Folder.."/config/")then
-if not isfolder(ac.Folder)then
-makefolder(ac.Folder)
-end
-if not isfolder(ac.Folder.."/config/")then
-makefolder(ac.Folder.."/config/")
-end
+if af.WindUI then
+ac=af.WindUI
 end
 
-local af=ac:AllConfigs()
+ad.Folder=ab.Folder
+ad.Path=tostring(ad.Folder).."/config/"
 
-for ag,ah in next,af do
-if isfile and readfile and isfile(ah..".json")then
-ac.Configs[ah]=readfile(ah..".json")
+
+
+if not isfolder(ad.Folder.."/config/")then
+if not isfolder(ad.Folder)then
+makefolder(ad.Folder)
+end
+if not isfolder(ad.Folder.."/config/")then
+makefolder(ad.Folder.."/config/")
 end
 end
 
-return ac
+local ag=ad:AllConfigs()
+
+for ah,ai in next,ag do
+if isfile and readfile and isfile(ai..".json")then
+ad.Configs[ai]=readfile(ai..".json")
+end
 end
 
-function ac.CreateConfig(ad,ae)
-local af={
-Path=ac.Path..ae..".json",
+return ad
+end
+
+function ad.CreateConfig(ae,af)
+local ag={
+Path=ad.Path..af..".json",
 Elements={},
 CustomData={},
 Version=1.1
 }
 
-if not ae then
+if not af then
 return false,"No config file is selected"
 end
 
-function af.SetAsCurrent(ag)
-ab:SetCurrentConfig(af)
+function ag.SetAsCurrent(ah)
+ab:SetCurrentConfig(ag)
 end
 
-function af.Register(ag,ah,ai)
-af.Elements[ah]=ai
+function ag.Register(ah,ai,aj)
+ag.Elements[ai]=aj
 end
 
-function af.Set(ag,ah,ai)
-af.CustomData[ah]=ai
+function ag.Set(ah,ai,aj)
+ag.CustomData[ai]=aj
 end
 
-function af.Get(ag,ah)
-return af.CustomData[ah]
+function ag.Get(ah,ai)
+return ag.CustomData[ai]
 end
 
-function af.Save(ag)
+
+local function serializeColor(ah)
+if typeof(ah)=="Color3"then
+return{
+__type="Color3",
+value=ah:ToHex()
+}
+elseif typeof(ah)=="table"then
+
+local ai=ah.Color
+local aj=ah.Transparency
+
+if ai and typeof(ai)=="ColorSequence"and aj and typeof(aj)=="NumberSequence"then
+
+local ak={}
+
+if ai.Keypoints then
+for al,am in ipairs(ai.Keypoints)do
+local an=math.floor(am.Time*100)
+local ao=0
+if aj.Keypoints and aj.Keypoints[al]then
+ao=aj.Keypoints[al].Value
+end
+ak[tostring(an)]={
+Color=am.Value:ToHex(),
+Transparency=ao
+}
+end
+end
+
+return{
+__type="Gradient",
+stops=ak,
+rotation=ah.Rotation or 0
+}
+end
+end
+return nil
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function ag.Save(ah)
 if ab.PendingFlags then
-for ah,ai in next,ab.PendingFlags do
-af:Register(ah,ai)
+for ai,aj in next,ab.PendingFlags do
+ag:Register(ai,aj)
 end
 end
 
-local ah={
-__version=af.Version,
+
+
+
+local ai={}
+local aj=a.load'b'
+if aj and aj.CustomOverrides then
+for ak,al in pairs(aj.CustomOverrides)do
+local am=serializeColor(al)
+if am then
+ai[ak]=am
+end
+end
+end
+
+local ak={
+__version=ag.Version,
 __elements={},
-__custom=af.CustomData
+__custom=ag.CustomData,
+__themeOverrides=ai
 }
 
-for ai,aj in next,af.Elements do
-if ac.Parser[aj.__type]then
-ah.__elements[tostring(ai)]=ac.Parser[aj.__type].Save(aj)
+for al,am in next,ag.Elements do
+if ad.Parser[am.__type]then
+ak.__elements[tostring(al)]=ad.Parser[am.__type].Save(am)
 end
 end
 
-local ai=aa:JSONEncode(ah)
+local al=aa:JSONEncode(ak)
 if writefile then
-writefile(af.Path,ai)
+writefile(ag.Path,al)
 end
 
-return ah
+return ak
 end
 
-function af.Load(ag)
-if isfile and not isfile(af.Path)then
+function ag.Load(ah)
+if isfile and not isfile(ag.Path)then
 return false,"Config file does not exist"
 end
 
-local ah,ai=pcall(function()
-local ah=readfile or function()
+local ai,aj=pcall(function()
+local ai=readfile or function()
 warn"[ WindUI.ConfigManager ] The config system doesn't work in the studio."
 return nil
 end
-return aa:JSONDecode(ah(af.Path))
+return aa:JSONDecode(ai(ag.Path))
 end)
 
-if not ah then
+if not ai then
 return false,"Failed to parse config file"
 end
 
-if not ai.__version then
-local aj={
-__version=af.Version,
-__elements=ai,
+if not aj.__version then
+local ak={
+__version=ag.Version,
+__elements=aj,
 __custom={}
 }
-ai=aj
+aj=ak
 end
 
 if ab.PendingFlags then
-for aj,ak in next,ab.PendingFlags do
-af:Register(aj,ak)
+for ak,al in next,ab.PendingFlags do
+ag:Register(ak,al)
 end
 end
 
-for aj,ak in next,(ai.__elements or{})do
-if af.Elements[aj]and ac.Parser[ak.__type]then
+for ak,al in next,(aj.__elements or{})do
+if ag.Elements[ak]and ad.Parser[al.__type]then
 task.spawn(function()
-ac.Parser[ak.__type].Load(af.Elements[aj],ak)
+ad.Parser[al.__type].Load(ag.Elements[ak],al)
 end)
 end
 end
 
-af.CustomData=ai.__custom or{}
+ag.CustomData=aj.__custom or{}
 
-return af.CustomData
+
+if aj.__themeOverrides then
+local ak=a.load'b'
+if ak and ak.CustomOverrides then
+
+ak.CustomOverrides={}
+
+
+local function deserializeColor(al)
+if not al or not al.__type then
+return nil
 end
 
-function af.Delete(ag)
+if al.__type=="Color3"then
+return Color3.fromHex(al.value)
+elseif al.__type=="Gradient"then
+
+local am=ac
+if not am and ab and ab.WindUI then
+am=ab.WindUI
+end
+
+if am and am.Gradient then
+
+local an={}
+for ao,ap in pairs(al.stops or{})do
+an[ao]={
+Color=Color3.fromHex(ap.Color),
+Transparency=ap.Transparency or 0
+}
+end
+return am:Gradient(an,{
+Rotation=al.rotation or 0
+})
+end
+end
+return nil
+end
+
+
+for al,am in pairs(aj.__themeOverrides)do
+local an=deserializeColor(am)
+if an then
+ak.CustomOverrides[al]=an
+end
+end
+
+
+if ak.UpdateTheme then
+ak.UpdateTheme(nil,false)
+end
+end
+end
+
+return ag.CustomData
+end
+
+function ag.Delete(ah)
 if not delfile then
 return false,"delfile function is not available"
 end
 
-if not isfile(af.Path)then
+if not isfile(ag.Path)then
+return false,"Config file does not exist"
+end
+
+local ai,aj=pcall(function()
+delfile(ag.Path)
+end)
+
+if not ai then
+return false,"Failed to delete config file: "..tostring(aj)
+end
+
+ad.Configs[af]=nil
+
+if ab.CurrentConfig==ag then
+ab.CurrentConfig=nil
+end
+
+return true,"Config deleted successfully"
+end
+
+function ag.GetData(ah)
+return{
+elements=ag.Elements,
+custom=ag.CustomData
+}
+end
+
+ag:SetAsCurrent()
+ad.Configs[af]=ag
+return ag
+end
+
+function ad.DeleteConfig(ae,af)
+if not delfile then
+return false,"delfile function is not available"
+end
+
+local ag=ad.Path..af..".json"
+
+if not isfile(ag)then
 return false,"Config file does not exist"
 end
 
 local ah,ai=pcall(function()
-delfile(af.Path)
+delfile(ag)
 end)
 
 if not ah then
 return false,"Failed to delete config file: "..tostring(ai)
 end
 
-ac.Configs[ae]=nil
+ad.Configs[af]=nil
 
-if ab.CurrentConfig==af then
+if ab.CurrentConfig and ab.CurrentConfig.Path==ag then
 ab.CurrentConfig=nil
 end
 
 return true,"Config deleted successfully"
 end
 
-function af.GetData(ag)
-return{
-elements=af.Elements,
-custom=af.CustomData
-}
-end
+function ad.AllConfigs(ae)
+if not listfiles then return{}end
 
-af:SetAsCurrent()
-ac.Configs[ae]=af
+local af={}
+if not isfolder(ad.Path)then
+makefolder(ad.Path)
 return af
 end
 
-function ac.DeleteConfig(ad,ae)
-if not delfile then
-return false,"delfile function is not available"
+for ag,ah in next,listfiles(ad.Path)do
+local ai=ah:match"([^\\/]+)%.json$"
+if ai then
+table.insert(af,ai)
+end
 end
 
-local af=ac.Path..ae..".json"
-
-if not isfile(af)then
-return false,"Config file does not exist"
+return af
 end
 
-local ag,ah=pcall(function()
-delfile(af)
+function ad.GetConfig(ae,af)
+return ad.Configs[af]
+end
+
+
+function ad.LoadConfigByName(ae,af)
+if not af or af==""then
+return false,"Config name cannot be empty"
+end
+
+
+local ag=ad.Path..af..".json"
+if not isfile or not isfile(ag)then
+return false,"Config '"..af.."' does not exist"
+end
+
+
+local ah=ad.Configs[af]
+if not ah then
+ah=ad:CreateConfig(af)
+end
+
+
+local ai,aj=pcall(function()
+return ah:Load()
 end)
 
-if not ag then
-return false,"Failed to delete config file: "..tostring(ah)
+if not ai then
+return false,"Failed to load config: "..tostring(aj)
 end
 
-ac.Configs[ae]=nil
-
-if ab.CurrentConfig and ab.CurrentConfig.Path==af then
-ab.CurrentConfig=nil
+if aj==false then
+return false,"Config file does not exist or failed to parse"
 end
 
-return true,"Config deleted successfully"
+return true,aj
 end
 
-function ac.AllConfigs(ad)
-if not listfiles then return{}end
 
-local ae={}
-if not isfolder(ac.Path)then
-makefolder(ac.Path)
-return ae
+function ad.ConfigExists(ae,af)
+if not af or af==""then
+return false
 end
 
-for af,ag in next,listfiles(ac.Path)do
-local ah=ag:match"([^\\/]+)%.json$"
-if ah then
-table.insert(ae,ah)
-end
+local ag=ad.Path..af..".json"
+return isfile and isfile(ag)or false
 end
 
-return ae
-end
-
-function ac.GetConfig(ad,ae)
-return ac.Configs[ae]
-end
-
-return ac end function a.x()
+return ad end function a.x()
 local aa={}
 
 local ab=a.load'b'
@@ -7061,6 +7239,17 @@ ElementTable=aq,
 
 if aq.Callback then
 aq.UIElements.Dropdown=ag("",nil,aq.DropdownFrame.UIElements.Main,nil,am.Window.NewElements and 12 or 10)
+
+
+if aq.UIElements.Dropdown and aq.UIElements.Dropdown.Frame and aq.UIElements.Dropdown.Frame.Frame and aq.UIElements.Dropdown.Frame.Frame.TextLabel then
+local as=aq.UIElements.Dropdown.Frame.Frame.TextLabel
+
+ac.Objects[as]=nil
+ac.AddThemeObject(as,{
+TextColor3="DropdownSelected",
+BackgroundColor3="DropdownSelected"
+})
+end
 
 aq.UIElements.Dropdown.Frame.Frame.TextLabel.TextTruncate="AtEnd"
 aq.UIElements.Dropdown.Frame.Frame.TextLabel.Size=UDim2.new(1,aq.UIElements.Dropdown.Frame.Frame.TextLabel.Size.X.Offset-18-12-12,0,0)
@@ -10259,8 +10448,9 @@ local at=aj("UICorner",{
 CornerRadius=UDim.new(0,ar.UICorner)
 })
 
+if ar.Folder then
 
-if ar.Folder and aq.Folder then
+ar.WindUI=aq.WindUI
 ar.ConfigManager=ap:Init(ar)
 end
 
@@ -12458,6 +12648,15 @@ end
 function ac.SetCustomCheckboxIcon(as,at)
 if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
 ak.CustomOverrides.CheckboxIcon=at
+ak.UpdateTheme(nil,false)
+return true
+end
+return false
+end
+
+function ac.SetCustomDropdownSelected(as,at)
+if typeof(at)=="Color3"or(typeof(at)=="table"and at.Color and at.Transparency)then
+ak.CustomOverrides.DropdownSelected=at
 ak.UpdateTheme(nil,false)
 return true
 end
