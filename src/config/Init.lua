@@ -461,6 +461,9 @@ function ConfigManager:LoadConfigByName(configName)
         configModule = ConfigManager:CreateConfig(configName)
     end
     
+    -- Set as current config before loading
+    configModule:SetAsCurrent()
+    
     -- Load the config
     local success, result = pcall(function()
         return configModule:Load()

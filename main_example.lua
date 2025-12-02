@@ -1031,7 +1031,20 @@ do -- config panel
             configDropdown:SetValues(dropdownValues)
             -- Try to maintain current selection if it still exists
             if selectedConfigFromDropdown and table.find(AllConfigs, selectedConfigFromDropdown) then
-                configDropdown:Select(selectedConfigFromDropdown)
+                -- Find the matching option object from Values array
+                local matchingOption = nil
+                for _, option in ipairs(dropdownValues) do
+                    if type(option) == "table" and option.Title == selectedConfigFromDropdown then
+                        matchingOption = option
+                        break
+                    end
+                end
+                if matchingOption then
+                    configDropdown:Select(matchingOption)
+                else
+                    -- Fallback: try selecting by string
+                    configDropdown:Select(selectedConfigFromDropdown)
+                end
             end
         else
             configDropdown = ConfigTab:Dropdown({
@@ -1143,7 +1156,23 @@ do -- config panel
                 -- Update dropdown selection
                 selectedConfigFromDropdown = configToLoad
                 if configDropdown then
-                    configDropdown:Select(configToLoad)
+                    -- Find the matching option object from Values array
+                    local matchingOption = nil
+                    for _, option in ipairs(configDropdown.Values or {}) do
+                        if type(option) == "table" and option.Title == configToLoad then
+                            matchingOption = option
+                            break
+                        elseif option == configToLoad then
+                            matchingOption = option
+                            break
+                        end
+                    end
+                    if matchingOption then
+                        configDropdown:Select(matchingOption)
+                    else
+                        -- Fallback: try selecting by string
+                        configDropdown:Select(configToLoad)
+                    end
                 end
             else
                 WindUI:Notify({
