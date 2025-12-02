@@ -4038,10 +4038,18 @@ end
 
 local al=aa:JSONEncode(ak)
 if writefile then
+local am,an=pcall(function()
 writefile(ag.Path,al)
+end)
+if not am then
+warn("[ WindUI.ConfigManager ] Failed to save config: "..tostring(an))
+return false,"Failed to write config file: "..tostring(an)
 end
-
-return ak
+return true
+else
+warn"[ WindUI.ConfigManager ] writefile is not available. Config cannot be saved."
+return false,"writefile function is not available"
+end
 end
 
 function ag.Load(ah)
