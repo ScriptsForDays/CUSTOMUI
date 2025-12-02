@@ -31,4 +31,8 @@ build/.init.lua
 WindUI-original/
 
 # Documentation HTML files (private, not for public repo)
-docs/*.html
+# Allow index.html for GitHub Pages, but ignore other documentation files
+docs/api.html
+docs/components.html
+docs/customizations.html
+docs/installation.html
