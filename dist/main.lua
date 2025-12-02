@@ -4128,6 +4128,20 @@ end
 return am:Gradient(an,{
 Rotation=al.rotation or 0
 })
+else
+
+if ak.Gradient then
+local an={}
+for ao,ap in pairs(al.stops or{})do
+an[ao]={
+Color=Color3.fromHex(ap.Color),
+Transparency=ap.Transparency or 0
+}
+end
+return ak.Gradient(an,{
+Rotation=al.rotation or 0
+})
+end
 end
 end
 return nil
@@ -4142,9 +4156,18 @@ end
 end
 
 
+
 if ak.UpdateTheme then
 ak.UpdateTheme(nil,false)
 end
+
+
+task.spawn(function()
+task.wait(0.1)
+if ak.UpdateTheme then
+ak.UpdateTheme(nil,false)
+end
+end)
 end
 end
 
