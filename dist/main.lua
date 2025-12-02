@@ -4251,6 +4251,9 @@ ah=ad:CreateConfig(af)
 end
 
 
+ah:SetAsCurrent()
+
+
 local ai,aj=pcall(function()
 return ah:Load()
 end)
