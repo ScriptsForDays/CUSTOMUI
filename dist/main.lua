@@ -4013,7 +4013,8 @@ end
 
 
 local ai={}
-local aj=a.load'b'
+
+local aj=(ac and ac.Creator)or(ab and ab.WindUI and ab.WindUI.Creator)or a.load'b'
 if aj and aj.CustomOverrides then
 
 local ak=0
@@ -4028,6 +4029,8 @@ end
 end
 if ak>0 then
 print("[ WindUI.ConfigManager ] Saving "..ak.." custom theme overrides")
+else
+warn"[ WindUI.ConfigManager ] CustomOverrides table is empty - no custom colors to save"
 end
 else
 warn"[ WindUI.ConfigManager ] Creator.CustomOverrides is nil or not accessible"
@@ -4106,7 +4109,8 @@ ag.CustomData=aj.__custom or{}
 
 
 if aj.__themeOverrides then
-local ak=a.load'b'
+
+local ak=(ac and ac.Creator)or(ab and ab.WindUI and ab.WindUI.Creator)or a.load'b'
 if ak and ak.CustomOverrides then
 
 local al=0
