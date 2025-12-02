@@ -224,7 +224,8 @@ function ConfigManager:CreateConfig(configFilename)
         -- This includes ALL custom theme properties: Accent, Background, Text, Button, Icon, 
         -- Dialog, Outline, Hover, Placeholder, DropdownSelected, and all other custom properties
         local customOverrides = {}
-        local Creator = require("../modules/Creator")
+        -- Use WindUI.Creator to ensure we're accessing the same instance
+        local Creator = (WindUI and WindUI.Creator) or (Window and Window.WindUI and Window.WindUI.Creator) or require("../modules/Creator")
         if Creator and Creator.CustomOverrides then
             -- Debug: Check if CustomOverrides has any entries
             local overrideCount = 0
@@ -239,6 +240,8 @@ function ConfigManager:CreateConfig(configFilename)
             end
             if overrideCount > 0 then
                 print("[ WindUI.ConfigManager ] Saving " .. overrideCount .. " custom theme overrides")
+            else
+                warn("[ WindUI.ConfigManager ] CustomOverrides table is empty - no custom colors to save")
             end
         else
             warn("[ WindUI.ConfigManager ] Creator.CustomOverrides is nil or not accessible")
@@ -317,7 +320,8 @@ function ConfigManager:CreateConfig(configFilename)
         
         -- Restore CustomOverrides if they were saved
         if loadData.__themeOverrides then
-            local Creator = require("../modules/Creator")
+            -- Use WindUI.Creator to ensure we're accessing the same instance
+            local Creator = (WindUI and WindUI.Creator) or (Window and Window.WindUI and Window.WindUI.Creator) or require("../modules/Creator")
             if Creator and Creator.CustomOverrides then
                 -- Debug: Check how many overrides we're loading
                 local overrideCount = 0
