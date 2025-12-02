@@ -533,7 +533,7 @@ end
             </div>
 
             <h3>Complete Example: Config UI</h3>
-            <p>Here's a complete example showing how to create a config management UI:</p>
+            <p>Here's a complete example showing how to create a config management UI with both dropdown and textbox options for loading configs:</p>
             
             <div class="code-block">
                 <code>
@@ -635,6 +635,15 @@ ConfigTab:Button({<br>
 })
                 </code>
             </div>
+
+            <h4>How the Config Loading Works</h4>
+            <p>The config loading UI provides two flexible options for users:</p>
+            <ul style="color: #a1a1aa; margin-left: 2rem; margin-bottom: 1rem;">
+                <li><strong>Dropdown Selection:</strong> Users can select a config from the dropdown menu, which automatically lists all saved configs. When a config is selected, it updates the textbox below.</li>
+                <li><strong>Textbox Entry:</strong> Users can manually type a config name in the textbox. This works independently from the dropdown and is useful when users know the exact config name.</li>
+                <li><strong>Load Button:</strong> The load button intelligently uses the dropdown selection if available (priority), otherwise it uses the textbox value. This gives users flexibility to use either method.</li>
+            </ul>
+            <p><strong>Note:</strong> Both methods are optional - users can use either the dropdown, the textbox, or both. The dropdown automatically updates when new configs are saved.</p>
 
             <h3>Automatic Theme Color Saving</h3>
             <p><strong>All custom theme colors are automatically saved and loaded with configs!</strong> You don't need to manually register or save them - the config system handles everything automatically.</p>
