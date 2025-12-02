@@ -1012,37 +1012,38 @@ do -- config panel
 
     ConfigTab:Space()
 
-    -- Input field for loading configs by name
-    local LoadConfigNameInput = ConfigTab:Input({
-        Title = "Load Config by Name",
-        Desc = "Type the name of the config to load",
-        Icon = "folder-open",
-        Value = LoadConfigName,
-        Callback = function(value)
-            LoadConfigName = value or ""
-        end
-    })
-
-    -- Dropdown to see all available configs
+    -- Dropdown to see all available configs (optional - user can select from this)
     local configDropdown
+    local selectedConfigFromDropdown = nil
     local function UpdateConfigDropdown()
         local AllConfigs = ConfigManager:AllConfigs()
-        local DefaultValue = table.find(AllConfigs, LoadConfigName) and LoadConfigName or nil
+        
+        -- Convert array of strings to dropdown format
+        local dropdownValues = {}
+        for _, configName in ipairs(AllConfigs) do
+            table.insert(dropdownValues, {
+                Title = configName,
+                Icon = "file"
+            })
+        end
         
         if configDropdown then
-            configDropdown:SetValues(AllConfigs)
-            if DefaultValue then
-                configDropdown:Select(DefaultValue)
+            configDropdown:SetValues(dropdownValues)
+            -- Try to maintain current selection if it still exists
+            if selectedConfigFromDropdown and table.find(AllConfigs, selectedConfigFromDropdown) then
+                configDropdown:Select(selectedConfigFromDropdown)
             end
         else
             configDropdown = ConfigTab:Dropdown({
-                Title = "All Configs",
-                Desc = "Select existing configs to load",
-                Values = AllConfigs,
-                Value = DefaultValue,
-                Callback = function(value)
-                    LoadConfigName = value
-                    LoadConfigNameInput:Set(value)
+                Title = "Select Config (Optional)",
+                Desc = "Choose a config from the dropdown, or type one below",
+                Values = dropdownValues,
+                Callback = function(option)
+                    selectedConfigFromDropdown = option and option.Title or nil
+                    if selectedConfigFromDropdown then
+                        LoadConfigNameInput:Set(selectedConfigFromDropdown)
+                        LoadConfigName = selectedConfigFromDropdown
+                    end
                 end
             })
         end
@@ -1050,6 +1051,21 @@ do -- config panel
 
     -- Initialize dropdown
     UpdateConfigDropdown()
+
+    ConfigTab:Space()
+
+    -- Input field for loading configs by name (optional - user can type here)
+    local LoadConfigNameInput = ConfigTab:Input({
+        Title = "Load Config by Name",
+        Desc = "Type the name of the config to load, or select from dropdown above",
+        Icon = "folder-open",
+        Value = LoadConfigName,
+        Callback = function(value)
+            LoadConfigName = value or ""
+            -- Clear dropdown selection when user types manually
+            selectedConfigFromDropdown = nil
+        end
+    })
 
     ConfigTab:Space()
 
@@ -1092,16 +1108,19 @@ do -- config panel
 
     ConfigTab:Space()
 
-    -- Load Config Button (using input field)
+    -- Load Config Button (uses dropdown selection if available, otherwise uses textbox)
     ConfigTab:Button({
         Title = "Load Config",
         Icon = "refresh-cw",
         Justify = "Center",
         Callback = function()
-            if not LoadConfigName or LoadConfigName == "" then
+            -- Priority: Use dropdown selection if available, otherwise use textbox value
+            local configToLoad = selectedConfigFromDropdown or LoadConfigName
+            
+            if not configToLoad or configToLoad == "" then
                 WindUI:Notify({
                     Title = "Error",
-                    Desc = "Please enter a config name to load",
+                    Desc = "Please select a config from the dropdown or enter a config name",
                     Icon = "x",
                     Duration = 3
                 })
@@ -1109,18 +1128,23 @@ do -- config panel
             end
 
             -- Use the new LoadConfigByName method
-            local success, result = ConfigManager:LoadConfigByName(LoadConfigName)
+            local success, result = ConfigManager:LoadConfigByName(configToLoad)
             
             if success then
                 WindUI:Notify({
                     Title = "Config Loaded",
-                    Desc = "Config '" .. LoadConfigName .. "' loaded successfully",
+                    Desc = "Config '" .. configToLoad .. "' loaded successfully",
                     Icon = "check",
                     Duration = 3
                 })
                 -- Update save name to match loaded config
-                SaveConfigName = LoadConfigName
+                SaveConfigName = configToLoad
                 SaveConfigNameInput:Set(SaveConfigName)
+                -- Update dropdown selection
+                selectedConfigFromDropdown = configToLoad
+                if configDropdown then
+                    configDropdown:Select(configToLoad)
+                end
             else
                 WindUI:Notify({
                     Title = "Error",
