@@ -108,7 +108,13 @@
             .visitor-counter {
                 top: 0.5rem;
                 right: 0.5rem;
-                padding: 0.5rem 1rem;
+                padding: 0.75rem;
+                cursor: pointer;
+                min-width: 44px;
+                min-height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
             .visitor-counter-text {
@@ -116,8 +122,12 @@
             }
 
             .visitor-counter-icon {
-                width: 12px;
-                height: 12px;
+                width: 16px;
+                height: 16px;
+            }
+
+            .visitor-counter:active {
+                transform: scale(0.95);
             }
 
             .container {
