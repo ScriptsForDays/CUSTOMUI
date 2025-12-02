@@ -996,43 +996,95 @@ do -- config panel
     })
 
     local ConfigManager = Window.ConfigManager
-    local ConfigName = "default"
+    local SaveConfigName = "default"
+    local LoadConfigName = "default"
 
-    local ConfigNameInput = ConfigTab:Input({
-        Title = "Config Name",
+    -- Input field for naming configs to save
+    local SaveConfigNameInput = ConfigTab:Input({
+        Title = "Config Name (Save)",
+        Desc = "Enter a name for your config",
         Icon = "file-cog",
+        Value = SaveConfigName,
         Callback = function(value)
-            ConfigName = value
-        end
-    })
-
-    local AllConfigs = ConfigManager:AllConfigs()
-    local DefaultValue = table.find(AllConfigs, ConfigName) and ConfigName or nil
-
-    ConfigTab:Dropdown({
-        Title = "All Configs",
-        Desc = "Select existing configs",
-        Values = AllConfigs,
-        Value = DefaultValue,
-        Callback = function(value)
-            ConfigName = value
-            ConfigNameInput:Set(value)
+            SaveConfigName = value or "default"
         end
     })
 
     ConfigTab:Space()
 
+    -- Input field for loading configs by name
+    local LoadConfigNameInput = ConfigTab:Input({
+        Title = "Load Config by Name",
+        Desc = "Type the name of the config to load",
+        Icon = "folder-open",
+        Value = LoadConfigName,
+        Callback = function(value)
+            LoadConfigName = value or ""
+        end
+    })
+
+    -- Dropdown to see all available configs
+    local configDropdown
+    local function UpdateConfigDropdown()
+        local AllConfigs = ConfigManager:AllConfigs()
+        local DefaultValue = table.find(AllConfigs, LoadConfigName) and LoadConfigName or nil
+        
+        if configDropdown then
+            configDropdown:SetValues(AllConfigs)
+            if DefaultValue then
+                configDropdown:Select(DefaultValue)
+            end
+        else
+            configDropdown = ConfigTab:Dropdown({
+                Title = "All Configs",
+                Desc = "Select existing configs to load",
+                Values = AllConfigs,
+                Value = DefaultValue,
+                Callback = function(value)
+                    LoadConfigName = value
+                    LoadConfigNameInput:Set(value)
+                end
+            })
+        end
+    end
+
+    -- Initialize dropdown
+    UpdateConfigDropdown()
+
+    ConfigTab:Space()
+
+    -- Save Config Button
     ConfigTab:Button({
         Title = "Save Config",
-        Icon = "",
+        Icon = "save",
         Justify = "Center",
         Callback = function()
-            Window.CurrentConfig = ConfigManager:CreateConfig(ConfigName)
+            if not SaveConfigName or SaveConfigName == "" then
+                WindUI:Notify({
+                    Title = "Error",
+                    Desc = "Please enter a config name",
+                    Icon = "x",
+                    Duration = 3
+                })
+                return
+            end
+
+            Window.CurrentConfig = ConfigManager:CreateConfig(SaveConfigName)
             if Window.CurrentConfig:Save() then
                 WindUI:Notify({
                     Title = "Config Saved",
-                    Desc = "Config '" .. ConfigName .. "' saved",
+                    Desc = "Config '" .. SaveConfigName .. "' saved successfully",
                     Icon = "check",
+                    Duration = 3
+                })
+                -- Update dropdown to show new config
+                UpdateConfigDropdown()
+            else
+                WindUI:Notify({
+                    Title = "Error",
+                    Desc = "Failed to save config",
+                    Icon = "x",
+                    Duration = 3
                 })
             end
         end
@@ -1040,17 +1092,41 @@ do -- config panel
 
     ConfigTab:Space()
 
+    -- Load Config Button (using input field)
     ConfigTab:Button({
         Title = "Load Config",
-        Icon = "",
+        Icon = "refresh-cw",
         Justify = "Center",
         Callback = function()
-            Window.CurrentConfig = ConfigManager:CreateConfig(ConfigName)
-            if Window.CurrentConfig:Load() then
+            if not LoadConfigName or LoadConfigName == "" then
+                WindUI:Notify({
+                    Title = "Error",
+                    Desc = "Please enter a config name to load",
+                    Icon = "x",
+                    Duration = 3
+                })
+                return
+            end
+
+            -- Use the new LoadConfigByName method
+            local success, result = ConfigManager:LoadConfigByName(LoadConfigName)
+            
+            if success then
                 WindUI:Notify({
                     Title = "Config Loaded",
-                    Desc = "Config '" .. ConfigName .. "' loaded",
-                    Icon = "refresh-cw",
+                    Desc = "Config '" .. LoadConfigName .. "' loaded successfully",
+                    Icon = "check",
+                    Duration = 3
+                })
+                -- Update save name to match loaded config
+                SaveConfigName = LoadConfigName
+                SaveConfigNameInput:Set(SaveConfigName)
+            else
+                WindUI:Notify({
+                    Title = "Error",
+                    Desc = result or "Failed to load config",
+                    Icon = "x",
+                    Duration = 3
                 })
             end
         end

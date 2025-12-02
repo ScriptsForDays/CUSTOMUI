@@ -119,8 +119,9 @@ return function(Config)
         CornerRadius = UDim.new(0,Window.UICorner)
     })
 
-    -- Only initialize ConfigManager if Config.Folder is explicitly set (not from Title)
-    if Window.Folder and Config.Folder then 
+    if Window.Folder then 
+        -- Store WindUI reference in Window for ConfigManager to access
+        Window.WindUI = Config.WindUI
         Window.ConfigManager = ConfigManager:Init(Window)
     end
     

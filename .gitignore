@@ -29,3 +29,6 @@ build/.init.lua
 
 # Temporary comparison directory
 WindUI-original/
+
+# Documentation HTML files (private, not for public repo)
+docs/*.html

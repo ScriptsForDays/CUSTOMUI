@@ -523,6 +523,15 @@ function WindUI:SetCustomCheckboxIcon(color)
     return false
 end
 
+function WindUI:SetCustomDropdownSelected(color)
+    if typeof(color) == "Color3" or (typeof(color) == "table" and color.Color and color.Transparency) then
+        Creator.CustomOverrides["DropdownSelected"] = color
+        Creator.UpdateTheme(nil, false) -- Update all UI elements immediately
+        return true
+    end
+    return false
+end
+
 -- Generic Property Setter (for any property not covered above)
 function WindUI:SetCustomProperty(propertyName, value)
     if typeof(value) == "Color3" or (typeof(value) == "table" and value.Color and value.Transparency) or typeof(value) == "number" then

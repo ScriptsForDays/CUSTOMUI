@@ -46,4 +46,6 @@ return {
     
     Checkbox = "Button",
     CheckboxIcon = "White",
+    
+    DropdownSelected = "Text",
 }

@@ -1,6 +1,7 @@
 local HttpService = game:GetService("HttpService")
 
 local Window 
+local WindUI
 
 local ConfigManager
 ConfigManager = {
@@ -97,6 +98,11 @@ function ConfigManager:Init(WindowTable)
     end
     
     Window = WindowTable
+    -- Get WindUI reference from Window object
+    if WindowTable.WindUI then
+        WindUI = WindowTable.WindUI
+    end
+    
     ConfigManager.Folder = Window.Folder
     ConfigManager.Path = tostring(ConfigManager.Folder) .. "/config/"
     
@@ -150,6 +156,63 @@ function ConfigManager:CreateConfig(configFilename)
         return ConfigModule.CustomData[key]
     end
     
+    -- Helper function to serialize Color3 or Gradient to JSON-safe format
+    local function serializeColor(color)
+        if typeof(color) == "Color3" then
+            return {
+                __type = "Color3",
+                value = color:ToHex()
+            }
+        elseif typeof(color) == "table" then
+            -- Check if it's a Gradient (has ColorSequence and NumberSequence)
+            local colorSeq = color.Color
+            local transSeq = color.Transparency
+            
+            if colorSeq and typeof(colorSeq) == "ColorSequence" and transSeq and typeof(transSeq) == "NumberSequence" then
+                -- It's a Gradient
+                local stops = {}
+                
+                if colorSeq.Keypoints then
+                    for i, keypoint in ipairs(colorSeq.Keypoints) do
+                        local pos = math.floor(keypoint.Time * 100)
+                        local transparency = 0
+                        if transSeq.Keypoints and transSeq.Keypoints[i] then
+                            transparency = transSeq.Keypoints[i].Value
+                        end
+                        stops[tostring(pos)] = {
+                            Color = keypoint.Value:ToHex(),
+                            Transparency = transparency
+                        }
+                    end
+                end
+                
+                return {
+                    __type = "Gradient",
+                    stops = stops,
+                    rotation = color.Rotation or 0
+                }
+            end
+        end
+        return nil
+    end
+    
+    -- Helper function to deserialize Color3 or Gradient from saved format
+    local function deserializeColor(data)
+        if not data or not data.__type then
+            return nil
+        end
+        
+        if data.__type == "Color3" then
+            return Color3.fromHex(data.value)
+        elseif data.__type == "Gradient" and WindUI and WindUI.Gradient then
+            -- Reconstruct gradient using WindUI:Gradient
+            return WindUI:Gradient(data.stops or {}, {
+                Rotation = data.rotation or 0
+            })
+        end
+        return nil
+    end
+    
     function ConfigModule:Save()
         if Window.PendingFlags then
             for flag, element in next, Window.PendingFlags do
@@ -157,10 +220,25 @@ function ConfigManager:CreateConfig(configFilename)
             end
         end
         
+        -- Get CustomOverrides from Creator module
+        -- This includes ALL custom theme properties: Accent, Background, Text, Button, Icon, 
+        -- Dialog, Outline, Hover, Placeholder, DropdownSelected, and all other custom properties
+        local customOverrides = {}
+        local Creator = require("../modules/Creator")
+        if Creator and Creator.CustomOverrides then
+            for property, color in pairs(Creator.CustomOverrides) do
+                local serialized = serializeColor(color)
+                if serialized then
+                    customOverrides[property] = serialized
+                end
+            end
+        end
+        
         local saveData = {
             __version = ConfigModule.Version,
             __elements = {},
-            __custom = ConfigModule.CustomData
+            __custom = ConfigModule.CustomData,
+            __themeOverrides = customOverrides
         }
         
         for name, element in next, ConfigModule.Elements do
@@ -218,6 +296,60 @@ function ConfigManager:CreateConfig(configFilename)
         end
         
         ConfigModule.CustomData = loadData.__custom or {}
+        
+        -- Restore CustomOverrides if they were saved
+        if loadData.__themeOverrides then
+            local Creator = require("../modules/Creator")
+            if Creator and Creator.CustomOverrides then
+                -- Clear existing overrides first
+                Creator.CustomOverrides = {}
+                
+                -- Helper function to deserialize Color3 or Gradient
+                local function deserializeColor(data)
+                    if not data or not data.__type then
+                        return nil
+                    end
+                    
+                    if data.__type == "Color3" then
+                        return Color3.fromHex(data.value)
+                    elseif data.__type == "Gradient" then
+                        -- Get WindUI reference
+                        local windUI = WindUI
+                        if not windUI and Window and Window.WindUI then
+                            windUI = Window.WindUI
+                        end
+                        
+                        if windUI and windUI.Gradient then
+                            -- Convert stops from hex strings to Color3
+                            local convertedStops = {}
+                            for pos, stop in pairs(data.stops or {}) do
+                                convertedStops[pos] = {
+                                    Color = Color3.fromHex(stop.Color),
+                                    Transparency = stop.Transparency or 0
+                                }
+                            end
+                            return windUI:Gradient(convertedStops, {
+                                Rotation = data.rotation or 0
+                            })
+                        end
+                    end
+                    return nil
+                end
+                
+                -- Restore each override (including DropdownSelected and all other custom properties)
+                for property, colorData in pairs(loadData.__themeOverrides) do
+                    local color = deserializeColor(colorData)
+                    if color then
+                        Creator.CustomOverrides[property] = color
+                    end
+                end
+                
+                -- Update theme to apply all overrides (including DropdownSelected)
+                if Creator.UpdateTheme then
+                    Creator.UpdateTheme(nil, false)
+                end
+            end
+        end
         
         return ConfigModule.CustomData
     end
@@ -309,6 +441,50 @@ end
 
 function ConfigManager:GetConfig(configName)
     return ConfigManager.Configs[configName]
+end
+
+-- Load a config by name (creates config module if needed, then loads it)
+function ConfigManager:LoadConfigByName(configName)
+    if not configName or configName == "" then
+        return false, "Config name cannot be empty"
+    end
+    
+    -- Check if config file exists
+    local configPath = ConfigManager.Path .. configName .. ".json"
+    if not isfile or not isfile(configPath) then
+        return false, "Config '" .. configName .. "' does not exist"
+    end
+    
+    -- Get or create the config module
+    local configModule = ConfigManager.Configs[configName]
+    if not configModule then
+        configModule = ConfigManager:CreateConfig(configName)
+    end
+    
+    -- Load the config
+    local success, result = pcall(function()
+        return configModule:Load()
+    end)
+    
+    if not success then
+        return false, "Failed to load config: " .. tostring(result)
+    end
+    
+    if result == false then
+        return false, "Config file does not exist or failed to parse"
+    end
+    
+    return true, result
+end
+
+-- Check if a config exists by name
+function ConfigManager:ConfigExists(configName)
+    if not configName or configName == "" then
+        return false
+    end
+    
+    local configPath = ConfigManager.Path .. configName .. ".json"
+    return isfile and isfile(configPath) or false
 end
 
 return ConfigManager

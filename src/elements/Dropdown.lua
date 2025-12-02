@@ -166,6 +166,17 @@ function Element:New(Config)
     if Dropdown.Callback then
         Dropdown.UIElements.Dropdown = CreateLabel("", nil, Dropdown.DropdownFrame.UIElements.Main, nil, Config.Window.NewElements and 12 or 10)
         
+        -- Update the TextLabel to use DropdownSelected theme property instead of Text
+        if Dropdown.UIElements.Dropdown and Dropdown.UIElements.Dropdown.Frame and Dropdown.UIElements.Dropdown.Frame.Frame and Dropdown.UIElements.Dropdown.Frame.Frame.TextLabel then
+            local textLabel = Dropdown.UIElements.Dropdown.Frame.Frame.TextLabel
+            -- Remove old theme object and add new one with DropdownSelected
+            Creator.Objects[textLabel] = nil
+            Creator.AddThemeObject(textLabel, {
+                TextColor3 = "DropdownSelected",
+                BackgroundColor3 = "DropdownSelected"
+            })
+        end
+        
         Dropdown.UIElements.Dropdown.Frame.Frame.TextLabel.TextTruncate = "AtEnd"
         Dropdown.UIElements.Dropdown.Frame.Frame.TextLabel.Size = UDim2.new(1, Dropdown.UIElements.Dropdown.Frame.Frame.TextLabel.Size.X.Offset - 18 - 12 - 12,0,0)
         
