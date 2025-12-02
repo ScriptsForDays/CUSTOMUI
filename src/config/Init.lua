@@ -226,12 +226,22 @@ function ConfigManager:CreateConfig(configFilename)
         local customOverrides = {}
         local Creator = require("../modules/Creator")
         if Creator and Creator.CustomOverrides then
+            -- Debug: Check if CustomOverrides has any entries
+            local overrideCount = 0
             for property, color in pairs(Creator.CustomOverrides) do
+                overrideCount = overrideCount + 1
                 local serialized = serializeColor(color)
                 if serialized then
                     customOverrides[property] = serialized
+                else
+                    warn("[ WindUI.ConfigManager ] Failed to serialize color for property: " .. tostring(property))
                 end
             end
+            if overrideCount > 0 then
+                print("[ WindUI.ConfigManager ] Saving " .. overrideCount .. " custom theme overrides")
+            end
+        else
+            warn("[ WindUI.ConfigManager ] Creator.CustomOverrides is nil or not accessible")
         end
         
         local saveData = {
@@ -309,6 +319,13 @@ function ConfigManager:CreateConfig(configFilename)
         if loadData.__themeOverrides then
             local Creator = require("../modules/Creator")
             if Creator and Creator.CustomOverrides then
+                -- Debug: Check how many overrides we're loading
+                local overrideCount = 0
+                for _ in pairs(loadData.__themeOverrides) do
+                    overrideCount = overrideCount + 1
+                end
+                print("[ WindUI.ConfigManager ] Loading " .. overrideCount .. " custom theme overrides")
+                
                 -- Clear existing overrides first
                 Creator.CustomOverrides = {}
                 
@@ -359,17 +376,26 @@ function ConfigManager:CreateConfig(configFilename)
                 end
                 
                 -- Restore each override (including DropdownSelected and all other custom properties)
+                local restoredCount = 0
                 for property, colorData in pairs(loadData.__themeOverrides) do
                     local color = deserializeColor(colorData)
                     if color then
                         Creator.CustomOverrides[property] = color
+                        restoredCount = restoredCount + 1
+                    else
+                        warn("[ WindUI.ConfigManager ] Failed to deserialize color for property: " .. tostring(property))
                     end
                 end
+                
+                print("[ WindUI.ConfigManager ] Restored " .. restoredCount .. " custom theme overrides")
                 
                 -- Update theme to apply all overrides immediately
                 -- This ensures custom colors are applied right away
                 if Creator.UpdateTheme then
+                    print("[ WindUI.ConfigManager ] Calling UpdateTheme to apply custom colors")
                     Creator.UpdateTheme(nil, false)
+                else
+                    warn("[ WindUI.ConfigManager ] Creator.UpdateTheme is nil")
                 end
                 
                 -- Also update theme after a small delay to catch any elements that might be created later
@@ -379,7 +405,11 @@ function ConfigManager:CreateConfig(configFilename)
                         Creator.UpdateTheme(nil, false)
                     end
                 end)
+            else
+                warn("[ WindUI.ConfigManager ] Creator.CustomOverrides is nil or not accessible when loading")
             end
+        else
+            print("[ WindUI.ConfigManager ] No theme overrides found in config file")
         end
         
         return ConfigModule.CustomData
