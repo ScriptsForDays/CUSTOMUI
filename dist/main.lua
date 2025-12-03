@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.6.61  |  2025-12-02  |  Roblox UI Library for scripts
+    v1.6.61  |  2025-12-03  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -11296,13 +11296,18 @@ for u,v in next,ar.Background do
 r[u]=v
 end
 
+local u=ar.UIElements.Main:FindFirstChild"Background"
+if u then
 ar.UIElements.BackgroundGradient=ai.NewRoundFrame(ar.UICorner,"Squircle",{
 Size=UDim2.new(1,0,1,0),
-Parent=ar.UIElements.Main.Background,
+Parent=u,
 ImageTransparency=ar.Transparent and aq.WindUI.TransparencyValue or 0
 },{
 r
 })
+else
+warn"[ WindUI.Window ] Background frame not found when creating gradient"
+end
 end
 
 
@@ -11374,7 +11379,12 @@ j.Text=u
 end
 
 function ar.SetBackgroundImage(r,u)
-ar.UIElements.Main.Background.ImageLabel.Image=u
+local v=ar.UIElements.Main:FindFirstChild"Background"
+if v and v:FindFirstChild"ImageLabel"then
+v.ImageLabel.Image=u
+else
+warn"[ WindUI.Window ] Background frame or ImageLabel not found when setting background image"
+end
 end
 function ar.SetBackgroundImageTransparency(r,u)
 if e and e:IsA"ImageLabel"then
@@ -11491,19 +11501,22 @@ end
 task.wait(.06)
 ar.Closed=false
 
-ak(ar.UIElements.Main.Background,0.2,{
+local x=ar.UIElements.Main:FindFirstChild"Background"
+if x then
+ak(x,0.2,{
 ImageTransparency=ar.Transparent and aq.WindUI.TransparencyValue or 0,
 },Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+
+ak(x,0.4,{
+Size=UDim2.new(1,0,1,0),
+},Enum.EasingStyle.Exponential,Enum.EasingDirection.Out):Play()
+end
 
 if ar.UIElements.BackgroundGradient then
 ak(ar.UIElements.BackgroundGradient,0.2,{
 ImageTransparency=0,
 },Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 end
-
-ak(ar.UIElements.Main.Background,0.4,{
-Size=UDim2.new(1,0,1,0),
-},Enum.EasingStyle.Exponential,Enum.EasingDirection.Out):Play()
 
 if e then
 if e:IsA"VideoFrame"then
@@ -11542,7 +11555,10 @@ ar.CanDropdown=true
 ar.UIElements.Main.Visible=true
 task.spawn(function()
 task.wait(.05)
-ar.UIElements.Main:WaitForChild"Main".Visible=true
+local z=ar.UIElements.Main:FindFirstChild"Main"
+if z then
+z.Visible=true
+end
 
 aq.WindUI:ToggleAcrylic(true)
 end)
@@ -11559,23 +11575,30 @@ end
 
 aq.WindUI:ToggleAcrylic(false)
 
-ar.UIElements.Main:WaitForChild"Main".Visible=false
+local z=ar.UIElements.Main:FindFirstChild"Main"
+if z then
+z.Visible=false
+end
 
 ar.CanDropdown=false
 ar.Closed=true
 
-ak(ar.UIElements.Main.Background,0.32,{
+local A=ar.UIElements.Main:FindFirstChild"Background"
+if A then
+ak(A,0.32,{
 ImageTransparency=1,
 },Enum.EasingStyle.Quint,Enum.EasingDirection.InOut):Play()
+
+ak(A,0.4,{
+Size=UDim2.new(1,0,1,-240),
+},Enum.EasingStyle.Exponential,Enum.EasingDirection.InOut):Play()
+end
+
 if ar.UIElements.BackgroundGradient then
 ak(ar.UIElements.BackgroundGradient,0.32,{
 ImageTransparency=1,
 },Enum.EasingStyle.Quint,Enum.EasingDirection.InOut):Play()
 end
-
-ak(ar.UIElements.Main.Background,0.4,{
-Size=UDim2.new(1,0,1,-240),
-},Enum.EasingStyle.Exponential,Enum.EasingDirection.InOut):Play()
 
 
 if e then
@@ -11606,7 +11629,7 @@ ar.OpenButtonMain:Visible(true)
 end
 end)
 
-function x.Destroy(z)
+function x.Destroy(B)
 task.spawn(function()
 if ar.OnDestroyCallback then
 task.spawn(function()
@@ -11647,9 +11670,15 @@ function ar.ToggleTransparency(v,x)
 ar.Transparent=x
 aq.WindUI.Transparent=x
 
-ar.UIElements.Main.Background.ImageTransparency=x and aq.WindUI.TransparencyValue or 0
+local z=ar.UIElements.Main:FindFirstChild"Background"
+if z then
+z.ImageTransparency=x and aq.WindUI.TransparencyValue or 0
+end
 
-ar.UIElements.MainBar.Background.ImageTransparency=x and 0.97 or 0.95
+local A=ar.UIElements.MainBar:FindFirstChild"Background"
+if A then
+A.ImageTransparency=x and 0.97 or 0.95
+end
 
 end
 
