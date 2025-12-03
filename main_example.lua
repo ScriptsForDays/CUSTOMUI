@@ -1098,7 +1098,16 @@ do -- config panel
                 return
             end
 
+            -- Create or get the config (this will set it as current and register pending flags)
             Window.CurrentConfig = ConfigManager:CreateConfig(SaveConfigName)
+            
+            -- Ensure all pending flags are registered (in case they weren't auto-registered)
+            if Window.PendingFlags then
+                for flag, element in pairs(Window.PendingFlags) do
+                    Window.CurrentConfig:Register(flag, element)
+                end
+            end
+            
             local success, errorMsg = Window.CurrentConfig:Save()
             if success then
                 WindUI:Notify({

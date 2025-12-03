@@ -142,6 +142,12 @@ function ConfigManager:CreateConfig(configFilename)
     
     function ConfigModule:SetAsCurrent()
         Window:SetCurrentConfig(ConfigModule)
+        -- When setting as current, register all pending flags to this config
+        if Window.PendingFlags then
+            for flag, element in next, Window.PendingFlags do
+                ConfigModule:Register(flag, element)
+            end
+        end
     end
 
     function ConfigModule:Register(Name, Element)
@@ -214,21 +220,33 @@ function ConfigManager:CreateConfig(configFilename)
     end
     
     function ConfigModule:Save()
+        -- Register all pending flags first (elements created when no config was current)
         if Window.PendingFlags then
             for flag, element in next, Window.PendingFlags do
                 ConfigModule:Register(flag, element)
             end
         end
         
+        -- Debug: Print how many elements are registered
+        local elementCount = 0
+        for _ in pairs(ConfigModule.Elements) do
+            elementCount = elementCount + 1
+        end
+        if elementCount > 0 then
+            print("[ WindUI.ConfigManager ] Saving " .. elementCount .. " registered elements")
+        else
+            warn("[ WindUI.ConfigManager ] No elements registered! Make sure elements have Flag parameter set.")
+        end
+        
         -- Get CustomOverrides from Creator module
         -- This includes ALL custom theme properties: Accent, Background, Text, Button, Icon, 
         -- Dialog, Outline, Hover, Placeholder, DropdownSelected, and all other custom properties
         local customOverrides = {}
+        local overrideCount = 0
         -- Use WindUI.Creator to ensure we're accessing the same instance
         local Creator = (WindUI and WindUI.Creator) or (Window and Window.WindUI and Window.WindUI.Creator) or require("../modules/Creator")
         if Creator and Creator.CustomOverrides then
             -- Debug: Check if CustomOverrides has any entries
-            local overrideCount = 0
             for property, color in pairs(Creator.CustomOverrides) do
                 overrideCount = overrideCount + 1
                 local serialized = serializeColor(color)
@@ -255,10 +273,36 @@ function ConfigManager:CreateConfig(configFilename)
         }
         
         for name, element in next, ConfigModule.Elements do
-            if ConfigManager.Parser[element.__type] then
-                saveData.__elements[tostring(name)] = ConfigManager.Parser[element.__type].Save(element)
+            if element and element.__type and ConfigManager.Parser[element.__type] then
+                local success, savedData = pcall(function()
+                    return ConfigManager.Parser[element.__type].Save(element)
+                end)
+                if success and savedData then
+                    saveData.__elements[tostring(name)] = savedData
+                else
+                    warn("[ WindUI.ConfigManager ] Failed to save element '" .. tostring(name) .. "' of type '" .. tostring(element.__type) .. "'")
+                end
+            else
+                warn("[ WindUI.ConfigManager ] Element '" .. tostring(name) .. "' is missing __type or parser. Element: " .. tostring(element))
             end
         end
+        
+        -- Debug: Print what's being saved
+        local savedElementCount = 0
+        for _ in pairs(saveData.__elements) do
+            savedElementCount = savedElementCount + 1
+        end
+        print("[ WindUI.ConfigManager ] Serialized " .. savedElementCount .. " elements for saving")
+        
+        -- Debug: Print summary before saving
+        local customDataCount = 0
+        for _ in pairs(saveData.__custom) do
+            customDataCount = customDataCount + 1
+        end
+        print("[ WindUI.ConfigManager ] Saving config with:")
+        print("  - Elements: " .. savedElementCount)
+        print("  - Theme overrides: " .. overrideCount)
+        print("  - Custom data entries: " .. customDataCount)
         
         local jsonData = HttpService:JSONEncode(saveData)
         if writefile then 
@@ -269,6 +313,7 @@ function ConfigManager:CreateConfig(configFilename)
                 warn("[ WindUI.ConfigManager ] Failed to save config: " .. tostring(err))
                 return false, "Failed to write config file: " .. tostring(err)
             end
+            print("[ WindUI.ConfigManager ] Config saved successfully to: " .. ConfigModule.Path)
             return true
         else
             warn("[ WindUI.ConfigManager ] writefile is not available. Config cannot be saved.")
