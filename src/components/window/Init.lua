@@ -899,13 +899,18 @@ return function(Config)
             BackgroundGradient[key] = value
         end
         
-        Window.UIElements.BackgroundGradient = Creator.NewRoundFrame(Window.UICorner, "Squircle", {
-            Size = UDim2.new(1,0,1,0),
-            Parent = Window.UIElements.Main.Background,
-            ImageTransparency = Window.Transparent and Config.WindUI.TransparencyValue or 0
-        }, {
-            BackgroundGradient
-        })
+        local BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+        if BackgroundFrame then
+            Window.UIElements.BackgroundGradient = Creator.NewRoundFrame(Window.UICorner, "Squircle", {
+                Size = UDim2.new(1,0,1,0),
+                Parent = BackgroundFrame,
+                ImageTransparency = Window.Transparent and Config.WindUI.TransparencyValue or 0
+            }, {
+                BackgroundGradient
+            })
+        else
+            warn("[ WindUI.Window ] Background frame not found when creating gradient")
+        end
     end
     
     -- local blur = require("../Blur")
@@ -977,7 +982,12 @@ return function(Config)
     end
     
     function Window:SetBackgroundImage(id)
-        Window.UIElements.Main.Background.ImageLabel.Image = id
+        local BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+        if BackgroundFrame and BackgroundFrame:FindFirstChild("ImageLabel") then
+            BackgroundFrame.ImageLabel.Image = id
+        else
+            warn("[ WindUI.Window ] Background frame or ImageLabel not found when setting background image")
+        end
     end
     function Window:SetBackgroundImageTransparency(v)
         if BGImage and BGImage:IsA("ImageLabel") then
@@ -1094,19 +1104,22 @@ return function(Config)
             task.wait(.06)
             Window.Closed = false
             
-            Tween(Window.UIElements.Main.Background, 0.2, {
-                ImageTransparency = Window.Transparent and Config.WindUI.TransparencyValue or 0,
-            }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+            local BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+            if BackgroundFrame then
+                Tween(BackgroundFrame, 0.2, {
+                    ImageTransparency = Window.Transparent and Config.WindUI.TransparencyValue or 0,
+                }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+                
+                Tween(BackgroundFrame, 0.4, {
+                    Size = UDim2.new(1,0,1,0),
+                }, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out):Play()
+            end
             
             if Window.UIElements.BackgroundGradient then
                 Tween(Window.UIElements.BackgroundGradient, 0.2, {
                     ImageTransparency = 0,
                 }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
             end
-            
-            Tween(Window.UIElements.Main.Background, 0.4, {
-                Size = UDim2.new(1,0,1,0),
-            }, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out):Play()
         
             if BGImage then
                 if BGImage:IsA("VideoFrame") then
@@ -1145,7 +1158,10 @@ return function(Config)
             Window.UIElements.Main.Visible = true
             task.spawn(function()
                 task.wait(.05)
-                Window.UIElements.Main:WaitForChild("Main").Visible = true
+                local MainChild = Window.UIElements.Main:FindFirstChild("Main")
+                if MainChild then
+                    MainChild.Visible = true
+                end
                 
                 Config.WindUI:ToggleAcrylic(true)
             end)
@@ -1162,23 +1178,30 @@ return function(Config)
         
         Config.WindUI:ToggleAcrylic(false)
         
-        Window.UIElements.Main:WaitForChild("Main").Visible = false
+        local MainChild = Window.UIElements.Main:FindFirstChild("Main")
+        if MainChild then
+            MainChild.Visible = false
+        end
         
         Window.CanDropdown = false
         Window.Closed = true
         
-        Tween(Window.UIElements.Main.Background, 0.32, {
-            ImageTransparency = 1,
-        }, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut):Play()
+        local BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+        if BackgroundFrame then
+            Tween(BackgroundFrame, 0.32, {
+                ImageTransparency = 1,
+            }, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut):Play()
+            
+            Tween(BackgroundFrame, 0.4, {
+                Size = UDim2.new(1,0,1,-240),
+            }, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut):Play()
+        end
+        
         if Window.UIElements.BackgroundGradient then
             Tween(Window.UIElements.BackgroundGradient, 0.32, {
                 ImageTransparency = 1,
             }, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut):Play()
         end
-        
-        Tween(Window.UIElements.Main.Background, 0.4, {
-            Size = UDim2.new(1,0,1,-240),
-        }, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut):Play()
     
         --Tween(Window.UIElements.Main.Background.UIScale, 0.19, {Scale = .95}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
         if BGImage then
@@ -1250,9 +1273,15 @@ return function(Config)
         Window.Transparent = Value
         Config.WindUI.Transparent = Value
         
-        Window.UIElements.Main.Background.ImageTransparency = Value and Config.WindUI.TransparencyValue or 0
+        local BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+        if BackgroundFrame then
+            BackgroundFrame.ImageTransparency = Value and Config.WindUI.TransparencyValue or 0
+        end
         -- Window.UIElements.Main.Background.ImageLabel.ImageTransparency = Value and Config.WindUI.TransparencyValue or 0
-        Window.UIElements.MainBar.Background.ImageTransparency = Value and 0.97 or 0.95
+        local MainBarBackground = Window.UIElements.MainBar:FindFirstChild("Background")
+        if MainBarBackground then
+            MainBarBackground.ImageTransparency = Value and 0.97 or 0.95
+        end
         
     end
     
