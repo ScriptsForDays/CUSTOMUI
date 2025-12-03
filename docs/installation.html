@@ -796,6 +796,35 @@ config2:Save()<br>
                 <li><strong><code>CreateConfig()</code> always works:</strong> It gets the existing config if it's in memory, or creates a new config module if it's not</li>
                 <li><strong><code>CreateConfig()</code> sets the config as current:</strong> This ensures all pending UI elements are properly registered</li>
             </ul>
+            
+            <p><strong>⚠️ Common Issue: Getting Selected Config from Dropdown</strong></p>
+            <p>If you're using a dropdown to select which config to overwrite, make sure you use the <strong><code>.Value</code></strong> property, not a <code>Get()</code> method:</p>
+            <div class="code-block" style="background: #2a1a1a; border-color: #ff4444;">
+                <code>
+<span class="comment">-- ❌ WRONG - Dropdown doesn't have a Get() method</span><br>
+local selectedOption = ConfigDropdown:Get() <span class="comment">-- This will fail!</span><br>
+local configName = selectedOption.Title<br>
+                </code>
+            </div>
+            <div class="code-block">
+                <code>
+<span class="comment">-- ✅ CORRECT - Use .Value property to get selected option</span><br>
+local selectedOption = ConfigDropdown.Value<br>
+local configName = nil<br>
+if type(selectedOption) == "table" and selectedOption.Title then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;configName = selectedOption.Title<br>
+elseif type(selectedOption) == "string" then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;configName = selectedOption<br>
+end<br>
+<br>
+<span class="comment">-- Now use CreateConfig to overwrite</span><br>
+if configName and configName ~= "Loading..." and configName ~= "No configs found" then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;local configFile = ConfigManager:CreateConfig(configName)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- Register all elements...</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;configFile:Save() <span class="comment">-- Overwrites the config</span><br>
+end
+                </code>
+            </div>
             <div class="code-block">
                 <code>
 <span class="comment">-- ❌ WRONG - Don't use GetConfig() for overwriting</span><br>
@@ -832,10 +861,20 @@ end
             <p><strong>Key Points:</strong></p>
             <ul style="color: #a1a1aa; margin-left: 2rem; margin-bottom: 1rem;">
                 <li>Always use <code>CreateConfig()</code> when overwriting - it works whether the config is in memory or not</li>
+                <li><strong>Use <code>dropdown.Value</code> to get selected option:</strong> Dropdowns don't have a <code>Get()</code> method - access the selected value via the <code>.Value</code> property</li>
                 <li>Register all UI elements before saving to ensure their current states are saved</li>
                 <li>Register both <code>Window.PendingFlags</code> (auto-registered elements) and any manually stored elements</li>
                 <li>The <code>Save()</code> method automatically overwrites the existing config file</li>
             </ul>
+            
+            <h5>Troubleshooting: Overwrite Config Not Working</h5>
+            <p>If your overwrite config button isn't working, check these common issues:</p>
+            <ol style="color: #a1a1aa; margin-left: 2rem; margin-bottom: 1rem;">
+                <li><strong>Using <code>dropdown:Get()</code> instead of <code>dropdown.Value</code>:</strong> Dropdowns store the selected value in the <code>.Value</code> property, not a <code>Get()</code> method</li>
+                <li><strong>Not checking if config is selected:</strong> Make sure to validate that a config is actually selected before trying to overwrite</li>
+                <li><strong>Using <code>GetConfig()</code> instead of <code>CreateConfig()</code>:</strong> <code>GetConfig()</code> only works if the config is already loaded in memory</li>
+                <li><strong>Not registering elements:</strong> Make sure all UI elements (toggles, dropdowns) are registered with the config before saving</li>
+            </ol>
 
             <h3>Complete Example: Config UI</h3>
             <p>Here's a complete example showing how to create a config management UI with both dropdown and textbox options for loading configs:</p>
