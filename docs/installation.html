@@ -618,6 +618,93 @@ end
                 </code>
             </div>
 
+            <h3>⚠️ Common Mistakes to Avoid</h3>
+            <p><strong>Important:</strong> The config system does NOT use methods directly on the <code>Window</code> object. These methods do not exist and will cause errors:</p>
+            
+            <div class="code-block" style="background: #2a1a1a; border-color: #ff4444;">
+                <code>
+<span class="comment">-- ❌ WRONG - These methods do NOT exist on Window:</span><br>
+Window:Save("myconfig") <span class="comment">-- This will fail!</span><br>
+Window:Load("myconfig") <span class="comment">-- This will fail!</span><br>
+Window:GetConfigs() <span class="comment">-- This will fail!</span><br>
+Window:Delete("myconfig") <span class="comment">-- This will fail!</span>
+                </code>
+            </div>
+
+            <p><strong>✅ Correct Usage:</strong> Always use <code>Window.ConfigManager</code> to access config functionality:</p>
+            
+            <div class="code-block">
+                <code>
+local ConfigManager = Window.ConfigManager<br>
+<br>
+<span class="comment">-- ✅ CORRECT - Get all configs</span><br>
+local allConfigs = ConfigManager:AllConfigs()<br>
+<br>
+<span class="comment">-- ✅ CORRECT - Save a config</span><br>
+local configFile = ConfigManager:CreateConfig("myconfig")<br>
+local success, errorMsg = configFile:Save()<br>
+<br>
+<span class="comment">-- ✅ CORRECT - Load a config by name</span><br>
+local success, result = ConfigManager:LoadConfigByName("myconfig")<br>
+<br>
+<span class="comment">-- ✅ CORRECT - Delete a config</span><br>
+local success, result = ConfigManager:DeleteConfig("myconfig")<br>
+<br>
+<span class="comment">-- ✅ CORRECT - Check if config exists</span><br>
+if ConfigManager:ConfigExists("myconfig") then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("Config exists!")<br>
+end
+                </code>
+            </div>
+
+            <h4>Quick Reference: ConfigManager Methods</h4>
+            <table class="param-table">
+                <thead>
+                    <tr>
+                        <th style="padding: 0.5rem; border-bottom: 1px solid #27272a; text-align: left;">Method</th>
+                        <th style="padding: 0.5rem; border-bottom: 1px solid #27272a; text-align: left;">Description</th>
+                        <th style="padding: 0.5rem; border-bottom: 1px solid #27272a; text-align: left;">Returns</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>ConfigManager:AllConfigs()</code></td>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Get array of all saved config names</td>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Array of strings</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>ConfigManager:CreateConfig(name)</code></td>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Create or get existing config by name</td>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">ConfigModule object</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>ConfigManager:LoadConfigByName(name)</code></td>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Load a config by its name</td>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">success (bool), result (string/error)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>ConfigManager:DeleteConfig(name)</code></td>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Delete a config by name</td>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">success (bool), result (string/error)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>ConfigManager:ConfigExists(name)</code></td>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Check if a config exists</td>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Boolean</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>configFile:Save()</code></td>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Save the config (called on ConfigModule)</td>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">success (bool), errorMsg (string)</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>configFile:Load()</code></td>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Load the config (called on ConfigModule)</td>
+                        <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">success (bool), result (string/error)</td>
+                    </tr>
+                </tbody>
+            </table>
+
             <h3>Naming and Managing Multiple Configs</h3>
             <p>Users can create multiple named configs and easily switch between them:</p>
             
