@@ -585,24 +585,40 @@ local Window = WindUI:CreateWindow({<br>
                 <code>
 local ConfigManager = Window.ConfigManager<br>
 <br>
+<span class="comment">-- ⚠️ IMPORTANT: Always use Flag parameter for toggles, dropdowns, etc.</span><br>
+<span class="comment">-- Elements with Flag are automatically registered and their states are saved/loaded</span><br>
+local myToggle = Tab:Toggle({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Enable Feature",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Default = false,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Flag = "featureToggle", <span class="comment">-- Required! Without this, state won't be saved</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(value)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Feature enabled:", value)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+local myDropdown = Tab:Dropdown({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Select Option",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Values = {{Title = "Option 1"}, {Title = "Option 2"}},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Flag = "optionDropdown", <span class="comment">-- Required! Without this, selection won't be saved</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(option)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print("Selected:", option.Title)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
 <span class="comment">-- Create a config with a custom name</span><br>
 local configName = "myconfig"<br>
 local configFile = ConfigManager:CreateConfig(configName)<br>
 <br>
-<span class="comment">-- Register UI elements to save (using Flag parameter)</span><br>
-local myToggle = Tab:Toggle({<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Title = "Enable Feature",<br>
-&nbsp;&nbsp;&nbsp;&nbsp;Flag = "featureToggle" <span class="comment">-- Register with a flag name</span><br>
-})<br>
+<span class="comment">-- Note: Elements with Flag are automatically registered - no manual Register() needed!</span><br>
+<span class="comment">-- But you can still manually register if needed:</span><br>
+<span class="comment">-- configFile:Register("featureToggle", myToggle)</span><br>
 <br>
-<span class="comment">-- Register the element with the config</span><br>
-configFile:Register("featureToggle", myToggle)<br>
-<br>
-<span class="comment">-- Save custom data</span><br>
+<span class="comment">-- Save custom data (optional)</span><br>
 configFile:Set("playerName", "Player1")<br>
 configFile:Set("lastSave", os.date())<br>
 <br>
 <span class="comment">-- Save the config (returns success, errorMessage)</span><br>
+<span class="comment">-- ✅ Toggle on/off state and dropdown selection are automatically saved!</span><br>
 local success, errorMsg = configFile:Save()<br>
 if success then<br>
 &nbsp;&nbsp;&nbsp;&nbsp;print("Config saved successfully!")<br>
@@ -611,7 +627,8 @@ else<br>
 end<br>
 <br>
 <span class="comment">-- Load the config</span><br>
-local loadSuccess, loadResult = configFile:Load()<br>
+<span class="comment">-- ✅ Toggle and dropdown states are automatically restored!</span><br>
+local loadSuccess, loadResult = ConfigManager:LoadConfigByName("myconfig")<br>
 if not loadSuccess then<br>
 &nbsp;&nbsp;&nbsp;&nbsp;warn("Failed to load config:", loadResult)<br>
 end
@@ -771,6 +788,54 @@ config2:Save()<br>
 <span class="comment">-- ✅ setting2 is now "new"</span>
                 </code>
             </div>
+
+            <h4>Properly Overwriting an Existing Config</h4>
+            <p><strong>Important:</strong> When overwriting an existing config, always use <code>CreateConfig()</code> instead of <code>GetConfig()</code>. Here's why:</p>
+            <ul style="color: #a1a1aa; margin-left: 2rem; margin-bottom: 1rem;">
+                <li><strong><code>GetConfig()</code> only works if the config is already in memory:</strong> It returns <code>nil</code> if the config file exists but hasn't been loaded yet</li>
+                <li><strong><code>CreateConfig()</code> always works:</strong> It gets the existing config if it's in memory, or creates a new config module if it's not</li>
+                <li><strong><code>CreateConfig()</code> sets the config as current:</strong> This ensures all pending UI elements are properly registered</li>
+            </ul>
+            <div class="code-block">
+                <code>
+<span class="comment">-- ❌ WRONG - Don't use GetConfig() for overwriting</span><br>
+local configFile = ConfigManager:GetConfig("myconfig")<br>
+if not configFile then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;warn("Config not found!") <span class="comment">-- This will fail if config isn't in memory</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;return<br>
+end<br>
+configFile:Save() <span class="comment">-- May not work properly</span><br>
+<br>
+<span class="comment">-- ✅ CORRECT - Use CreateConfig() for overwriting</span><br>
+local configFile = ConfigManager:CreateConfig("myconfig")<br>
+<span class="comment">-- Register all UI elements (toggles, dropdowns, etc.)</span><br>
+if Window.PendingFlags then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for flag, element in pairs(Window.PendingFlags) do<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;configFile:Register(flag, element)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+end<br>
+<span class="comment">-- Register any additional elements you've stored</span><br>
+for flagName, element in pairs(MyStoredElements) do<br>
+&nbsp;&nbsp;&nbsp;&nbsp;if element and element.__type then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;configFile:Register(flagName, element)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+end<br>
+<span class="comment">-- Save the config (overwrites existing file)</span><br>
+local success, errorMsg = configFile:Save()<br>
+if success then<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("Config overwritten successfully!")<br>
+else<br>
+&nbsp;&nbsp;&nbsp;&nbsp;warn("Failed to overwrite config:", errorMsg)<br>
+end
+                </code>
+            </div>
+            <p><strong>Key Points:</strong></p>
+            <ul style="color: #a1a1aa; margin-left: 2rem; margin-bottom: 1rem;">
+                <li>Always use <code>CreateConfig()</code> when overwriting - it works whether the config is in memory or not</li>
+                <li>Register all UI elements before saving to ensure their current states are saved</li>
+                <li>Register both <code>Window.PendingFlags</code> (auto-registered elements) and any manually stored elements</li>
+                <li>The <code>Save()</code> method automatically overwrites the existing config file</li>
+            </ul>
 
             <h3>Complete Example: Config UI</h3>
             <p>Here's a complete example showing how to create a config management UI with both dropdown and textbox options for loading configs:</p>
@@ -1070,7 +1135,7 @@ ConfigManager:LoadConfigByName("mytheme")<br>
                 </tr>
                 <tr>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>ConfigManager:CreateConfig(name)</code></td>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Creates a new config module with the specified name (or gets existing one). Returns a config object with Save(), Load(), Register(), Set(), Get() methods. <strong>Note:</strong> If a config with this name already exists, saving will overwrite it.</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Creates a new config module with the specified name (or gets existing one from memory). Returns a config object with Save(), Load(), Register(), Set(), Get() methods. Sets the config as current and auto-registers pending flags. <strong>Recommended for overwriting configs</strong> - works even if config isn't loaded in memory. <strong>Note:</strong> If a config with this name already exists, saving will overwrite it.</td>
                 </tr>
                 <tr>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>ConfigManager:LoadConfigByName(name)</code></td>
@@ -1086,7 +1151,7 @@ ConfigManager:LoadConfigByName("mytheme")<br>
                 </tr>
                 <tr>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>ConfigManager:GetConfig(name)</code></td>
-                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Gets an existing config module by name. Returns the config object or nil.</td>
+                    <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;">Gets an existing config module by name from memory. Returns the config object or nil if not in memory. <strong>Note:</strong> For overwriting configs, use <code>CreateConfig()</code> instead, as it works even if the config isn't loaded in memory.</td>
                 </tr>
                 <tr>
                     <td style="padding: 0.5rem; border-bottom: 1px solid #27272a;"><code>ConfigManager:DeleteConfig(name)</code></td>
@@ -1114,10 +1179,82 @@ ConfigManager:LoadConfigByName("mytheme")<br>
                 </tr>
             </table>
 
+            <h3>Important: Using Flag Parameter for Toggles and Dropdowns</h3>
+            <p><strong>Critical:</strong> For toggles, dropdowns, and other UI elements to have their states (on/off, selected values) saved and loaded properly, you <strong>must</strong> include a <code>Flag</code> parameter when creating them. Without the <code>Flag</code> parameter, the config system cannot track and restore their states.</p>
+            
+            <div class="code-block">
+                <code>
+<span class="comment">-- ❌ WRONG - Toggle without Flag parameter</span><br>
+local myToggle = MainTab:Toggle({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "AutoFarm",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Default = false,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(value)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- State changes won't be saved/loaded!<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- ✅ CORRECT - Toggle with Flag parameter</span><br>
+local myToggle = MainTab:Toggle({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "AutoFarm",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Default = false,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Flag = "AutoFarmToggle", <span class="comment">-- Required for saving/loading state!</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(value)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- State will be saved and restored correctly<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- ❌ WRONG - Dropdown without Flag parameter</span><br>
+local myDropdown = MainTab:Dropdown({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Auto Tap Mode",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Values = {{Title = "Nearest"}, {Title = "Random"}},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Value = "Nearest",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(option)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- Selected value won't be saved/loaded!<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- ✅ CORRECT - Dropdown with Flag parameter</span><br>
+local myDropdown = MainTab:Dropdown({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "Auto Tap Mode",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Values = {{Title = "Nearest"}, {Title = "Random"}},<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Value = "Nearest",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Flag = "AutoTapModeDropdown", <span class="comment">-- Required for saving/loading selection!</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Callback = function(option)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-- Selected value will be saved and restored correctly<br>
+&nbsp;&nbsp;&nbsp;&nbsp;end<br>
+})<br>
+<br>
+<span class="comment">-- Now when you save a config, these elements' states are automatically included</span><br>
+local configFile = ConfigManager:CreateConfig("myconfig")<br>
+configFile:Save() <span class="comment">-- ✅ Toggle on/off state and dropdown selection are saved!</span><br>
+<br>
+<span class="comment">-- When you load the config, states are automatically restored</span><br>
+ConfigManager:LoadConfigByName("myconfig") <span class="comment">-- ✅ Toggle and dropdown restore to saved states!</span>
+                </code>
+            </div>
+            
+            <p><strong>Key Points:</strong></p>
+            <ul style="color: #a1a1aa; margin-left: 2rem; margin-bottom: 1rem;">
+                <li><strong>Always use Flag parameter:</strong> Every toggle, dropdown, slider, input, keybind, and colorpicker should have a unique <code>Flag</code> name</li>
+                <li><strong>Flag names must be unique:</strong> Each element needs a different flag name (e.g., "AutoFarmToggle", "AutoTapToggle", "AutoTapModeDropdown")</li>
+                <li><strong>Auto-registration:</strong> Elements with <code>Flag</code> are automatically registered with the config system - no manual registration needed</li>
+                <li><strong>State persistence:</strong> With <code>Flag</code>, toggle on/off states and dropdown selections are automatically saved and restored</li>
+                <li><strong>Without Flag:</strong> Elements without <code>Flag</code> won't have their states saved, even if you manually register them</li>
+            </ul>
+            
+            <h4>Troubleshooting: Toggles/Dropdowns Not Saving States</h4>
+            <p>If your toggles and dropdowns aren't saving their states when you save a config, check the following:</p>
+            <ol style="color: #a1a1aa; margin-left: 2rem; margin-bottom: 1rem;">
+                <li><strong>Verify Flag parameter exists:</strong> Make sure each toggle/dropdown has a <code>Flag = "UniqueName"</code> parameter</li>
+                <li><strong>Check Flag names are unique:</strong> Each element must have a different flag name</li>
+                <li><strong>Ensure config is saved properly:</strong> Check that <code>configFile:Save()</code> returns <code>true</code></li>
+                <li><strong>Verify elements are registered:</strong> Elements with <code>Flag</code> are auto-registered, but you can verify by checking <code>Window.PendingFlags</code></li>
+            </ol>
+
             <h3>What Gets Saved Automatically</h3>
             <p>When you save a config, the following are automatically included:</p>
             <ul style="color: #a1a1aa; margin-left: 2rem; margin-bottom: 1rem;">
-                <li><strong>All registered UI elements:</strong> Toggles, Sliders, Dropdowns, Inputs, Keybinds, Colorpickers (values are saved)</li>
+                <li><strong>All registered UI elements:</strong> Toggles, Sliders, Dropdowns, Inputs, Keybinds, Colorpickers (values are saved) - <strong>only if they have Flag parameter</strong></li>
                 <li><strong>All custom theme colors:</strong> Accent, Background, Text, Button, Icon, Dialog, Outline, Hover, Placeholder, DropdownSelected, and all other custom properties</li>
                 <li><strong>Custom data:</strong> Any data you save using <code>configFile:Set(key, value)</code></li>
             </ul>
