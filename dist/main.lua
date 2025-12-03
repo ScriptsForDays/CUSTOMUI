@@ -3931,6 +3931,12 @@ end
 
 function ag.SetAsCurrent(ah)
 ab:SetCurrentConfig(ag)
+
+if ab.PendingFlags then
+for ai,aj in next,ab.PendingFlags do
+ag:Register(ai,aj)
+end
+end
 end
 
 function ag.Register(ah,ai,aj)
@@ -4003,6 +4009,7 @@ end
 
 
 function ag.Save(ah)
+
 if ab.PendingFlags then
 for ai,aj in next,ab.PendingFlags do
 ag:Register(ai,aj)
@@ -4010,21 +4017,32 @@ end
 end
 
 
-
-
-local ai={}
-
-local aj=(ac and ac.Creator)or(ab and ab.WindUI and ab.WindUI.Creator)or a.load'b'
-if aj and aj.CustomOverrides then
-
-local ak=0
-for al,am in pairs(aj.CustomOverrides)do
-ak=ak+1
-local an=serializeColor(am)
-if an then
-ai[al]=an
+local ai=0
+for aj in pairs(ag.Elements)do
+ai=ai+1
+end
+if ai>0 then
+print("[ WindUI.ConfigManager ] Saving "..ai.." registered elements")
 else
-warn("[ WindUI.ConfigManager ] Failed to serialize color for property: "..tostring(al))
+warn"[ WindUI.ConfigManager ] No elements registered! Make sure elements have Flag parameter set."
+end
+
+
+
+
+local aj={}
+local ak=0
+
+local al=(ac and ac.Creator)or(ab and ab.WindUI and ab.WindUI.Creator)or a.load'b'
+if al and al.CustomOverrides then
+
+for am,an in pairs(al.CustomOverrides)do
+ak=ak+1
+local ao=serializeColor(an)
+if ao then
+aj[am]=ao
+else
+warn("[ WindUI.ConfigManager ] Failed to serialize color for property: "..tostring(am))
 end
 end
 if ak>0 then
@@ -4036,28 +4054,55 @@ else
 warn"[ WindUI.ConfigManager ] Creator.CustomOverrides is nil or not accessible"
 end
 
-local ak={
+local am={
 __version=ag.Version,
 __elements={},
 __custom=ag.CustomData,
-__themeOverrides=ai
+__themeOverrides=aj
 }
 
-for al,am in next,ag.Elements do
-if ad.Parser[am.__type]then
-ak.__elements[tostring(al)]=ad.Parser[am.__type].Save(am)
+for an,ao in next,ag.Elements do
+if ao and ao.__type and ad.Parser[ao.__type]then
+local ap,aq=pcall(function()
+return ad.Parser[ao.__type].Save(ao)
+end)
+if ap and aq then
+am.__elements[tostring(an)]=aq
+else
+warn("[ WindUI.ConfigManager ] Failed to save element '"..tostring(an).."' of type '"..tostring(ao.__type).."'")
+end
+else
+warn("[ WindUI.ConfigManager ] Element '"..tostring(an).."' is missing __type or parser. Element: "..tostring(ao))
 end
 end
 
-local al=aa:JSONEncode(ak)
-if writefile then
-local am,an=pcall(function()
-writefile(ag.Path,al)
-end)
-if not am then
-warn("[ WindUI.ConfigManager ] Failed to save config: "..tostring(an))
-return false,"Failed to write config file: "..tostring(an)
+
+local an=0
+for ao in pairs(am.__elements)do
+an=an+1
 end
+print("[ WindUI.ConfigManager ] Serialized "..an.." elements for saving")
+
+
+local ao=0
+for ap in pairs(am.__custom)do
+ao=ao+1
+end
+print"[ WindUI.ConfigManager ] Saving config with:"
+print("  - Elements: "..an)
+print("  - Theme overrides: "..ak)
+print("  - Custom data entries: "..ao)
+
+local ap=aa:JSONEncode(am)
+if writefile then
+local aq,ar=pcall(function()
+writefile(ag.Path,ap)
+end)
+if not aq then
+warn("[ WindUI.ConfigManager ] Failed to save config: "..tostring(ar))
+return false,"Failed to write config file: "..tostring(ar)
+end
+print("[ WindUI.ConfigManager ] Config saved successfully to: "..ag.Path)
 return true
 else
 warn"[ WindUI.ConfigManager ] writefile is not available. Config cannot be saved."
