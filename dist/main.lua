@@ -4,7 +4,7 @@
     | |/ |/ / / _ \/ _  / /_/ // /  
     |__/|__/_/_//_/\_,_/\____/___/
     
-    v1.6.61  |  2025-12-03  |  Roblox UI Library for scripts
+    v1.6.61  |  2025-12-08  |  Roblox UI Library for scripts
     
     To view the source code, see the `src/` folder on the official GitHub repository.
     
@@ -11589,7 +11589,10 @@ ak(i,.45,{Size=UDim2.new(0,200,0,4),ImageTransparency=.8},Enum.EasingStyle.Expon
 p:Set(true)
 task.wait(.45)
 if ar.Resizable then
-ak(au.ImageLabel,.45,{ImageTransparency=.8},Enum.EasingStyle.Exponential,Enum.EasingDirection.Out):Play()
+local z=au:FindFirstChild"ImageLabel"
+if z then
+ak(z,.45,{ImageTransparency=.8},Enum.EasingStyle.Exponential,Enum.EasingDirection.Out):Play()
+end
 ar.CanResize=true
 end
 end)
@@ -11661,7 +11664,10 @@ ak(UIStroke,0.25,{Transparency=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Ou
 end
 
 ak(i,.3,{Size=UDim2.new(0,0,0,4),ImageTransparency=1},Enum.EasingStyle.Exponential,Enum.EasingDirection.InOut):Play()
-ak(au.ImageLabel,.3,{ImageTransparency=1},Enum.EasingStyle.Exponential,Enum.EasingDirection.Out):Play()
+local B=au:FindFirstChild"ImageLabel"
+if B then
+ak(B,.3,{ImageTransparency=1},Enum.EasingStyle.Exponential,Enum.EasingDirection.Out):Play()
+end
 p:Set(false)
 ar.CanResize=false
 
@@ -11674,7 +11680,7 @@ ar.OpenButtonMain:Visible(true)
 end
 end)
 
-function x.Destroy(B)
+function x.Destroy(C)
 task.spawn(function()
 if ar.OnDestroyCallback then
 task.spawn(function()
@@ -12114,7 +12120,10 @@ initialSize=ar.UIElements.Main.Size
 initialInputPosition=B.Position
 
 
-ak(au.ImageLabel,0.1,{ImageTransparency=.35}):Play()
+local C=au:FindFirstChild"ImageLabel"
+if C then
+ak(C,0.1,{ImageTransparency=.35}):Play()
+end
 
 ai.AddSignal(B.Changed,function()
 if B.UserInputState==Enum.UserInputState.End then
@@ -12122,7 +12131,10 @@ isResizing=false
 av.Active=false
 
 
-ak(au.ImageLabel,0.17,{ImageTransparency=.8}):Play()
+local F=au:FindFirstChild"ImageLabel"
+if F then
+ak(F,0.17,{ImageTransparency=.8}):Play()
+end
 end
 end)
 end
