@@ -11687,14 +11687,97 @@ task.spawn(function()
 ai.SafeCallback(ar.OnDestroyCallback)
 end)
 end
+
+
+if p then
+p:Set(false)
+end
+
+
+if ar.AllElements then
+for F=#ar.AllElements,1,-1 do
+local G=ar.AllElements[F]
+if G and G.Destroy then
+pcall(function()
+G:Destroy()
+end)
+end
+end
+ar.AllElements={}
+end
+
+
+if ar.TabModule and ar.TabModule.Tabs then
+for F,G in pairs(ar.TabModule.Tabs)do
+if G and G.Elements then
+for H=#G.Elements,1,-1 do
+local J=G.Elements[H]
+if J and J.Destroy then
+pcall(function()
+J:Destroy()
+end)
+end
+end
+end
+if G and G.UIElements and G.UIElements.Main then
+pcall(function()
+G.UIElements.Main:Destroy()
+end)
+end
+end
+ar.TabModule.Tabs={}
+end
+
+
+if ar.OpenButtonMain then
+if ar.OpenButtonMain.Button and ar.OpenButtonMain.Button.Parent then
+local F=ar.OpenButtonMain.Button.Parent
+pcall(function()
+F:Destroy()
+end)
+end
+ar.OpenButtonMain=nil
+end
+
+
 if ar.AcrylicPaint and ar.AcrylicPaint.Model then
 ar.AcrylicPaint.Model:Destroy()
+ar.AcrylicPaint=nil
 end
+
+
+ar.CurrentConfig=nil
+if ar.ConfigManager then
+ar.ConfigManager=nil
+end
+
+
+ar.OnOpenCallback=nil
+ar.OnCloseCallback=nil
+ar.OnDestroyCallback=nil
+
+
+ar.CurrentTab=nil
+ar.TabModule=nil
+ar.TopBarButtons={}
+ar.PendingFlags={}
+
 ar.Destroyed=true
+ar.Closed=true
+
 task.wait(0.4)
-aq.WindUI.ScreenGui:Destroy()
-aq.WindUI.NotificationGui:Destroy()
-aq.WindUI.DropdownGui:Destroy()
+
+
+if ar.UIElements then
+if ar.UIElements.Main then
+pcall(function()
+ar.UIElements.Main:Destroy()
+end)
+end
+
+ar.UIElements={}
+end
+
 
 ai.DisconnectAll()
 
