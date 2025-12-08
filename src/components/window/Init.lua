@@ -1147,7 +1147,10 @@ return function(Config)
                 WindowDragModule:Set(true)
                 task.wait(.45)
                 if Window.Resizable then
-                    Tween(ResizeHandle.ImageLabel, .45, {ImageTransparency = .8}, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out):Play()
+                    local resizeHandleImage = ResizeHandle:FindFirstChild("ImageLabel")
+                    if resizeHandleImage then
+                        Tween(resizeHandleImage, .45, {ImageTransparency = .8}, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out):Play()
+                    end
                     Window.CanResize = true
                 end
             end)
@@ -1219,7 +1222,10 @@ return function(Config)
         end
         
         Tween(BottomDragFrame, .3, {Size = UDim2.new(0,0,0,4), ImageTransparency = 1}, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut):Play()
-        Tween(ResizeHandle.ImageLabel, .3, {ImageTransparency = 1}, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out):Play()
+        local resizeHandleImage = ResizeHandle:FindFirstChild("ImageLabel")
+        if resizeHandleImage then
+            Tween(resizeHandleImage, .3, {ImageTransparency = 1}, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out):Play()
+        end
         WindowDragModule:Set(false)
         Window.CanResize = false
         
@@ -1672,7 +1678,10 @@ return function(Config)
             initialInputPosition = input.Position
             --Tween(FullScreenIcon, 0.12, {ImageTransparency = .65}):Play()
             --Tween(FullScreenIcon.ImageLabel, 0.12, {ImageTransparency = 0}):Play()
-            Tween(ResizeHandle.ImageLabel, 0.1, {ImageTransparency = .35}):Play()
+            local resizeHandleImage = ResizeHandle:FindFirstChild("ImageLabel")
+            if resizeHandleImage then
+                Tween(resizeHandleImage, 0.1, {ImageTransparency = .35}):Play()
+            end
         
             Creator.AddSignal(input.Changed, function()
                 if input.UserInputState == Enum.UserInputState.End then
@@ -1680,7 +1689,10 @@ return function(Config)
                     FullScreenIcon.Active = false
                     --Tween(FullScreenIcon, 0.2, {ImageTransparency = 1}):Play()
                     --Tween(FullScreenIcon.ImageLabel, 0.17, {ImageTransparency = 1}):Play()
-                    Tween(ResizeHandle.ImageLabel, 0.17, {ImageTransparency = .8}):Play()
+                    local resizeHandleImage2 = ResizeHandle:FindFirstChild("ImageLabel")
+                    if resizeHandleImage2 then
+                        Tween(resizeHandleImage2, 0.17, {ImageTransparency = .8}):Play()
+                    end
                 end
             end)
         end
