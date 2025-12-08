@@ -899,7 +899,10 @@ return function(Config)
             BackgroundGradient[key] = value
         end
         
-        local BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+        local BackgroundFrame = nil
+        if Window.UIElements and Window.UIElements.Main then
+            BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+        end
         if BackgroundFrame then
             Window.UIElements.BackgroundGradient = Creator.NewRoundFrame(Window.UICorner, "Squircle", {
                 Size = UDim2.new(1,0,1,0),
@@ -982,7 +985,10 @@ return function(Config)
     end
     
     function Window:SetBackgroundImage(id)
-        local BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+        local BackgroundFrame = nil
+        if Window.UIElements and Window.UIElements.Main then
+            BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+        end
         if BackgroundFrame and BackgroundFrame:FindFirstChild("ImageLabel") then
             BackgroundFrame.ImageLabel.Image = id
         else
@@ -1104,7 +1110,10 @@ return function(Config)
             task.wait(.06)
             Window.Closed = false
             
-            local BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+            local BackgroundFrame = nil
+            if Window.UIElements and Window.UIElements.Main then
+                BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+            end
             if BackgroundFrame then
                 Tween(BackgroundFrame, 0.2, {
                     ImageTransparency = Window.Transparent and Config.WindUI.TransparencyValue or 0,
@@ -1161,7 +1170,10 @@ return function(Config)
             Window.UIElements.Main.Visible = true
             task.spawn(function()
                 task.wait(.05)
-                local MainChild = Window.UIElements.Main:FindFirstChild("Main")
+                local MainChild = nil
+                if Window.UIElements and Window.UIElements.Main then
+                    MainChild = Window.UIElements.Main:FindFirstChild("Main")
+                end
                 if MainChild then
                     MainChild.Visible = true
                 end
@@ -1181,15 +1193,20 @@ return function(Config)
         
         Config.WindUI:ToggleAcrylic(false)
         
-        local MainChild = Window.UIElements.Main:FindFirstChild("Main")
-        if MainChild then
-            MainChild.Visible = false
+        if Window.UIElements and Window.UIElements.Main then
+            local MainChild = Window.UIElements.Main:FindFirstChild("Main")
+            if MainChild then
+                MainChild.Visible = false
+            end
         end
         
         Window.CanDropdown = false
         Window.Closed = true
         
-        local BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+        local BackgroundFrame = nil
+        if Window.UIElements and Window.UIElements.Main then
+            BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+        end
         if BackgroundFrame then
             Tween(BackgroundFrame, 0.32, {
                 ImageTransparency = 1,
@@ -1200,7 +1217,7 @@ return function(Config)
             }, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut):Play()
         end
         
-        if Window.UIElements.BackgroundGradient then
+        if Window.UIElements and Window.UIElements.BackgroundGradient then
             Tween(Window.UIElements.BackgroundGradient, 0.32, {
                 ImageTransparency = 1,
             }, Enum.EasingStyle.Quint, Enum.EasingDirection.InOut):Play()
@@ -1216,13 +1233,20 @@ return function(Config)
                 }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
             end
         end
-        Tween(Blur, 0.25, {ImageTransparency = 1}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+        if Blur then
+            Tween(Blur, 0.25, {ImageTransparency = 1}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+        end
         if UIStroke then
             Tween(UIStroke, 0.25, {Transparency = 1}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
         end
         
-        Tween(BottomDragFrame, .3, {Size = UDim2.new(0,0,0,4), ImageTransparency = 1}, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut):Play()
-        local resizeHandleImage = ResizeHandle:FindFirstChild("ImageLabel")
+        if BottomDragFrame then
+            Tween(BottomDragFrame, .3, {Size = UDim2.new(0,0,0,4), ImageTransparency = 1}, Enum.EasingStyle.Exponential, Enum.EasingDirection.InOut):Play()
+        end
+        local resizeHandleImage = nil
+        if ResizeHandle then
+            resizeHandleImage = ResizeHandle:FindFirstChild("ImageLabel")
+        end
         if resizeHandleImage then
             Tween(resizeHandleImage, .3, {ImageTransparency = 1}, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out):Play()
         end
@@ -1362,12 +1386,18 @@ return function(Config)
         Window.Transparent = Value
         Config.WindUI.Transparent = Value
         
-        local BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+        local BackgroundFrame = nil
+        if Window.UIElements and Window.UIElements.Main then
+            BackgroundFrame = Window.UIElements.Main:FindFirstChild("Background")
+        end
         if BackgroundFrame then
             BackgroundFrame.ImageTransparency = Value and Config.WindUI.TransparencyValue or 0
         end
         -- Window.UIElements.Main.Background.ImageLabel.ImageTransparency = Value and Config.WindUI.TransparencyValue or 0
-        local MainBarBackground = Window.UIElements.MainBar:FindFirstChild("Background")
+        local MainBarBackground = nil
+        if Window.UIElements and Window.UIElements.MainBar then
+            MainBarBackground = Window.UIElements.MainBar:FindFirstChild("Background")
+        end
         if MainBarBackground then
             MainBarBackground.ImageTransparency = Value and 0.97 or 0.95
         end
