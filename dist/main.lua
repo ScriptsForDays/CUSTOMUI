@@ -11341,7 +11341,10 @@ for u,v in next,ar.Background do
 r[u]=v
 end
 
-local u=ar.UIElements.Main:FindFirstChild"Background"
+local u
+if ar.UIElements and ar.UIElements.Main then
+u=ar.UIElements.Main:FindFirstChild"Background"
+end
 if u then
 ar.UIElements.BackgroundGradient=ai.NewRoundFrame(ar.UICorner,"Squircle",{
 Size=UDim2.new(1,0,1,0),
@@ -11424,7 +11427,10 @@ j.Text=u
 end
 
 function ar.SetBackgroundImage(r,u)
-local v=ar.UIElements.Main:FindFirstChild"Background"
+local v
+if ar.UIElements and ar.UIElements.Main then
+v=ar.UIElements.Main:FindFirstChild"Background"
+end
 if v and v:FindFirstChild"ImageLabel"then
 v.ImageLabel.Image=u
 else
@@ -11546,7 +11552,10 @@ end
 task.wait(.06)
 ar.Closed=false
 
-local x=ar.UIElements.Main:FindFirstChild"Background"
+local x
+if ar.UIElements and ar.UIElements.Main then
+x=ar.UIElements.Main:FindFirstChild"Background"
+end
 if x then
 ak(x,0.2,{
 ImageTransparency=ar.Transparent and aq.WindUI.TransparencyValue or 0,
@@ -11603,7 +11612,10 @@ ar.CanDropdown=true
 ar.UIElements.Main.Visible=true
 task.spawn(function()
 task.wait(.05)
-local z=ar.UIElements.Main:FindFirstChild"Main"
+local z
+if ar.UIElements and ar.UIElements.Main then
+z=ar.UIElements.Main:FindFirstChild"Main"
+end
 if z then
 z.Visible=true
 end
@@ -11623,26 +11635,31 @@ end
 
 aq.WindUI:ToggleAcrylic(false)
 
+if ar.UIElements and ar.UIElements.Main then
 local z=ar.UIElements.Main:FindFirstChild"Main"
 if z then
 z.Visible=false
+end
 end
 
 ar.CanDropdown=false
 ar.Closed=true
 
-local A=ar.UIElements.Main:FindFirstChild"Background"
-if A then
-ak(A,0.32,{
+local z
+if ar.UIElements and ar.UIElements.Main then
+z=ar.UIElements.Main:FindFirstChild"Background"
+end
+if z then
+ak(z,0.32,{
 ImageTransparency=1,
 },Enum.EasingStyle.Quint,Enum.EasingDirection.InOut):Play()
 
-ak(A,0.4,{
+ak(z,0.4,{
 Size=UDim2.new(1,0,1,-240),
 },Enum.EasingStyle.Exponential,Enum.EasingDirection.InOut):Play()
 end
 
-if ar.UIElements.BackgroundGradient then
+if ar.UIElements and ar.UIElements.BackgroundGradient then
 ak(ar.UIElements.BackgroundGradient,0.32,{
 ImageTransparency=1,
 },Enum.EasingStyle.Quint,Enum.EasingDirection.InOut):Play()
@@ -11658,15 +11675,22 @@ ImageTransparency=1,
 },Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 end
 end
+if ax then
 ak(ax,0.25,{ImageTransparency=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+end
 if UIStroke then
 ak(UIStroke,0.25,{Transparency=1},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
 end
 
+if i then
 ak(i,.3,{Size=UDim2.new(0,0,0,4),ImageTransparency=1},Enum.EasingStyle.Exponential,Enum.EasingDirection.InOut):Play()
-local B=au:FindFirstChild"ImageLabel"
-if B then
-ak(B,.3,{ImageTransparency=1},Enum.EasingStyle.Exponential,Enum.EasingDirection.Out):Play()
+end
+local A
+if au then
+A=au:FindFirstChild"ImageLabel"
+end
+if A then
+ak(A,.3,{ImageTransparency=1},Enum.EasingStyle.Exponential,Enum.EasingDirection.Out):Play()
 end
 p:Set(false)
 ar.CanResize=false
@@ -11680,7 +11704,7 @@ ar.OpenButtonMain:Visible(true)
 end
 end)
 
-function x.Destroy(C)
+function x.Destroy(B)
 task.spawn(function()
 if ar.OnDestroyCallback then
 task.spawn(function()
@@ -11695,11 +11719,11 @@ end
 
 
 if ar.AllElements then
-for F=#ar.AllElements,1,-1 do
-local G=ar.AllElements[F]
-if G and G.Destroy then
+for C=#ar.AllElements,1,-1 do
+local F=ar.AllElements[C]
+if F and F.Destroy then
 pcall(function()
-G:Destroy()
+F:Destroy()
 end)
 end
 end
@@ -11708,20 +11732,20 @@ end
 
 
 if ar.TabModule and ar.TabModule.Tabs then
-for F,G in pairs(ar.TabModule.Tabs)do
-if G and G.Elements then
-for H=#G.Elements,1,-1 do
-local J=G.Elements[H]
-if J and J.Destroy then
+for C,F in pairs(ar.TabModule.Tabs)do
+if F and F.Elements then
+for G=#F.Elements,1,-1 do
+local H=F.Elements[G]
+if H and H.Destroy then
 pcall(function()
-J:Destroy()
+H:Destroy()
 end)
 end
 end
 end
-if G and G.UIElements and G.UIElements.Main then
+if F and F.UIElements and F.UIElements.Main then
 pcall(function()
-G.UIElements.Main:Destroy()
+F.UIElements.Main:Destroy()
 end)
 end
 end
@@ -11731,9 +11755,9 @@ end
 
 if ar.OpenButtonMain then
 if ar.OpenButtonMain.Button and ar.OpenButtonMain.Button.Parent then
-local F=ar.OpenButtonMain.Button.Parent
+local C=ar.OpenButtonMain.Button.Parent
 pcall(function()
-F:Destroy()
+C:Destroy()
 end)
 end
 ar.OpenButtonMain=nil
@@ -11804,12 +11828,18 @@ function ar.ToggleTransparency(v,x)
 ar.Transparent=x
 aq.WindUI.Transparent=x
 
-local z=ar.UIElements.Main:FindFirstChild"Background"
+local z
+if ar.UIElements and ar.UIElements.Main then
+z=ar.UIElements.Main:FindFirstChild"Background"
+end
 if z then
 z.ImageTransparency=x and aq.WindUI.TransparencyValue or 0
 end
 
-local A=ar.UIElements.MainBar:FindFirstChild"Background"
+local A
+if ar.UIElements and ar.UIElements.MainBar then
+A=ar.UIElements.MainBar:FindFirstChild"Background"
+end
 if A then
 A.ImageTransparency=x and 0.97 or 0.95
 end
