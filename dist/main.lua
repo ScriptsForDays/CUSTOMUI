@@ -10873,13 +10873,21 @@ PaddingRight=UDim.new(0,ar.UIPadding/2),
 
 function ar.User.Enable(az)
 ar.User.Enabled=true
+if ar.UIElements and ar.UIElements.SideBarContainer then
 ak(ar.UIElements.SideBarContainer,.25,{Size=UDim2.new(0,ar.SideBarWidth,1,-94-(ar.UIPadding*2))},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+end
+if ay then
 ay.Visible=true
+end
 end
 function ar.User.Disable(az)
 ar.User.Enabled=false
+if ar.UIElements and ar.UIElements.SideBarContainer then
 ak(ar.UIElements.SideBarContainer,.25,{Size=UDim2.new(0,ar.SideBarWidth,1,-52)},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+end
+if ay then
 ay.Visible=false
+end
 end
 function ar.User.SetAnonymous(az,aA)
 if aA~=false then aA=true end
@@ -11609,7 +11617,9 @@ end)
 
 ar.CanDropdown=true
 
+if ar.UIElements and ar.UIElements.Main then
 ar.UIElements.Main.Visible=true
+end
 task.spawn(function()
 task.wait(.05)
 local z
@@ -11697,7 +11707,9 @@ ar.CanResize=false
 
 task.spawn(function()
 task.wait(0.4)
+if ar.UIElements and ar.UIElements.Main then
 ar.UIElements.Main.Visible=false
+end
 
 if ar.OpenButtonMain and not ar.Destroyed and not ar.IsPC and ar.IsOpenButtonEnabled then
 ar.OpenButtonMain:Visible(true)
@@ -12220,8 +12232,17 @@ end
 end,999)
 
 function ar.Tag(B,C)
-if ar.UIElements.Main.Main.Topbar.Center.Visible==false then ar.UIElements.Main.Main.Topbar.Center.Visible=true end
-return ao:New(C,ar.UIElements.Main.Main.Topbar.Center)
+local F
+if ar.UIElements and ar.UIElements.Main and ar.UIElements.Main.Main and ar.UIElements.Main.Main.Topbar and ar.UIElements.Main.Main.Topbar.Center then
+F=ar.UIElements.Main.Main.Topbar.Center
+if F.Visible==false then
+F.Visible=true
+end
+end
+if F then
+return ao:New(C,F)
+end
+return nil
 end
 
 
@@ -12387,7 +12408,7 @@ end
 function ar.DisableTopbarButtons(H,J)
 for L,M in next,J do
 for N,O in next,ar.TopBarButtons do
-if O.Name==M then
+if O.Name==M and O.Object then
 O.Object.Visible=false
 end
 end
