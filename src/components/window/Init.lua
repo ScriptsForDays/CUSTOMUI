@@ -431,13 +431,21 @@ return function(Config)
         
         function Window.User:Enable()
             Window.User.Enabled = true
-            Tween(Window.UIElements.SideBarContainer, .25, { Size = UDim2.new(0,Window.SideBarWidth,1,-52 -42 -(Window.UIPadding*2)) }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-            UserIcon.Visible = true
+            if Window.UIElements and Window.UIElements.SideBarContainer then
+                Tween(Window.UIElements.SideBarContainer, .25, { Size = UDim2.new(0,Window.SideBarWidth,1,-52 -42 -(Window.UIPadding*2)) }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+            end
+            if UserIcon then
+                UserIcon.Visible = true
+            end
         end
         function Window.User:Disable()
             Window.User.Enabled = false
-            Tween(Window.UIElements.SideBarContainer, .25, { Size = UDim2.new(0,Window.SideBarWidth,1,-52 ) }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-            UserIcon.Visible = false
+            if Window.UIElements and Window.UIElements.SideBarContainer then
+                Tween(Window.UIElements.SideBarContainer, .25, { Size = UDim2.new(0,Window.SideBarWidth,1,-52 ) }, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+            end
+            if UserIcon then
+                UserIcon.Visible = false
+            end
         end
         function Window.User:SetAnonymous(v)
             if v ~= false then v = true end
@@ -1167,7 +1175,9 @@ return function(Config)
             
             Window.CanDropdown = true
             
-            Window.UIElements.Main.Visible = true
+            if Window.UIElements and Window.UIElements.Main then
+                Window.UIElements.Main.Visible = true
+            end
             task.spawn(function()
                 task.wait(.05)
                 local MainChild = nil
@@ -1255,7 +1265,9 @@ return function(Config)
         
         task.spawn(function()
             task.wait(0.4)
-            Window.UIElements.Main.Visible = false
+            if Window.UIElements and Window.UIElements.Main then
+                Window.UIElements.Main.Visible = false
+            end
             
             if Window.OpenButtonMain and not Window.Destroyed and not Window.IsPC and Window.IsOpenButtonEnabled then
                 Window.OpenButtonMain:Visible(true)
@@ -1778,8 +1790,17 @@ return function(Config)
     end, 999)
     
     function Window:Tag(TagConfig)
-        if Window.UIElements.Main.Main.Topbar.Center.Visible == false then Window.UIElements.Main.Main.Topbar.Center.Visible = true end
-        return Tag:New(TagConfig, Window.UIElements.Main.Main.Topbar.Center)
+        local centerElement = nil
+        if Window.UIElements and Window.UIElements.Main and Window.UIElements.Main.Main and Window.UIElements.Main.Main.Topbar and Window.UIElements.Main.Main.Topbar.Center then
+            centerElement = Window.UIElements.Main.Main.Topbar.Center
+            if centerElement.Visible == false then
+                centerElement.Visible = true
+            end
+        end
+        if centerElement then
+            return Tag:New(TagConfig, centerElement)
+        end
+        return nil
     end
 
 
@@ -1945,7 +1966,7 @@ return function(Config)
     function Window:DisableTopbarButtons(btns)
         for _,b in next, btns do
             for _,i in next, Window.TopBarButtons do
-                if i.Name == b then
+                if i.Name == b and i.Object then
                     i.Object.Visible = false
                 end
             end
