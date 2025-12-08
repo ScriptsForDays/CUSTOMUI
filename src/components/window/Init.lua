@@ -1245,15 +1245,98 @@ return function(Config)
                         Creator.SafeCallback(Window.OnDestroyCallback)
                     end)
                 end
+                
+                -- Disable dragging to prevent any further interactions
+                if WindowDragModule then
+                    WindowDragModule:Set(false)
+                end
+                
+                -- Destroy all UI elements created on this window
+                if Window.AllElements then
+                    for i = #Window.AllElements, 1, -1 do
+                        local element = Window.AllElements[i]
+                        if element and element.Destroy then
+                            pcall(function()
+                                element:Destroy()
+                            end)
+                        end
+                    end
+                    Window.AllElements = {}
+                end
+                
+                -- Clean up tabs
+                if Window.TabModule and Window.TabModule.Tabs then
+                    for _, tab in pairs(Window.TabModule.Tabs) do
+                        if tab and tab.Elements then
+                            for i = #tab.Elements, 1, -1 do
+                                local element = tab.Elements[i]
+                                if element and element.Destroy then
+                                    pcall(function()
+                                        element:Destroy()
+                                    end)
+                                end
+                            end
+                        end
+                        if tab and tab.UIElements and tab.UIElements.Main then
+                            pcall(function()
+                                tab.UIElements.Main:Destroy()
+                            end)
+                        end
+                    end
+                    Window.TabModule.Tabs = {}
+                end
+                
+                -- Clean up OpenButtonMain
+                if Window.OpenButtonMain then
+                    if Window.OpenButtonMain.Button and Window.OpenButtonMain.Button.Parent then
+                        local container = Window.OpenButtonMain.Button.Parent
+                        pcall(function()
+                            container:Destroy()
+                        end)
+                    end
+                    Window.OpenButtonMain = nil
+                end
+                
+                -- Clean up AcrylicPaint
                 if Window.AcrylicPaint and Window.AcrylicPaint.Model then
                     Window.AcrylicPaint.Model:Destroy()
+                    Window.AcrylicPaint = nil
                 end
-                Window.Destroyed = true
-                task.wait(0.4)
-                Config.WindUI.ScreenGui:Destroy()
-                Config.WindUI.NotificationGui:Destroy()
-                Config.WindUI.DropdownGui:Destroy()
                 
+                -- Clear config references
+                Window.CurrentConfig = nil
+                if Window.ConfigManager then
+                    Window.ConfigManager = nil
+                end
+                
+                -- Clear callbacks
+                Window.OnOpenCallback = nil
+                Window.OnCloseCallback = nil
+                Window.OnDestroyCallback = nil
+                
+                -- Clear other references
+                Window.CurrentTab = nil
+                Window.TabModule = nil
+                Window.TopBarButtons = {}
+                Window.PendingFlags = {}
+                
+                Window.Destroyed = true
+                Window.Closed = true
+                
+                task.wait(0.4)
+                
+                -- Destroy main UI elements (this will cancel any active tweens)
+                if Window.UIElements then
+                    if Window.UIElements.Main then
+                        pcall(function()
+                            Window.UIElements.Main:Destroy()
+                        end)
+                    end
+                    -- Clear all UI element references
+                    Window.UIElements = {}
+                end
+                
+                -- Disconnect all signals/connections
                 Creator.DisconnectAll()
                 
                 return
