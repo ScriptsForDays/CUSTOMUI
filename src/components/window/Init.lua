@@ -63,6 +63,7 @@ return function(Config)
         OutlineShadowEnabled = Config.OutlineShadowEnabled or false,
         OutlineShadowColor = Config.OutlineShadowColor or Color3.fromRGB(0, 0, 0),
         OutlineShadowTransparency = Config.OutlineShadowTransparency or 0.5,
+        OutlineShadowThickness = Config.OutlineShadowThickness or nil, -- nil means use OutlineThickness
         OutlineShadowOffset = Config.OutlineShadowOffset or 2,
         
         Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -159,8 +160,9 @@ return function(Config)
             }),
         })
         
+        local shadowThickness = Window.OutlineShadowThickness or Window.OutlineThickness
         OutlineShadowStroke = New("UIStroke", {
-            Thickness = Window.OutlineThickness + shadowOffset,
+            Thickness = shadowThickness,
             Color = Window.OutlineShadowColor,
             Transparency = Window.OutlineShadowTransparency,
         })
@@ -1258,8 +1260,9 @@ return function(Config)
                     }),
                 })
                 
+                local shadowThickness = Window.OutlineShadowThickness or Window.OutlineThickness
                 OutlineShadowStroke = New("UIStroke", {
-                    Thickness = Window.OutlineThickness + shadowOffset,
+                    Thickness = shadowThickness,
                     Color = Window.OutlineShadowColor,
                     Transparency = Window.OutlineShadowTransparency,
                 })
@@ -1309,11 +1312,17 @@ return function(Config)
         return Window
     end
 
+    function Window:SetOutlineShadowThickness(thickness)
+        Window.OutlineShadowThickness = thickness
+        if OutlineShadowStroke then
+            local shadowThickness = thickness or Window.OutlineThickness
+            OutlineShadowStroke.Thickness = shadowThickness
+        end
+        return Window
+    end
+
     function Window:SetOutlineShadowOffset(offset)
         Window.OutlineShadowOffset = offset
-        if OutlineShadowStroke then
-            OutlineShadowStroke.Thickness = Window.OutlineThickness + offset
-        end
         if OutlineShadowFrame then
             -- Update shadow frame position with new offset
             local shadowOffset = offset or 2

@@ -614,6 +614,7 @@ local Window = WindUI:CreateWindow({<br>
 &nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowEnabled = true, <span class="comment">-- Enable outline shadow (default: false)</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowColor = Color3.fromHex("#000000"), <span class="comment">-- Shadow color (default: black)</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowTransparency = 0.5, <span class="comment">-- Shadow transparency 0-1 (default: 0.5)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowThickness = 3, <span class="comment">-- Shadow thickness in pixels (default: uses OutlineThickness)</span><br>
 &nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowOffset = 3 <span class="comment">-- Shadow offset/blur in pixels (default: 2)</span><br>
 })
                 </code>
@@ -635,6 +636,10 @@ Window:SetOutlineShadowColor(Color3.fromHex("#ff0000"))<br>
 Window:SetOutlineShadowTransparency(0.3) <span class="comment">-- Make shadow more visible</span><br>
 <span class="comment">-- Shadow transparency updates immediately!</span><br>
 <br>
+<span class="comment">-- Change shadow thickness</span><br>
+Window:SetOutlineShadowThickness(4) <span class="comment">-- Set shadow thickness to 4 pixels</span><br>
+<span class="comment">-- Shadow thickness updates immediately!</span><br>
+<br>
 <span class="comment">-- Change shadow offset</span><br>
 Window:SetOutlineShadowOffset(5) <span class="comment">-- Increase shadow blur/offset</span><br>
 <span class="comment">-- Shadow offset updates immediately!</span><br>
@@ -643,6 +648,7 @@ Window:SetOutlineShadowOffset(5) <span class="comment">-- Increase shadow blur/o
 Window:SetOutlineShadowEnabled(true)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;:SetOutlineShadowColor(Color3.fromHex("#000000"))<br>
 &nbsp;&nbsp;&nbsp;&nbsp;:SetOutlineShadowTransparency(0.4)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;:SetOutlineShadowThickness(3)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;:SetOutlineShadowOffset(4)
                 </code>
             </div>
@@ -677,6 +683,12 @@ Window:SetOutlineShadowEnabled(true)<br>
                         <td>The transparency of the shadow. Range: 0 (fully opaque) to 1 (fully transparent). Lower values create more visible shadows.</td>
                     </tr>
                     <tr>
+                        <td><code>OutlineShadowThickness</code></td>
+                        <td>number</td>
+                        <td><code>nil</code> (uses <code>OutlineThickness</code>)</td>
+                        <td>The thickness of the shadow outline in pixels. If not specified, uses the same thickness as the main outline. Recommended range: 1-10 pixels.</td>
+                    </tr>
+                    <tr>
                         <td><code>OutlineShadowOffset</code></td>
                         <td>number</td>
                         <td><code>2</code></td>
@@ -690,6 +702,7 @@ Window:SetOutlineShadowEnabled(true)<br>
                 <li><code>Window:SetOutlineShadowEnabled(enabled)</code> - Enable or disable the outline shadow. Creates the shadow frame if it doesn't exist. Returns the Window object for chaining.</li>
                 <li><code>Window:SetOutlineShadowColor(color)</code> - Set the shadow color. Returns the Window object for chaining.</li>
                 <li><code>Window:SetOutlineShadowTransparency(transparency)</code> - Set the shadow transparency (0-1). Returns the Window object for chaining.</li>
+                <li><code>Window:SetOutlineShadowThickness(thickness)</code> - Set the shadow thickness in pixels. If set to <code>nil</code>, uses the main outline thickness. Returns the Window object for chaining.</li>
                 <li><code>Window:SetOutlineShadowOffset(offset)</code> - Set the shadow offset/blur amount in pixels. Returns the Window object for chaining.</li>
             </ul>
 
