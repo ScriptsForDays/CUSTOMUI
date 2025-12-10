@@ -10505,6 +10505,7 @@ OutlineTransparency=aq.OutlineTransparency or 0.8,
 OutlineShadowEnabled=aq.OutlineShadowEnabled or false,
 OutlineShadowColor=aq.OutlineShadowColor or Color3.fromRGB(0,0,0),
 OutlineShadowTransparency=aq.OutlineShadowTransparency or 0.5,
+OutlineShadowThickness=aq.OutlineShadowThickness or nil,
 OutlineShadowOffset=aq.OutlineShadowOffset or 2,
 
 Position=UDim2.new(0.5,0,0.5,0),
@@ -10601,8 +10602,9 @@ CornerRadius=UDim.new(0,ar.UICorner)
 }),
 })
 
+local ay=ar.OutlineShadowThickness or ar.OutlineThickness
 aw=aj("UIStroke",{
-Thickness=ar.OutlineThickness+ax,
+Thickness=ay,
 Color=ar.OutlineShadowColor,
 Transparency=ar.OutlineShadowTransparency,
 })
@@ -11700,8 +11702,9 @@ CornerRadius=UDim.new(0,ar.UICorner)
 }),
 })
 
+local F=ar.OutlineShadowThickness or ar.OutlineThickness
 aw=aj("UIStroke",{
-Thickness=ar.OutlineThickness+C,
+Thickness=F,
 Color=ar.OutlineShadowColor,
 Transparency=ar.OutlineShadowTransparency,
 })
@@ -11710,12 +11713,12 @@ aw.Parent=av
 
 ai.AddSignal(ar.UIElements.Main:GetPropertyChangedSignal"Position",function()
 if av then
-local F=ar.OutlineShadowOffset or 2
+local G=ar.OutlineShadowOffset or 2
 av.Position=UDim2.new(
 ar.UIElements.Main.Position.X.Scale,
-ar.UIElements.Main.Position.X.Offset+F,
+ar.UIElements.Main.Position.X.Offset+G,
 ar.UIElements.Main.Position.Y.Scale,
-ar.UIElements.Main.Position.Y.Offset+F
+ar.UIElements.Main.Position.Y.Offset+G
 )
 end
 end)
@@ -11751,11 +11754,17 @@ end
 return ar
 end
 
+function ar.SetOutlineShadowThickness(A,B)
+ar.OutlineShadowThickness=B
+if aw then
+local C=B or ar.OutlineThickness
+aw.Thickness=C
+end
+return ar
+end
+
 function ar.SetOutlineShadowOffset(A,B)
 ar.OutlineShadowOffset=B
-if aw then
-aw.Thickness=ar.OutlineThickness+B
-end
 if av then
 
 local C=B or 2
