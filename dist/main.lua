@@ -11656,9 +11656,6 @@ end
 
 
 ak(ay,0.25,{ImageTransparency=ar.ShadowTransparency},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
-if au then
-ak(au,0.25,{Transparency=.8},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
-end
 
 task.spawn(function()
 task.wait(.3)
