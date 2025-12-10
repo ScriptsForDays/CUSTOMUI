@@ -10590,7 +10590,8 @@ av=aj("Frame",{
 Size=UDim2.new(1,0,1,0),
 Position=UDim2.new(0,0,0,0),
 BackgroundTransparency=1,
-ZIndex=-1,
+ZIndex=0,
+Visible=true,
 },{
 aj("UICorner",{
 CornerRadius=UDim.new(0,ar.UICorner)
@@ -11649,7 +11650,8 @@ av=aj("Frame",{
 Size=UDim2.new(1,0,1,0),
 Position=UDim2.new(0,0,0,0),
 BackgroundTransparency=1,
-ZIndex=-1,
+ZIndex=0,
+Visible=true,
 Parent=ar.UIElements.Main
 },{
 aj("UICorner",{
@@ -11755,6 +11757,14 @@ end
 
 
 ak(aA,0.25,{ImageTransparency=ar.ShadowTransparency},Enum.EasingStyle.Quint,Enum.EasingDirection.Out):Play()
+
+
+if av then
+av.Visible=true
+if aw then
+aw.Transparency=ar.OutlineShadowTransparency
+end
+end
 
 task.spawn(function()
 task.wait(.3)
