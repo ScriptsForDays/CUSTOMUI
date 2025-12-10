@@ -55,6 +55,11 @@ return function(Config)
         AutoScale = Config.AutoScale ~= false,
         OpenButton = Config.OpenButton,
         
+        OutlineEnabled = Config.OutlineEnabled ~= false,
+        OutlineColor = Config.OutlineColor or Color3.fromRGB(255, 255, 255),
+        OutlineThickness = Config.OutlineThickness or 1,
+        OutlineTransparency = Config.OutlineTransparency or 0.8,
+        
         Position = UDim2.new(0.5, 0, 0.5, 0),
         UICorner = nil, -- Window.Radius (16)
         UIPadding = 14,
@@ -118,6 +123,15 @@ return function(Config)
     local UICorner = New("UICorner", {
         CornerRadius = UDim.new(0,Window.UICorner)
     })
+
+    local UIStroke = nil
+    if Window.OutlineEnabled then
+        UIStroke = New("UIStroke", {
+            Thickness = Window.OutlineThickness,
+            Color = Window.OutlineColor,
+            Transparency = Window.OutlineTransparency,
+        })
+    end
 
     if Window.Folder then 
         -- Store WindUI reference in Window for ConfigManager to access
@@ -1104,6 +1118,52 @@ return function(Config)
         if WindowIcon then
             WindowIcon.Size = NewSize
         end
+    end
+
+    function Window:SetOutlineColor(color)
+        Window.OutlineColor = color
+        if UIStroke then
+            UIStroke.Color = color
+        end
+        return Window
+    end
+
+    function Window:SetOutlineThickness(thickness)
+        Window.OutlineThickness = thickness
+        if UIStroke then
+            UIStroke.Thickness = thickness
+        end
+        return Window
+    end
+
+    function Window:SetOutlineTransparency(transparency)
+        Window.OutlineTransparency = transparency
+        if UIStroke then
+            UIStroke.Transparency = transparency
+        end
+        return Window
+    end
+
+    function Window:SetOutlineEnabled(enabled)
+        Window.OutlineEnabled = enabled
+        if enabled then
+            if not UIStroke then
+                -- Create UIStroke if it doesn't exist
+                UIStroke = New("UIStroke", {
+                    Thickness = Window.OutlineThickness,
+                    Color = Window.OutlineColor,
+                    Transparency = Window.OutlineTransparency,
+                    Parent = Window.UIElements.Main
+                })
+            else
+                UIStroke.Enabled = true
+            end
+        else
+            if UIStroke then
+                UIStroke.Enabled = false
+            end
+        end
+        return Window
     end
 
     function Window:Open()
