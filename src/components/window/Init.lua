@@ -148,7 +148,8 @@ return function(Config)
             Size = UDim2.new(1, 0, 1, 0),
             Position = UDim2.new(0, 0, 0, 0),
             BackgroundTransparency = 1,
-            ZIndex = -1,
+            ZIndex = 0, -- Behind outline but still visible
+            Visible = true,
         }, {
             New("UICorner", {
                 CornerRadius = UDim.new(0, Window.UICorner)
@@ -1207,7 +1208,8 @@ return function(Config)
                     Size = UDim2.new(1, 0, 1, 0),
                     Position = UDim2.new(0, 0, 0, 0),
                     BackgroundTransparency = 1,
-                    ZIndex = -1,
+                    ZIndex = 0, -- Behind outline but still visible
+                    Visible = true,
                     Parent = Window.UIElements.Main
                 }, {
                     New("UICorner", {
@@ -1313,6 +1315,14 @@ return function(Config)
             
             --Tween(Window.UIElements.Main.Background.UIScale, 0.2, {Scale = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
             Tween(Blur, 0.25, {ImageTransparency = Window.ShadowTransparency}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
+            
+            -- Ensure shadow frame stays visible
+            if OutlineShadowFrame then
+                OutlineShadowFrame.Visible = true
+                if OutlineShadowStroke then
+                    OutlineShadowStroke.Transparency = Window.OutlineShadowTransparency
+                end
+            end
             
             task.spawn(function()
                 task.wait(.3)
