@@ -1214,9 +1214,6 @@ return function(Config)
             
             --Tween(Window.UIElements.Main.Background.UIScale, 0.2, {Scale = 1}, Enum.EasingStyle.Back, Enum.EasingDirection.Out):Play()
             Tween(Blur, 0.25, {ImageTransparency = Window.ShadowTransparency}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-            if UIStroke then
-                Tween(UIStroke, 0.25, {Transparency = .8}, Enum.EasingStyle.Quint, Enum.EasingDirection.Out):Play()
-            end
             
             task.spawn(function()
                 task.wait(.3)
