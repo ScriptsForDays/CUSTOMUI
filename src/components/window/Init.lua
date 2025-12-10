@@ -141,18 +141,13 @@ return function(Config)
 
     local OutlineShadowFrame = nil
     local OutlineShadowStroke = nil
+    
+    -- Create shadow frame as child of main window (attached, moves with window)
     if Window.OutlineShadowEnabled then
-        local shadowOffset = Window.OutlineShadowOffset or 2
         OutlineShadowFrame = New("Frame", {
-            Size = Window.Size,
-            Position = UDim2.new(
-                Window.Position.X.Scale,
-                Window.Position.X.Offset + shadowOffset,
-                Window.Position.Y.Scale,
-                Window.Position.Y.Offset + shadowOffset
-            ),
+            Size = UDim2.new(1, 0, 1, 0),
+            Position = UDim2.new(0, 0, 0, 0),
             BackgroundTransparency = 1,
-            AnchorPoint = Vector2.new(0.5, 0.5),
             ZIndex = -1,
         }, {
             New("UICorner", {
@@ -692,10 +687,6 @@ return function(Config)
         }
     })
     
-    if OutlineShadowFrame then
-        OutlineShadowFrame.Parent = Config.Parent
-    end
-    
     Window.UIElements.Main = New("Frame", {
         Size = Window.Size,
         Position = Window.Position,
@@ -703,10 +694,11 @@ return function(Config)
         Parent = Config.Parent,
         AnchorPoint = Vector2.new(0.5,0.5),
         Active = true,
-    }, {
-        Window.AcrylicPaint and Window.AcrylicPaint.Frame or nil,
-        Blur,
-        Creator.NewRoundFrame(Window.UICorner, "Squircle", {
+        }, {
+            Window.AcrylicPaint and Window.AcrylicPaint.Frame or nil,
+            Blur,
+            OutlineShadowFrame,
+            Creator.NewRoundFrame(Window.UICorner, "Squircle", {
             ImageTransparency = 1, -- Window.Transparent and 0.25 or 0
             Size = UDim2.new(1,0,1,-240),
             AnchorPoint = Vector2.new(0.5,0.5),
@@ -949,40 +941,10 @@ return function(Config)
                     Tween(BottomDragFrame, .2, {ImageTransparency = .8}):Play()
                 end
                 Window.Position = Window.UIElements.Main.Position
-                -- Update shadow frame position with offset
-                if OutlineShadowFrame then
-                    local shadowOffset = Window.OutlineShadowOffset or 2
-                    OutlineShadowFrame.Position = UDim2.new(
-                        Window.Position.X.Scale,
-                        Window.Position.X.Offset + shadowOffset,
-                        Window.Position.Y.Scale,
-                        Window.Position.Y.Offset + shadowOffset
-                    )
-                end
                 Window.Dragging = dragging
             end
         end
     )
-    
-    -- Sync shadow frame with main window position and size
-    if OutlineShadowFrame then
-        Creator.AddSignal(Window.UIElements.Main:GetPropertyChangedSignal("Position"), function()
-            if OutlineShadowFrame then
-                local shadowOffset = Window.OutlineShadowOffset or 2
-                OutlineShadowFrame.Position = UDim2.new(
-                    Window.UIElements.Main.Position.X.Scale,
-                    Window.UIElements.Main.Position.X.Offset + shadowOffset,
-                    Window.UIElements.Main.Position.Y.Scale,
-                    Window.UIElements.Main.Position.Y.Offset + shadowOffset
-                )
-            end
-        end)
-        Creator.AddSignal(Window.UIElements.Main:GetPropertyChangedSignal("Size"), function()
-            if OutlineShadowFrame then
-                OutlineShadowFrame.Size = Window.UIElements.Main.Size
-            end
-        end)
-    end
     
     if not IsVideoBG and Window.Background and typeof(Window.Background) == "table" then
         
@@ -1240,20 +1202,13 @@ return function(Config)
         Window.OutlineShadowEnabled = enabled
         if enabled then
             if not OutlineShadowFrame then
-                -- Create shadow frame if it doesn't exist
-                local shadowOffset = Window.OutlineShadowOffset or 2
+                -- Create shadow frame as child of main window (attached, moves with window)
                 OutlineShadowFrame = New("Frame", {
-                    Size = Window.Size,
-                    Position = UDim2.new(
-                        Window.Position.X.Scale,
-                        Window.Position.X.Offset + shadowOffset,
-                        Window.Position.Y.Scale,
-                        Window.Position.Y.Offset + shadowOffset
-                    ),
+                    Size = UDim2.new(1, 0, 1, 0),
+                    Position = UDim2.new(0, 0, 0, 0),
                     BackgroundTransparency = 1,
-                    AnchorPoint = Vector2.new(0.5, 0.5),
                     ZIndex = -1,
-                    Parent = Config.Parent
+                    Parent = Window.UIElements.Main
                 }, {
                     New("UICorner", {
                         CornerRadius = UDim.new(0, Window.UICorner)
@@ -1267,24 +1222,6 @@ return function(Config)
                     Transparency = Window.OutlineShadowTransparency,
                 })
                 OutlineShadowStroke.Parent = OutlineShadowFrame
-                
-                -- Sync shadow frame with main window position and size
-                Creator.AddSignal(Window.UIElements.Main:GetPropertyChangedSignal("Position"), function()
-                    if OutlineShadowFrame then
-                        local offset = Window.OutlineShadowOffset or 2
-                        OutlineShadowFrame.Position = UDim2.new(
-                            Window.UIElements.Main.Position.X.Scale,
-                            Window.UIElements.Main.Position.X.Offset + offset,
-                            Window.UIElements.Main.Position.Y.Scale,
-                            Window.UIElements.Main.Position.Y.Offset + offset
-                        )
-                    end
-                end)
-                Creator.AddSignal(Window.UIElements.Main:GetPropertyChangedSignal("Size"), function()
-                    if OutlineShadowFrame then
-                        OutlineShadowFrame.Size = Window.UIElements.Main.Size
-                    end
-                end)
             else
                 OutlineShadowFrame.Visible = true
             end
@@ -1323,16 +1260,8 @@ return function(Config)
 
     function Window:SetOutlineShadowOffset(offset)
         Window.OutlineShadowOffset = offset
-        if OutlineShadowFrame then
-            -- Update shadow frame position with new offset
-            local shadowOffset = offset or 2
-            OutlineShadowFrame.Position = UDim2.new(
-                Window.UIElements.Main.Position.X.Scale,
-                Window.UIElements.Main.Position.X.Offset + shadowOffset,
-                Window.UIElements.Main.Position.Y.Scale,
-                Window.UIElements.Main.Position.Y.Offset + shadowOffset
-            )
-        end
+        -- Note: Offset is now visual (thickness difference) rather than positional
+        -- The shadow is attached to the main window frame and moves with it automatically
         return Window
     end
 
@@ -2097,10 +2026,6 @@ return function(Config)
                 }):Play()
                 
                 Window.Size = newSize
-                -- Update shadow frame size
-                if OutlineShadowFrame then
-                    OutlineShadowFrame.Size = newSize
-                end
             end
         end
     end)

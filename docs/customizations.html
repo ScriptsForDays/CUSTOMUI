@@ -599,7 +599,7 @@ Window:SetOutlineColor(Color3.fromHex("#ff6a30"))<br>
             </ul>
 
             <h4>Window Outline Shadow Customization</h4>
-            <p>You can add a customizable shadow around the window outline to create a depth effect. The shadow can be enabled/disabled and its color, transparency, and offset can be customized both during window creation and at runtime.</p>
+            <p>You can add a customizable shadow around the window outline to create a depth effect. The shadow is attached to the main window frame as a child, so it automatically moves and resizes with the window - no manual syncing needed! The shadow can be enabled/disabled and its color, transparency, and thickness can be customized both during window creation and at runtime.</p>
             
             <h5>During Window Creation</h5>
             <div class="code-block">
@@ -640,16 +640,14 @@ Window:SetOutlineShadowTransparency(0.3) <span class="comment">-- Make shadow mo
 Window:SetOutlineShadowThickness(4) <span class="comment">-- Set shadow thickness to 4 pixels</span><br>
 <span class="comment">-- Shadow thickness updates immediately!</span><br>
 <br>
-<span class="comment">-- Change shadow offset</span><br>
-Window:SetOutlineShadowOffset(5) <span class="comment">-- Increase shadow blur/offset</span><br>
-<span class="comment">-- Shadow offset updates immediately!</span><br>
+<span class="comment">-- Note: Shadow offset is reserved for future use</span><br>
+<span class="comment">-- The shadow is attached to the window and moves with it automatically</span><br>
 <br>
 <span class="comment">-- All methods return the Window object for method chaining</span><br>
 Window:SetOutlineShadowEnabled(true)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;:SetOutlineShadowColor(Color3.fromHex("#000000"))<br>
 &nbsp;&nbsp;&nbsp;&nbsp;:SetOutlineShadowTransparency(0.4)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;:SetOutlineShadowThickness(3)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;:SetOutlineShadowOffset(4)
+&nbsp;&nbsp;&nbsp;&nbsp;:SetOutlineShadowThickness(3)
                 </code>
             </div>
 
@@ -692,7 +690,7 @@ Window:SetOutlineShadowEnabled(true)<br>
                         <td><code>OutlineShadowOffset</code></td>
                         <td>number</td>
                         <td><code>2</code></td>
-                        <td>The offset/blur amount of the shadow in pixels. Higher values create a more blurred, diffused shadow effect. Recommended range: 1-10 pixels.</td>
+                        <td>The visual offset/blur amount of the shadow. Note: The shadow is attached to the main window frame and moves with it automatically. This parameter is reserved for future use. Recommended range: 1-10 pixels.</td>
                     </tr>
                 </tbody>
             </table>
@@ -703,10 +701,10 @@ Window:SetOutlineShadowEnabled(true)<br>
                 <li><code>Window:SetOutlineShadowColor(color)</code> - Set the shadow color. Returns the Window object for chaining.</li>
                 <li><code>Window:SetOutlineShadowTransparency(transparency)</code> - Set the shadow transparency (0-1). Returns the Window object for chaining.</li>
                 <li><code>Window:SetOutlineShadowThickness(thickness)</code> - Set the shadow thickness in pixels. If set to <code>nil</code>, uses the main outline thickness. Returns the Window object for chaining.</li>
-                <li><code>Window:SetOutlineShadowOffset(offset)</code> - Set the shadow offset/blur amount in pixels. Returns the Window object for chaining.</li>
+                <li><code>Window:SetOutlineShadowOffset(offset)</code> - Reserved for future use. The shadow is attached to the window frame and moves with it automatically. Returns the Window object for chaining.</li>
             </ul>
 
-            <p><strong>Note:</strong> The outline shadow automatically syncs with the window position and size when the window is moved or resized. The shadow is positioned behind the main window frame to create a depth effect.</p>
+            <p><strong>Note:</strong> The outline shadow is attached as a child of the main window frame, so it automatically moves and resizes with the window. No manual syncing is needed - the shadow stays perfectly aligned with the outline when dragging or resizing the window. The shadow is positioned behind the main window frame (ZIndex = -1) to create a depth effect.</p>
 
             <h4>Tab Customization</h4>
             <div class="code-block">
