@@ -598,6 +598,103 @@ Window:SetOutlineColor(Color3.fromHex("#ff6a30"))<br>
                 <li><code>Window:SetOutlineEnabled(enabled)</code> - Enable or disable the outline. Returns the Window object for chaining.</li>
             </ul>
 
+            <h4>Window Outline Shadow Customization</h4>
+            <p>You can add a customizable shadow around the window outline to create a depth effect. The shadow can be enabled/disabled and its color, transparency, and offset can be customized both during window creation and at runtime.</p>
+            
+            <h5>During Window Creation</h5>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Create window with outline shadow enabled</span><br>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Author = "by Developer",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Folder = "myscript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineEnabled = true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowEnabled = true, <span class="comment">-- Enable outline shadow (default: false)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowColor = Color3.fromHex("#000000"), <span class="comment">-- Shadow color (default: black)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowTransparency = 0.5, <span class="comment">-- Shadow transparency 0-1 (default: 0.5)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowOffset = 3 <span class="comment">-- Shadow offset/blur in pixels (default: 2)</span><br>
+})
+                </code>
+            </div>
+
+            <h5>At Runtime</h5>
+            <p>You can change the shadow properties at any time using the following methods:</p>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Enable outline shadow</span><br>
+Window:SetOutlineShadowEnabled(true)<br>
+<span class="comment">-- Shadow appears immediately!</span><br>
+<br>
+<span class="comment">-- Change shadow color</span><br>
+Window:SetOutlineShadowColor(Color3.fromHex("#ff0000"))<br>
+<span class="comment">-- Shadow color updates immediately!</span><br>
+<br>
+<span class="comment">-- Change shadow transparency</span><br>
+Window:SetOutlineShadowTransparency(0.3) <span class="comment">-- Make shadow more visible</span><br>
+<span class="comment">-- Shadow transparency updates immediately!</span><br>
+<br>
+<span class="comment">-- Change shadow offset</span><br>
+Window:SetOutlineShadowOffset(5) <span class="comment">-- Increase shadow blur/offset</span><br>
+<span class="comment">-- Shadow offset updates immediately!</span><br>
+<br>
+<span class="comment">-- All methods return the Window object for method chaining</span><br>
+Window:SetOutlineShadowEnabled(true)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;:SetOutlineShadowColor(Color3.fromHex("#000000"))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;:SetOutlineShadowTransparency(0.4)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;:SetOutlineShadowOffset(4)
+                </code>
+            </div>
+
+            <h5>Configuration Parameters</h5>
+            <table class="param-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>OutlineShadowEnabled</code></td>
+                        <td>boolean</td>
+                        <td><code>false</code></td>
+                        <td>Whether the outline shadow is enabled. Set to <code>true</code> to enable the shadow.</td>
+                    </tr>
+                    <tr>
+                        <td><code>OutlineShadowColor</code></td>
+                        <td>Color3</td>
+                        <td><code>Color3.fromRGB(0, 0, 0)</code></td>
+                        <td>The color of the outline shadow. Typically black for a natural shadow effect.</td>
+                    </tr>
+                    <tr>
+                        <td><code>OutlineShadowTransparency</code></td>
+                        <td>number</td>
+                        <td><code>0.5</code></td>
+                        <td>The transparency of the shadow. Range: 0 (fully opaque) to 1 (fully transparent). Lower values create more visible shadows.</td>
+                    </tr>
+                    <tr>
+                        <td><code>OutlineShadowOffset</code></td>
+                        <td>number</td>
+                        <td><code>2</code></td>
+                        <td>The offset/blur amount of the shadow in pixels. Higher values create a more blurred, diffused shadow effect. Recommended range: 1-10 pixels.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h5>Methods</h5>
+            <ul class="method-list">
+                <li><code>Window:SetOutlineShadowEnabled(enabled)</code> - Enable or disable the outline shadow. Creates the shadow frame if it doesn't exist. Returns the Window object for chaining.</li>
+                <li><code>Window:SetOutlineShadowColor(color)</code> - Set the shadow color. Returns the Window object for chaining.</li>
+                <li><code>Window:SetOutlineShadowTransparency(transparency)</code> - Set the shadow transparency (0-1). Returns the Window object for chaining.</li>
+                <li><code>Window:SetOutlineShadowOffset(offset)</code> - Set the shadow offset/blur amount in pixels. Returns the Window object for chaining.</li>
+            </ul>
+
+            <p><strong>Note:</strong> The outline shadow automatically syncs with the window position and size when the window is moved or resized. The shadow is positioned behind the main window frame to create a depth effect.</p>
+
             <h4>Tab Customization</h4>
             <div class="code-block">
                 <code>
