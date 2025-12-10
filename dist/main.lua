@@ -10583,18 +10583,13 @@ end
 
 local av
 local aw
+
+
 if ar.OutlineShadowEnabled then
-local ax=ar.OutlineShadowOffset or 2
 av=aj("Frame",{
-Size=ar.Size,
-Position=UDim2.new(
-ar.Position.X.Scale,
-ar.Position.X.Offset+ax,
-ar.Position.Y.Scale,
-ar.Position.Y.Offset+ax
-),
+Size=UDim2.new(1,0,1,0),
+Position=UDim2.new(0,0,0,0),
 BackgroundTransparency=1,
-AnchorPoint=Vector2.new(0.5,0.5),
 ZIndex=-1,
 },{
 aj("UICorner",{
@@ -10602,9 +10597,9 @@ CornerRadius=UDim.new(0,ar.UICorner)
 }),
 })
 
-local ay=ar.OutlineShadowThickness or ar.OutlineThickness
+local ax=ar.OutlineShadowThickness or ar.OutlineThickness
 aw=aj("UIStroke",{
-Thickness=ay,
+Thickness=ax,
 Color=ar.OutlineShadowColor,
 Transparency=ar.OutlineShadowTransparency,
 })
@@ -11134,10 +11129,6 @@ TextColor3="WindowTopbarTitle"
 }
 })
 
-if av then
-av.Parent=aq.Parent
-end
-
 ar.UIElements.Main=aj("Frame",{
 Size=ar.Size,
 Position=ar.Position,
@@ -11148,6 +11139,7 @@ Active=true,
 },{
 ar.AcrylicPaint and ar.AcrylicPaint.Frame or nil,
 aA,
+av,
 ai.NewRoundFrame(ar.UICorner,"Squircle",{
 ImageTransparency=1,
 Size=UDim2.new(1,0,1,-240),
@@ -11391,40 +11383,10 @@ else
 ak(m,.2,{ImageTransparency=.8}):Play()
 end
 ar.Position=ar.UIElements.Main.Position
-
-if av then
-local z=ar.OutlineShadowOffset or 2
-av.Position=UDim2.new(
-ar.Position.X.Scale,
-ar.Position.X.Offset+z,
-ar.Position.Y.Scale,
-ar.Position.Y.Offset+z
-)
-end
 ar.Dragging=v
 end
 end
 )
-
-
-if av then
-ai.AddSignal(ar.UIElements.Main:GetPropertyChangedSignal"Position",function()
-if av then
-local x=ar.OutlineShadowOffset or 2
-av.Position=UDim2.new(
-ar.UIElements.Main.Position.X.Scale,
-ar.UIElements.Main.Position.X.Offset+x,
-ar.UIElements.Main.Position.Y.Scale,
-ar.UIElements.Main.Position.Y.Offset+x
-)
-end
-end)
-ai.AddSignal(ar.UIElements.Main:GetPropertyChangedSignal"Size",function()
-if av then
-av.Size=ar.UIElements.Main.Size
-end
-end)
-end
 
 if not h and ar.Background and typeof(ar.Background)=="table"then
 
@@ -11683,50 +11645,25 @@ ar.OutlineShadowEnabled=B
 if B then
 if not av then
 
-local C=ar.OutlineShadowOffset or 2
 av=aj("Frame",{
-Size=ar.Size,
-Position=UDim2.new(
-ar.Position.X.Scale,
-ar.Position.X.Offset+C,
-ar.Position.Y.Scale,
-ar.Position.Y.Offset+C
-),
+Size=UDim2.new(1,0,1,0),
+Position=UDim2.new(0,0,0,0),
 BackgroundTransparency=1,
-AnchorPoint=Vector2.new(0.5,0.5),
 ZIndex=-1,
-Parent=aq.Parent
+Parent=ar.UIElements.Main
 },{
 aj("UICorner",{
 CornerRadius=UDim.new(0,ar.UICorner)
 }),
 })
 
-local F=ar.OutlineShadowThickness or ar.OutlineThickness
+local C=ar.OutlineShadowThickness or ar.OutlineThickness
 aw=aj("UIStroke",{
-Thickness=F,
+Thickness=C,
 Color=ar.OutlineShadowColor,
 Transparency=ar.OutlineShadowTransparency,
 })
 aw.Parent=av
-
-
-ai.AddSignal(ar.UIElements.Main:GetPropertyChangedSignal"Position",function()
-if av then
-local G=ar.OutlineShadowOffset or 2
-av.Position=UDim2.new(
-ar.UIElements.Main.Position.X.Scale,
-ar.UIElements.Main.Position.X.Offset+G,
-ar.UIElements.Main.Position.Y.Scale,
-ar.UIElements.Main.Position.Y.Offset+G
-)
-end
-end)
-ai.AddSignal(ar.UIElements.Main:GetPropertyChangedSignal"Size",function()
-if av then
-av.Size=ar.UIElements.Main.Size
-end
-end)
 else
 av.Visible=true
 end
@@ -11765,16 +11702,8 @@ end
 
 function ar.SetOutlineShadowOffset(A,B)
 ar.OutlineShadowOffset=B
-if av then
 
-local C=B or 2
-av.Position=UDim2.new(
-ar.UIElements.Main.Position.X.Scale,
-ar.UIElements.Main.Position.X.Offset+C,
-ar.UIElements.Main.Position.Y.Scale,
-ar.UIElements.Main.Position.Y.Offset+C
-)
-end
+
 return ar
 end
 
@@ -12539,10 +12468,6 @@ Size=J
 }):Play()
 
 ar.Size=J
-
-if av then
-av.Size=J
-end
 end
 end
 end)
