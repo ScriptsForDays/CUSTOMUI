@@ -601,6 +601,26 @@ Window:SetOutlineColor(Color3.fromHex("#ff6a30"))<br>
             <h4>Window Outline Shadow Customization</h4>
             <p>You can add a customizable shadow around the window outline to create a depth effect. The shadow is attached to the main window frame as a child, so it automatically moves and resizes with the window - no manual syncing needed! The shadow can be enabled/disabled and its color, transparency, and thickness can be customized both during window creation and at runtime.</p>
             
+            <h5>Quick Start: How to Implement Outline Shadow</h5>
+            <p>To add a shadow to your window outline, simply enable it when creating your window:</p>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Step 1: Enable the outline (required for shadow)</span><br>
+<span class="comment">-- Step 2: Enable the shadow</span><br>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Folder = "myscript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineEnabled = true, <span class="comment">-- Required: Enable outline first</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowEnabled = true <span class="comment">-- Enable shadow</span><br>
+})<br>
+<br>
+<span class="comment">-- That's it! The shadow will appear automatically.</span><br>
+<span class="comment">-- You can customize it further with the options below.</span>
+                </code>
+            </div>
+            
+            <p><strong>Important:</strong> The outline must be enabled (<code>OutlineEnabled = true</code>) for the shadow to work. If the outline is disabled, the shadow will not be visible.</p>
+            
             <h5>During Window Creation</h5>
             <div class="code-block">
                 <code>
@@ -620,8 +640,35 @@ local Window = WindUI:CreateWindow({<br>
                 </code>
             </div>
 
+            <h5>Complete Implementation Example</h5>
+            <div class="code-block">
+                <code>
+<span class="comment">-- Full example with all shadow customization options</span><br>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Title = "My Script",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Author = "by Developer",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Folder = "myscript",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Icon = "settings",<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- Outline settings (required for shadow)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineEnabled = true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineColor = Color3.fromHex("#ffffff"),<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineThickness = 2,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineTransparency = 0.8,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">-- Shadow settings</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowEnabled = true,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowColor = Color3.fromHex("#000000"), <span class="comment">-- Black shadow</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowTransparency = 0.5, <span class="comment">-- 50% transparent</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowThickness = 3 <span class="comment">-- 3 pixels thick (or nil to match outline)</span><br>
+})<br>
+<br>
+<span class="comment">-- The shadow is now active and will move with the window automatically!</span>
+                </code>
+            </div>
+            
             <h5>At Runtime</h5>
-            <p>You can change the shadow properties at any time using the following methods:</p>
+            <p>You can enable or modify the shadow properties at any time using the following methods:</p>
             <div class="code-block">
                 <code>
 <span class="comment">-- Enable outline shadow</span><br>
@@ -704,7 +751,34 @@ Window:SetOutlineShadowEnabled(true)<br>
                 <li><code>Window:SetOutlineShadowOffset(offset)</code> - Reserved for future use. The shadow is attached to the window frame and moves with it automatically. Returns the Window object for chaining.</li>
             </ul>
 
-            <p><strong>Note:</strong> The outline shadow is attached as a child of the main window frame, so it automatically moves and resizes with the window. No manual syncing is needed - the shadow stays perfectly aligned with the outline when dragging or resizing the window. The shadow is positioned behind the main window frame (ZIndex = -1) to create a depth effect.</p>
+            <h5>Implementation Tips</h5>
+            <ul class="feature-list">
+                <li><strong>Enable Outline First:</strong> Always set <code>OutlineEnabled = true</code> before enabling the shadow. The shadow requires an outline to be visible.</li>
+                <li><strong>Automatic Movement:</strong> The shadow is attached to the window frame, so it automatically moves and resizes with the window. No manual syncing needed!</li>
+                <li><strong>Color Recommendations:</strong> Black shadows (<code>Color3.fromHex("#000000")</code>) work best for a natural depth effect, but you can use any color.</li>
+                <li><strong>Transparency Range:</strong> Lower transparency values (0.2-0.4) create more visible shadows. Higher values (0.6-0.8) create subtle shadows.</li>
+                <li><strong>Thickness Matching:</strong> If you don't specify <code>OutlineShadowThickness</code>, it will automatically match your <code>OutlineThickness</code>.</li>
+                <li><strong>Performance:</strong> The shadow has minimal performance impact since it's a simple UIStroke attached to the window frame.</li>
+            </ul>
+            
+            <h5>Troubleshooting</h5>
+            <div class="code-block" style="background: #2a1a1a; border-color: #ff4444;">
+                <code>
+<span class="comment">-- ❌ WRONG - Shadow won't show if outline is disabled</span><br>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineEnabled = false, <span class="comment">-- Outline disabled</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowEnabled = true <span class="comment">-- Shadow won't be visible!</span><br>
+})<br>
+<br>
+<span class="comment">-- ✅ CORRECT - Enable outline first</span><br>
+local Window = WindUI:CreateWindow({<br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineEnabled = true, <span class="comment">-- Outline enabled</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;OutlineShadowEnabled = true <span class="comment">-- Shadow will work!</span><br>
+})
+                </code>
+            </div>
+            
+            <p><strong>Note:</strong> The outline shadow is attached as a child of the main window frame, so it automatically moves and resizes with the window. No manual syncing is needed - the shadow stays perfectly aligned with the outline when dragging or resizing the window. The shadow is positioned behind the main window frame (ZIndex = 0) to create a depth effect.</p>
 
             <h4>Tab Customization</h4>
             <div class="code-block">
